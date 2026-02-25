@@ -158,9 +158,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     guestButtonText: {
-        color: '#666',
+        color: '#444',
         fontSize: 16,
         fontWeight: '500',
-        textDecorationLine: 'underline',
     }
 });
