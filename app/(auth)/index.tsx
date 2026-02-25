@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { BookOpen } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useLanguage } from '../../context/LanguageContext';
 // import { supabase } from '../../lib/supabase';
 
 export default function AuthScreen() {
@@ -10,6 +11,7 @@ export default function AuthScreen() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { t } = useLanguage();
 
     async function signInWithEmail() {
         setLoading(true);
@@ -38,43 +40,22 @@ export default function AuthScreen() {
     }
 
     async function signUpWithEmail() {
-        setLoading(true);
-        setTimeout(async () => {
-            setLoading(false);
-            await AsyncStorage.setItem('mockSession', 'true');
-            router.replace('/(onboarding)');
-        }, 800);
-        /*
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
-        setLoading(false);
-
-        if (error) {
-            Alert.alert('Sign Up Failed', error.message + '\n\nContinuing as Guest for MVP.', [
-                { text: 'OK', onPress: () => router.replace('/(onboarding)') }
-            ]);
-        } else {
-            Alert.alert('Check your email for the login link!');
-            router.replace('/(onboarding)');
-        }
-        */
+        router.push('/(auth)/signup');
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <BookOpen stroke="#1976d2" size={64} style={{ marginBottom: 20 }} />
-                <Text style={styles.title}>Your Career Roadmap</Text>
-                <Text style={styles.subtitle}>Discover paths that match your passion.</Text>
+                <Text style={styles.title}>{t('welcome_roadmap')}</Text>
+                <Text style={styles.subtitle}>{t('auth_subtitle')}</Text>
             </View>
 
             <View style={styles.form}>
                 <TextInput
                     onChangeText={setEmail}
                     value={email}
-                    placeholder="Email address"
+                    placeholder={t('email')}
                     placeholderTextColor="#888"
                     autoCapitalize="none"
                     keyboardType="email-address"
@@ -84,22 +65,25 @@ export default function AuthScreen() {
                     onChangeText={setPassword}
                     value={password}
                     secureTextEntry
-                    placeholder="Password"
+                    placeholder={t('password')}
                     placeholderTextColor="#888"
                     style={styles.input}
                     autoCapitalize="none"
                 />
 
                 <TouchableOpacity style={styles.button} onPress={signInWithEmail} disabled={loading}>
-                    <Text style={styles.buttonText}>{loading ? 'Loading...' : 'Sign In'}</Text>
+                    <Text style={styles.buttonText}>{loading ? 'Loading...' : t('sign_in')}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonOutline} onPress={signUpWithEmail} disabled={loading}>
-                    <Text style={styles.buttonOutlineText}>Sign Up</Text>
+                    <Text style={styles.buttonOutlineText}>{t('sign_up')}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ marginTop: 20 }} onPress={() => router.replace('/(onboarding)')}>
-                    <Text style={styles.guestText}>Continue as Guest</Text>
+                <TouchableOpacity
+                    style={styles.guestButton}
+                    onPress={() => router.replace('/(onboarding)')}
+                >
+                    <Text style={styles.guestButtonText}>{t('guest')}</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -167,10 +151,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
     },
-    guestText: {
-        color: '#0d47a1',
-        textAlign: 'center',
+    guestButton: {
+        marginTop: 16,
+        padding: 12,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    guestButtonText: {
+        color: '#666',
         fontSize: 16,
+        fontWeight: '500',
         textDecorationLine: 'underline',
     }
 });

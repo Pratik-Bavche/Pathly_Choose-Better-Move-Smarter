@@ -1,6 +1,7 @@
 import { BookCheck, Building2, MapPin, Search, Star } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useLanguage } from '../../context/LanguageContext';
 
 const COLLEGES = [
   { id: 1, name: 'Delhi University', location: 'New Delhi', fees: '₹15k/yr', rating: 4.8, type: 'Govt' },
@@ -12,24 +13,31 @@ const COLLEGES = [
 export default function ExploreScreen() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
+  const { t } = useLanguage();
 
   const filteredColleges = COLLEGES.filter(c =>
     (filter === 'All' || c.type === filter) &&
     c.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const filters = [
+    { label: t('filter_all'), value: 'All' },
+    { label: t('filter_govt'), value: 'Govt' },
+    { label: t('filter_private'), value: 'Private' },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>College Explorer</Text>
-        <Text style={styles.headerSubtitle}>Find the best institution for your degree</Text>
+        <Text style={styles.headerTitle}>{t('explore_title')}</Text>
+        <Text style={styles.headerSubtitle}>{t('explore_subtitle')}</Text>
       </View>
 
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Search color="#888" size={20} />
           <TextInput
-            placeholder="Search colleges, degrees..."
+            placeholder={t('search_placeholder')}
             style={styles.searchInput}
             value={search}
             onChangeText={setSearch}
@@ -38,13 +46,13 @@ export default function ExploreScreen() {
       </View>
 
       <View style={styles.filterRow}>
-        {['All', 'Govt', 'Private'].map(f => (
+        {filters.map(f => (
           <TouchableOpacity
-            key={f}
-            style={[styles.filterChip, filter === f && styles.filterChipActive]}
-            onPress={() => setFilter(f)}
+            key={f.value}
+            style={[styles.filterChip, filter === f.value && styles.filterChipActive]}
+            onPress={() => setFilter(f.value)}
           >
-            <Text style={[styles.filterText, filter === f && styles.filterTextActive]}>{f}</Text>
+            <Text style={[styles.filterText, filter === f.value && styles.filterTextActive]}>{f.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -71,15 +79,15 @@ export default function ExploreScreen() {
 
             <View style={styles.cardBody}>
               <View style={styles.infoCol}>
-                <Text style={styles.infoLabel}>Tuition Fees</Text>
+                <Text style={styles.infoLabel}>{t('tuition_fees')}</Text>
                 <Text style={styles.infoValue}>{college.fees}</Text>
               </View>
               <View style={styles.infoCol}>
-                <Text style={styles.infoLabel}>Type</Text>
-                <Text style={styles.infoValue}>{college.type}</Text>
+                <Text style={styles.infoLabel}>{t('college_type')}</Text>
+                <Text style={styles.infoValue}>{college.type === 'Govt' ? t('filter_govt') : t('filter_private')}</Text>
               </View>
               <View style={styles.infoCol}>
-                <Text style={styles.infoLabel}>Placement</Text>
+                <Text style={styles.infoLabel}>{t('placement')}</Text>
                 <Text style={styles.infoValue}>90%</Text>
               </View>
             </View>
@@ -87,10 +95,10 @@ export default function ExploreScreen() {
             <View style={styles.cardFooter}>
               <TouchableOpacity style={styles.saveBtn}>
                 <BookCheck color="#1976d2" size={18} />
-                <Text style={styles.saveBtnText}>Save</Text>
+                <Text style={styles.saveBtnText}>{t('save')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.applyBtn}>
-                <Text style={styles.applyBtnText}>View Details</Text>
+                <Text style={styles.applyBtnText}>{t('view_details')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -101,10 +109,10 @@ export default function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcfcfc', paddingTop: 60 },
-  header: { paddingHorizontal: 24, marginBottom: 16 },
-  headerTitle: { fontSize: 28, fontWeight: 'bold', color: '#0d47a1' },
-  headerSubtitle: { fontSize: 14, color: '#666', marginTop: 4 },
+  container: { flex: 1, backgroundColor: '#fcfcfc' },
+  header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, marginBottom: 20 },
+  headerTitle: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
+  headerSubtitle: { fontSize: 14, color: '#e3f2fd', marginTop: 4 },
   searchContainer: { paddingHorizontal: 24, marginBottom: 16 },
   searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, borderWidth: 1, borderColor: '#e0e0e0', elevation: 2, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8 },
   searchInput: { flex: 1, marginLeft: 12, fontSize: 16, color: '#333' },

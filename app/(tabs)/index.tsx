@@ -2,27 +2,29 @@ import { useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, GraduationCap, Rocket, Wrench } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-const PATHS = [
-  { id: 'edu', title: 'Further Education', icon: BookOpen, desc: 'Streams, degrees, colleges', color: '#e3f2fd', iconColor: '#1e88e5' },
-  { id: 'job', title: 'Start Working', icon: Briefcase, desc: 'Govt & private jobs', color: '#e8f5e9', iconColor: '#43a047' },
-  { id: 'skill', title: 'Skill Courses', icon: Wrench, desc: 'Certifications, vocations', color: '#fff3e0', iconColor: '#fb8c00' },
-  { id: 'business', title: 'Start a Business', icon: Rocket, desc: 'Ideas & freelance', color: '#f3e5f5', iconColor: '#8e24aa' },
-];
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [selectedPath, setSelectedPath] = useState('edu');
+
+  const PATHS = [
+    { id: 'edu', title: t('further_edu'), icon: BookOpen, desc: t('further_edu_desc'), color: '#e3f2fd', iconColor: '#1e88e5' },
+    { id: 'job', title: t('start_working'), icon: Briefcase, desc: t('start_working_desc'), color: '#e8f5e9', iconColor: '#43a047' },
+    { id: 'skill', title: t('skill_courses'), icon: Wrench, desc: t('skill_courses_desc'), color: '#fff3e0', iconColor: '#fb8c00' },
+    { id: 'business', title: t('start_business'), icon: Rocket, desc: t('start_business_desc'), color: '#f3e5f5', iconColor: '#8e24aa' },
+  ];
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 60 }}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>Hello, Student! 👋</Text>
-        <Text style={styles.subGreeting}>Let's chart your career roadmap</Text>
+        <Text style={styles.greeting}>{t('hello_student')}</Text>
+        <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>What would you like to explore?</Text>
+        <Text style={styles.sectionTitle}>{t('explore_section')}</Text>
         <View style={styles.grid}>
           {PATHS.map((item) => {
             const Icon = item.icon;
@@ -43,7 +45,7 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Recommended for You</Text>
+        <Text style={styles.sectionTitle}>{t('recommended')}</Text>
         {selectedPath === 'edu' && (
           <View>
             <RecommendationCard

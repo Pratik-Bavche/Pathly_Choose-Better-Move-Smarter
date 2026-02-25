@@ -1,6 +1,7 @@
 import { BookOpen, Briefcase, CheckCircle, Clock, PenTool } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useLanguage } from '../../context/LanguageContext';
 
 const TIMELINE = [
     { id: '1', title: 'Start Web Design Course', status: 'In Progress', date: 'March 2024', icon: PenTool, color: '#f5b041' },
@@ -9,11 +10,19 @@ const TIMELINE = [
 ];
 
 export default function PlanScreen() {
+    const { t } = useLanguage();
+
+    const getStatusText = (status: string) => {
+        if (status === 'Completed') return t('status_completed');
+        if (status === 'In Progress') return t('status_in_progress');
+        return t('status_pending');
+    };
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>My Career Plan</Text>
-                <Text style={styles.headerSubtitle}>Track your goals and saved action items</Text>
+                <Text style={styles.headerTitle}>{t('plan_title')}</Text>
+                <Text style={styles.headerSubtitle}>{t('plan_subtitle')}</Text>
             </View>
 
             <View style={styles.timelineContainer}>
@@ -35,7 +44,7 @@ export default function PlanScreen() {
                                     <Text style={styles.timelineTitle}>{item.title}</Text>
                                     <View style={[styles.statusBadge, item.status === 'Completed' ? styles.statusSuccess : styles.statusPending]}>
                                         {item.status === 'Completed' ? <CheckCircle size={10} color="#fff" /> : <Clock size={10} color="#fff" />}
-                                        <Text style={styles.statusText}>{item.status}</Text>
+                                        <Text style={styles.statusText}>{getStatusText(item.status)}</Text>
                                     </View>
                                 </View>
                                 <Text style={styles.timelineDate}>{item.date}</Text>
@@ -46,21 +55,22 @@ export default function PlanScreen() {
             </View>
 
             <View style={styles.savedSection}>
-                <Text style={styles.sectionTitle}>Saved Bookmarks</Text>
+                <Text style={styles.sectionTitle}>{t('bookmarks_title')}</Text>
                 <View style={styles.emptyState}>
-                    <Text style={styles.emptyStateText}>No bookmarks yet. Explore and save colleges or courses.</Text>
+                    <Text style={styles.emptyStateText}>{t('no_bookmarks')}</Text>
                 </View>
             </View>
         </ScrollView>
     );
 }
 
+
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#fcfcfc', paddingTop: 60, paddingHorizontal: 24 },
-    header: { marginBottom: 32 },
-    headerTitle: { fontSize: 28, fontWeight: 'bold', color: '#0d47a1' },
-    headerSubtitle: { fontSize: 14, color: '#666', marginTop: 4 },
-    timelineContainer: { marginBottom: 40 },
+    container: { flex: 1, backgroundColor: '#fcfcfc' },
+    header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, marginBottom: 32 },
+    headerTitle: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
+    headerSubtitle: { fontSize: 14, color: '#e3f2fd', marginTop: 4 },
+    timelineContainer: { marginBottom: 40, paddingHorizontal: 24 },
     timelineItem: { flexDirection: 'row', gap: 16 },
     timelineLeft: { alignItems: 'center', width: 40 },
     timelineIconWrapper: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', zIndex: 1 },
@@ -73,7 +83,7 @@ const styles = StyleSheet.create({
     statusSuccess: { backgroundColor: '#2ecc71' },
     statusPending: { backgroundColor: '#f39c12' },
     statusText: { fontSize: 10, color: '#ffffff', fontWeight: 'bold' },
-    savedSection: { marginTop: 10 },
+    savedSection: { marginTop: 10, paddingHorizontal: 24 },
     sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 16 },
     emptyState: { padding: 32, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8faff', borderRadius: 16, borderWidth: 1, borderColor: '#e0e0e0', borderStyle: 'dashed' },
     emptyStateText: { color: '#666', textAlign: 'center' }

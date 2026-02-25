@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
 import { Compass, Home, LayoutList, MessageCircle, User } from 'lucide-react-native';
 import { useColorScheme } from 'react-native';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { t } = useLanguage();
 
   return (
     <Tabs
@@ -20,38 +22,39 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: t('tab_home'),
           tabBarIcon: ({ color }) => <Home color={color} size={24} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Explore',
+          title: t('tab_explore'),
           tabBarIcon: ({ color }) => <Compass color={color} size={24} />,
         }}
       />
       <Tabs.Screen
         name="plan"
         options={{
-          title: 'My Plan',
+          title: t('tab_plan'),
           tabBarIcon: ({ color }) => <LayoutList color={color} size={24} />,
         }}
       />
       <Tabs.Screen
         name="chat"
         options={{
-          title: 'Assistant',
+          title: t('tab_assist'),
           tabBarIcon: ({ color }) => <MessageCircle color={color} size={24} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: t('tab_profile'),
           tabBarIcon: ({ color }) => <User color={color} size={24} />,
         }}
       />
     </Tabs>
   );
 }
+

@@ -1,10 +1,12 @@
 import { Bot, Send } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function ChatScreen() {
+    const { t } = useLanguage();
     const [messages, setMessages] = useState([
-        { id: '1', text: 'Hi! I am your Career Assistant. How can I help you today?', sender: 'bot' },
+        { id: '1', text: t('bot_initial_msg'), sender: 'bot' },
         { id: '2', text: 'Which is better: BSc or BBA?', sender: 'user' },
         { id: '3', text: 'It depends on your interests! If you like coding and science, B.Sc Computer Science is great. If you enjoy business, management, and marketing, BBA is a better fit. What subjects do you enjoy more?', sender: 'bot' }
     ]);
@@ -20,7 +22,7 @@ export default function ChatScreen() {
         setTimeout(() => {
             setMessages(prev => [...prev, {
                 id: (Date.now() + 1).toString(),
-                text: 'That sounds like a great path! Would you like me to find some relevant courses and colleges for that area?',
+                text: t('bot_feedback_msg'),
                 sender: 'bot'
             }]);
         }, 1500);
@@ -33,7 +35,7 @@ export default function ChatScreen() {
             keyboardVerticalOffset={80}
         >
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Career Assistant ✨</Text>
+                <Text style={styles.headerTitle}>{t('assist_title')}</Text>
             </View>
 
             <ScrollView style={styles.chatArea} contentContainerStyle={{ paddingBottom: 20 }}>
@@ -56,7 +58,7 @@ export default function ChatScreen() {
             <View style={styles.inputArea}>
                 <TextInput
                     style={styles.textInput}
-                    placeholder="Ask me anything..."
+                    placeholder={t('ask_anything')}
                     value={inputText}
                     onChangeText={setInputText}
                     multiline
@@ -69,10 +71,11 @@ export default function ChatScreen() {
     );
 }
 
+
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#fcfcfc', paddingTop: 60 },
-    header: { paddingHorizontal: 24, paddingBottom: 16, borderBottomWidth: 1, borderBottomColor: '#eee' },
-    headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#0d47a1' },
+    container: { flex: 1, backgroundColor: '#fcfcfc' },
+    header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 24, borderBottomRightRadius: 24 },
+    headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#ffffff' },
     chatArea: { flex: 1, padding: 24 },
     messageRow: { flexDirection: 'row', marginBottom: 16, maxWidth: '85%' },
     messageUserRow: { alignSelf: 'flex-end', justifyContent: 'flex-end' },
