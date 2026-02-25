@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { Check, Globe, HelpCircle, LogOut, RefreshCw, Settings, Shield, User } from 'lucide-react-native';
+import { Check, Globe, HelpCircle, LogOut, Settings, Shield, User } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LanguageId, useLanguage } from '../../context/LanguageContext';
@@ -30,17 +30,6 @@ export default function ProfileScreen() {
         ]);
     };
 
-    const handleRetakeQuiz = async () => {
-        Alert.alert(t('retake_assessment'), t('retake_confirm'), [
-            { text: t('cancel'), style: 'cancel' },
-            {
-                text: t('continue'), onPress: async () => {
-                    await AsyncStorage.removeItem('hasOnboarded');
-                    router.replace('/(onboarding)/profile');
-                }
-            },
-        ]);
-    };
 
     return (
         <View style={{ flex: 1 }}>
@@ -54,10 +43,6 @@ export default function ProfileScreen() {
                 </View>
 
                 <View style={styles.section}>
-                    <TouchableOpacity style={styles.listItem} onPress={handleRetakeQuiz}>
-                        <RefreshCw color="#1976d2" size={24} style={styles.listIcon} />
-                        <Text style={styles.listTitle}>{t('retake_assessment')}</Text>
-                    </TouchableOpacity>
 
                     <TouchableOpacity style={styles.listItem} onPress={() => setLangModalVisible(true)}>
                         <Globe color="#1976d2" size={24} style={styles.listIcon} />
