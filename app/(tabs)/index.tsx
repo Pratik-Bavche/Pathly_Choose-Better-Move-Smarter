@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { BookOpen, Briefcase, ChevronRight, GraduationCap, Rocket, Wrench } from 'lucide-react-native';
+import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
@@ -44,7 +44,32 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View style={styles.section}>
+      {/* Compact Special Cards Section */}
+      <View style={[styles.section, { paddingTop: 0, paddingBottom: 8 }]}>
+        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#fff8e1', borderColor: '#fef3c7' }]}>
+          <View style={[styles.recIconWrap, { backgroundColor: '#fef3c7' }]}>
+            <Trophy color="#f39c12" size={24} />
+          </View>
+          <View style={styles.recDetails}>
+            <Text style={styles.recTitle}>{t('scholarship_title')}</Text>
+            <Text style={styles.recSub}>{t('scholarship_name')}</Text>
+          </View>
+          <ChevronRight color="#ccc" size={24} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#f8faff' }]}>
+          <View style={[styles.recIconWrap, { backgroundColor: '#e8eaf6' }]}>
+            <FileText color="#3f51b5" size={24} />
+          </View>
+          <View style={styles.recDetails}>
+            <Text style={styles.recTitle}>{t('resume_instant_title')}</Text>
+            <Text style={styles.recSub}>{t('build_resume')}</Text>
+          </View>
+          <ChevronRight color="#ccc" size={24} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={[styles.section, { paddingTop: 8 }]}>
         <Text style={styles.sectionTitle}>{t('recommended')}</Text>
         {selectedPath === 'edu' && (
           <View>
@@ -131,9 +156,12 @@ const styles = StyleSheet.create({
   pathIcon: { marginBottom: 12 },
   pathTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 4 },
   pathDesc: { fontSize: 12, color: '#666' },
+
   recCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fcfcfc', padding: 16, borderRadius: 12, marginBottom: 12, borderWidth: 1, borderColor: '#eee' },
   recIconWrap: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#e3f2fd', justifyContent: 'center', alignItems: 'center', marginRight: 16 },
   recDetails: { flex: 1 },
   recTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 4 },
   recSub: { fontSize: 12, color: '#666' }
 });
+
+
