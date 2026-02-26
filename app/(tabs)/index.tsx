@@ -80,37 +80,75 @@ export default function HomeScreen() {
         </View>
 
         {selectedPath === 'edu' && (
-          <RecommendationCard
-            title="B.Sc Computer Science"
-            subtitle="Duration: 3 Years • Avg Salary: ₹4L - ₹8L"
-            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'B.Sc Computer Science' } })}
-            icon={GraduationCap}
-          />
+          <>
+            <RecommendationCard
+              title="B.Sc Computer Science"
+              subtitle="Duration: 3 Years • Avg Salary: ₹4L - ₹8L"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'B.Sc Computer Science' } })}
+              icon={GraduationCap}
+            />
+            <View style={{ height: 18 }} />
+            <RecommendationCard
+              title="Diploma in IT"
+              subtitle="Duration: 2 Years • Fast-track career"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Diploma in IT' } })}
+              icon={GraduationCap}
+            />
+          </>
         )}
         {selectedPath === 'job' && (
-          <RecommendationCard
-            title="Data Entry Operator"
-            subtitle="Private • 12th Pass • ₹15k - ₹25k/mo"
-            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Data Entry Operator' } })}
-            icon={Briefcase}
-          />
+          <>
+            <RecommendationCard
+              title="Data Entry Operator"
+              subtitle="Private • 12th Pass • ₹15k - ₹25k/mo"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Data Entry Operator' } })}
+              icon={Briefcase}
+            />
+            <View style={{ height: 16 }} />
+            <RecommendationCard
+              title="SSC CHSL (Govt)"
+              subtitle="Govt Exam • 12th Pass • Secure limits"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'SSC CHSL' } })}
+              icon={Briefcase}
+            />
+          </>
         )}
         {selectedPath === 'skill' && (
-          <RecommendationCard
-            title="Graphic Design Course"
-            subtitle="3 Months • Skill India • High demand"
-            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Graphic Design' } })}
-            icon={Wrench}
-          />
+          <>
+            <RecommendationCard
+              title="Graphic Design Course"
+              subtitle="3 Months • Skill India • High demand"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Graphic Design' } })}
+              icon={Wrench}
+            />
+            <View style={{ height: 16 }} />
+            <RecommendationCard
+              title="Digital Marketing"
+              subtitle="2 Months • Certification • Remote Work"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Digital Marketing' } })}
+              icon={Wrench}
+            />
+          </>
         )}
         {selectedPath === 'business' && (
-          <RecommendationCard
-            title="Freelance Content Writing"
-            subtitle="0 Investment • High Income Potential"
-            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Content Writing' } })}
-            icon={Rocket}
-          />
+          <>
+            <RecommendationCard
+              title="Freelance Content Writing"
+              subtitle="0 Investment • High Income Potential"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Content Writing' } })}
+              icon={Rocket}
+            />
+            <View style={{ height: 16 }} />
+            <RecommendationCard
+              title="Dropshipping Basics"
+              subtitle="Low Investment • E-commerce"
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Dropshipping' } })}
+              icon={Rocket}
+            />
+          </>
         )}
+
+        <View style={{ height: 50 }} />
       </View>
     </View>
   );
@@ -132,26 +170,49 @@ function RecommendationCard({ title, subtitle, onPress, icon: Icon }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#ffffff' },
-  header: { backgroundColor: '#0d47a1', paddingHorizontal: 24, paddingTop: 50, paddingBottom: 24, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, marginBottom: 12 },
-  greeting: { fontSize: 26, fontWeight: 'bold', color: '#ffffff' },
-  subGreeting: { fontSize: 15, color: '#e3f2fd', marginTop: 4 },
-  section: { paddingHorizontal: 24, paddingVertical: 12 },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 12 },
+  container: { flex: 1, backgroundColor: '#ffffff', paddingBottom: 110 }, // Increased padding for more gap above tabs
+  header: { backgroundColor: '#0d47a1', paddingHorizontal: 24, paddingTop: 50, paddingBottom: 20, borderBottomLeftRadius: 28, borderBottomRightRadius: 28, marginBottom: 4 },
+  greeting: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
+  subGreeting: { fontSize: 16, color: '#e3f2fd', marginTop: 4 },
+  section: { paddingHorizontal: 24, paddingVertical: 8 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  sectionTitle: { fontSize: 19, fontWeight: 'bold', color: '#333', marginBottom: 12 },
   seeMoreText: { fontSize: 14, color: '#1976d2', fontWeight: '600' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  pathCard: { width: '48%', padding: 14, borderRadius: 16, marginBottom: 12, minHeight: 110 },
+  pathCard: {
+    width: '48%',
+    padding: 16,
+    borderRadius: 20, // Clean, consistent radius
+    marginBottom: 12,
+    minHeight: 120,
+    backgroundColor: '#fff', // Ensure solid background for clean corners
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.05)',
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 }
+  },
   activeCard: { borderWidth: 2, borderColor: '#1976d2' },
-  pathIcon: { marginBottom: 8 },
-  pathTitle: { fontSize: 15, fontWeight: 'bold', color: '#333', marginBottom: 2 },
-  pathDesc: { fontSize: 11, color: '#666' },
+  pathIcon: { marginBottom: 10 },
+  pathTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 4 },
+  pathDesc: { fontSize: 12, color: '#666' },
 
-  recCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fcfcfc', padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#eee' },
-  recIconWrap: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#e3f2fd', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  recCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fcfcfc',
+    padding: 14, // Slightly increased from 12
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#eee',
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 }
+  },
+  recIconWrap: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#e3f2fd', justifyContent: 'center', alignItems: 'center', marginRight: 14 },
   recDetails: { flex: 1 },
-  recTitle: { fontSize: 15, fontWeight: 'bold', color: '#333', marginBottom: 2 },
-  recSub: { fontSize: 12, color: '#666' }
+  recTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 2 },
+  recSub: { fontSize: 13, color: '#666' }
 });
-
-
