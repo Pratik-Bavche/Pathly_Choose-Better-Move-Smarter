@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function HomeScreen() {
@@ -17,7 +17,7 @@ export default function HomeScreen() {
   ];
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 60 }}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.greeting}>{t('hello_student')}</Text>
         <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
@@ -38,18 +38,17 @@ export default function HomeScreen() {
                   router.push({ pathname: '/(tabs)/explore', params: { category: item.id } });
                 }}
               >
-                <Icon color={item.iconColor} size={32} style={styles.pathIcon} />
+                <Icon color={item.iconColor} size={28} style={styles.pathIcon} />
                 <Text style={styles.pathTitle}>{item.title}</Text>
-                <Text style={styles.pathDesc}>{item.desc}</Text>
+                <Text style={styles.pathDesc} numberOfLines={1}>{item.desc}</Text>
               </TouchableOpacity>
             )
           })}
         </View>
       </View>
 
-      {/* Compact Special Cards Section */}
-      <View style={[styles.section, { paddingTop: 0, paddingBottom: 8 }]}>
-        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#fff8e1', borderColor: '#fef3c7' }]}>
+      <View style={styles.section}>
+        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#fff8e1', borderColor: '#fef3c7', marginBottom: 12 }]}>
           <View style={[styles.recIconWrap, { backgroundColor: '#fef3c7' }]}>
             <Trophy color="#f39c12" size={24} />
           </View>
@@ -60,7 +59,7 @@ export default function HomeScreen() {
           <ChevronRight color="#ccc" size={24} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#f8faff' }]}>
+        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#f8faff', marginBottom: 16 }]}>
           <View style={[styles.recIconWrap, { backgroundColor: '#e8eaf6' }]}>
             <FileText color="#3f51b5" size={24} />
           </View>
@@ -72,67 +71,48 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.section, { paddingTop: 8 }]}>
+      <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('recommended')}</Text>
           <TouchableOpacity onPress={() => router.push({ pathname: '/(tabs)/explore', params: { category: selectedPath } })}>
             <Text style={styles.seeMoreText}>{t('see_more')}</Text>
           </TouchableOpacity>
         </View>
+
         {selectedPath === 'edu' && (
-          <View>
-            <RecommendationCard
-              title="B.Sc Computer Science"
-              subtitle="Duration: 3 Years • Avg Salary: ₹4L - ₹8L"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'B.Sc Computer Science' } })}
-              icon={GraduationCap}
-            />
-            <RecommendationCard
-              title="Diploma in IT"
-              subtitle="Duration: 2 Years • Fast-track career"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Diploma in IT' } })}
-              icon={GraduationCap}
-            />
-          </View>
+          <RecommendationCard
+            title="B.Sc Computer Science"
+            subtitle="Duration: 3 Years • Avg Salary: ₹4L - ₹8L"
+            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'B.Sc Computer Science' } })}
+            icon={GraduationCap}
+          />
         )}
         {selectedPath === 'job' && (
-          <View>
-            <RecommendationCard
-              title="Data Entry Operator"
-              subtitle="Private • 12th Pass • ₹15k - ₹25k/mo"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Data Entry Operator' } })}
-              icon={Briefcase}
-            />
-            <RecommendationCard
-              title="SSC CHSL (Govt)"
-              subtitle="Govt Exam • 12th Pass • Secure limits"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'SSC CHSL' } })}
-              icon={Briefcase}
-            />
-          </View>
+          <RecommendationCard
+            title="Data Entry Operator"
+            subtitle="Private • 12th Pass • ₹15k - ₹25k/mo"
+            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Data Entry Operator' } })}
+            icon={Briefcase}
+          />
         )}
         {selectedPath === 'skill' && (
-          <View>
-            <RecommendationCard
-              title="Graphic Design Course"
-              subtitle="3 Months • Skill India • High demand"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Graphic Design' } })}
-              icon={Wrench}
-            />
-          </View>
+          <RecommendationCard
+            title="Graphic Design Course"
+            subtitle="3 Months • Skill India • High demand"
+            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Graphic Design' } })}
+            icon={Wrench}
+          />
         )}
         {selectedPath === 'business' && (
-          <View>
-            <RecommendationCard
-              title="Freelance Content Writing"
-              subtitle="0 Investment • High Income Potential"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Content Writing' } })}
-              icon={Rocket}
-            />
-          </View>
+          <RecommendationCard
+            title="Freelance Content Writing"
+            subtitle="0 Investment • High Income Potential"
+            onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Content Writing' } })}
+            icon={Rocket}
+          />
         )}
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -153,24 +133,24 @@ function RecommendationCard({ title, subtitle, onPress, icon: Icon }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#ffffff' },
-  header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 24, borderBottomRightRadius: 24 },
-  greeting: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
-  subGreeting: { fontSize: 16, color: '#e3f2fd', marginTop: 8 },
-  section: { padding: 24, paddingTop: 32 },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  header: { backgroundColor: '#0d47a1', paddingHorizontal: 24, paddingTop: 50, paddingBottom: 24, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, marginBottom: 12 },
+  greeting: { fontSize: 26, fontWeight: 'bold', color: '#ffffff' },
+  subGreeting: { fontSize: 15, color: '#e3f2fd', marginTop: 4 },
+  section: { paddingHorizontal: 24, paddingVertical: 12 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 12 },
   seeMoreText: { fontSize: 14, color: '#1976d2', fontWeight: '600' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  pathCard: { width: '48%', padding: 16, borderRadius: 16, marginBottom: 16, minHeight: 140 },
+  pathCard: { width: '48%', padding: 14, borderRadius: 16, marginBottom: 12, minHeight: 110 },
   activeCard: { borderWidth: 2, borderColor: '#1976d2' },
-  pathIcon: { marginBottom: 12 },
-  pathTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 4 },
-  pathDesc: { fontSize: 12, color: '#666' },
+  pathIcon: { marginBottom: 8 },
+  pathTitle: { fontSize: 15, fontWeight: 'bold', color: '#333', marginBottom: 2 },
+  pathDesc: { fontSize: 11, color: '#666' },
 
-  recCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fcfcfc', padding: 16, borderRadius: 12, marginBottom: 12, borderWidth: 1, borderColor: '#eee' },
-  recIconWrap: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#e3f2fd', justifyContent: 'center', alignItems: 'center', marginRight: 16 },
+  recCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fcfcfc', padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#eee' },
+  recIconWrap: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#e3f2fd', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   recDetails: { flex: 1 },
-  recTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 4 },
+  recTitle: { fontSize: 15, fontWeight: 'bold', color: '#333', marginBottom: 2 },
   recSub: { fontSize: 12, color: '#666' }
 });
 
