@@ -33,7 +33,10 @@ export default function HomeScreen() {
               <TouchableOpacity
                 key={item.id}
                 style={[styles.pathCard, { backgroundColor: item.color }, isSelected && styles.activeCard]}
-                onPress={() => setSelectedPath(item.id)}
+                onPress={() => {
+                  setSelectedPath(item.id);
+                  router.push({ pathname: '/(tabs)/explore', params: { category: item.id } });
+                }}
               >
                 <Icon color={item.iconColor} size={32} style={styles.pathIcon} />
                 <Text style={styles.pathTitle}>{item.title}</Text>
@@ -70,19 +73,24 @@ export default function HomeScreen() {
       </View>
 
       <View style={[styles.section, { paddingTop: 8 }]}>
-        <Text style={styles.sectionTitle}>{t('recommended')}</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>{t('recommended')}</Text>
+          <TouchableOpacity onPress={() => router.push({ pathname: '/(tabs)/explore', params: { category: selectedPath } })}>
+            <Text style={styles.seeMoreText}>{t('see_more')}</Text>
+          </TouchableOpacity>
+        </View>
         {selectedPath === 'edu' && (
           <View>
             <RecommendationCard
               title="B.Sc Computer Science"
               subtitle="Duration: 3 Years • Avg Salary: ₹4L - ₹8L"
-              onPress={() => router.push('/(tabs)/explore')}
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'B.Sc Computer Science' } })}
               icon={GraduationCap}
             />
             <RecommendationCard
               title="Diploma in IT"
               subtitle="Duration: 2 Years • Fast-track career"
-              onPress={() => router.push('/(tabs)/explore')}
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Diploma in IT' } })}
               icon={GraduationCap}
             />
           </View>
@@ -92,13 +100,13 @@ export default function HomeScreen() {
             <RecommendationCard
               title="Data Entry Operator"
               subtitle="Private • 12th Pass • ₹15k - ₹25k/mo"
-              onPress={() => { }}
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Data Entry Operator' } })}
               icon={Briefcase}
             />
             <RecommendationCard
               title="SSC CHSL (Govt)"
               subtitle="Govt Exam • 12th Pass • Secure limits"
-              onPress={() => { }}
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'SSC CHSL' } })}
               icon={Briefcase}
             />
           </View>
@@ -108,7 +116,7 @@ export default function HomeScreen() {
             <RecommendationCard
               title="Graphic Design Course"
               subtitle="3 Months • Skill India • High demand"
-              onPress={() => { }}
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Graphic Design' } })}
               icon={Wrench}
             />
           </View>
@@ -118,7 +126,7 @@ export default function HomeScreen() {
             <RecommendationCard
               title="Freelance Content Writing"
               subtitle="0 Investment • High Income Potential"
-              onPress={() => { }}
+              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Content Writing' } })}
               icon={Rocket}
             />
           </View>
@@ -149,7 +157,9 @@ const styles = StyleSheet.create({
   greeting: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
   subGreeting: { fontSize: 16, color: '#e3f2fd', marginTop: 8 },
   section: { padding: 24, paddingTop: 32 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 16 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  seeMoreText: { fontSize: 14, color: '#1976d2', fontWeight: '600' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   pathCard: { width: '48%', padding: 16, borderRadius: 16, marginBottom: 16, minHeight: 140 },
   activeCard: { borderWidth: 2, borderColor: '#1976d2' },

@@ -47,6 +47,7 @@ const LANGUAGES = {
         start_business: 'Start a Business',
         start_business_desc: 'Ideas & freelance',
         recommended: 'Recommended for You',
+        see_more: 'See More',
 
         // Explore Screen
         explore_title: 'College Explorer',
@@ -140,6 +141,7 @@ const LANGUAGES = {
         start_business: 'व्यवसाय शुरू करें',
         start_business_desc: 'विचार और फ्रीलांस',
         recommended: 'आपके लिए अनुशंसित',
+        see_more: 'और देखें',
 
         // Explore Screen
         explore_title: 'कॉलेज एक्सप्लोरर',
@@ -233,6 +235,7 @@ const LANGUAGES = {
         start_business: 'व्यवसाय सुरू करा',
         start_business_desc: 'कल्पना आणि फ्रीलांस',
         recommended: 'तुमच्यासाठी शिफारस केलेले',
+        see_more: 'आणखी पहा',
 
         // Explore Screen
         explore_title: 'कॉलेज एक्सप्लोरर',
