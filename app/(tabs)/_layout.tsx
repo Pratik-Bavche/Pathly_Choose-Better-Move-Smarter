@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import { Compass, Home, LayoutList, MessageCircle, User } from 'lucide-react-native';
 import { useColorScheme } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
@@ -6,6 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { t } = useLanguage();
+  const router = useRouter();
 
   return (
     <Tabs

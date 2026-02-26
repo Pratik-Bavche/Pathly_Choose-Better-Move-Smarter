@@ -20,8 +20,15 @@ const ITEMS = [
 export default function ExploreScreen() {
   const { category: categoryParam, search: searchParam } = useLocalSearchParams();
   const [search, setSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>(categoryParam as string || 'edu');
   const [filter, setFilter] = useState('All');
   const { t } = useLanguage();
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam as string);
+    }
+  }, [categoryParam]);
 
   useEffect(() => {
     if (searchParam) {
@@ -30,21 +37,27 @@ export default function ExploreScreen() {
       setSearch('');
     }
     setFilter('All');
-  }, [searchParam, categoryParam]);
+  }, [searchParam]);
 
   const filteredItems = ITEMS.filter(item => {
-    const matchesCategory = !categoryParam || item.category === categoryParam;
+    const matchesCategory = item.category === activeCategory;
     const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.type.toLowerCase().includes(search.toLowerCase());
     const matchesFilter = filter === 'All' || item.type === filter;
 
-    // If specific search is provided, we should prioritize showing only that or very relevant ones
     if (searchParam && search === searchParam) {
       return item.name.toLowerCase().includes((searchParam as string).toLowerCase());
     }
 
     return matchesCategory && matchesSearch && matchesFilter;
   });
+
+  const categories = [
+    { id: 'edu', label: t('further_edu') },
+    { id: 'job', label: t('start_working') },
+    { id: 'skill', label: t('skill_courses') },
+    { id: 'business', label: t('start_business') },
+  ];
 
   const filters = [
     { label: t('filter_all'), value: 'All' },
@@ -55,9 +68,25 @@ export default function ExploreScreen() {
   return (
     <View style={styles.container}>
       <View style={[styles.header, searchParam && styles.headerCompact]}>
-        <Text style={styles.headerTitle}>{searchParam ? t('recommended') : t('explore_title')}</Text>
+        <Text style={styles.headerTitle}>
+          {searchParam ? t('recommended') : categories.find(c => c.id === activeCategory)?.label || t('explore_title')}
+        </Text>
         {!searchParam && <Text style={styles.headerSubtitle}>{t('explore_subtitle')}</Text>}
       </View>
+
+      {!searchParam && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll} contentContainerStyle={styles.categoryRow}>
+          {categories.map(c => (
+            <TouchableOpacity
+              key={c.id}
+              style={[styles.categoryChip, activeCategory === c.id && styles.categoryChipActive]}
+              onPress={() => setActiveCategory(c.id)}
+            >
+              <Text style={[styles.categoryText, activeCategory === c.id && styles.categoryTextActive]}>{c.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
 
       {!searchParam && (
         <View style={styles.searchContainer}>
@@ -166,6 +195,12 @@ const styles = StyleSheet.create({
   filterChipActive: { backgroundColor: '#e3f2fd', borderColor: '#1976d2' },
   filterText: { color: '#666', fontWeight: '500' },
   filterTextActive: { color: '#1976d2', fontWeight: 'bold' },
+  categoryScroll: { maxHeight: 50, marginBottom: 12 },
+  categoryRow: { paddingHorizontal: 24, gap: 10 },
+  categoryChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f5f5f5', borderWidth: 1, borderColor: '#eee' },
+  categoryChipActive: { backgroundColor: '#0d47a1', borderColor: '#0d47a1' },
+  categoryText: { color: '#666', fontSize: 13, fontWeight: '500' },
+  categoryTextActive: { color: '#ffffff', fontWeight: 'bold' },
   listContainer: { flex: 1, paddingHorizontal: 24 },
   recommendedTitle: { fontSize: 18, fontWeight: 'bold', color: '#1976d2', marginBottom: 12 },
   scrollArea: { flex: 1 },
