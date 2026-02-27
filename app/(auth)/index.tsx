@@ -115,13 +115,6 @@ export default function AuthScreen() {
                 <TouchableOpacity style={styles.buttonOutline} onPress={signUpWithEmail} disabled={loading}>
                     <Text style={styles.buttonOutlineText}>{t('sign_up')}</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.guestButton}
-                    onPress={() => router.replace('/(onboarding)')}
-                >
-                    <Text style={styles.guestButtonText}>Try as Guest</Text>
-                </TouchableOpacity>
             </View>
         </View>
     );
@@ -195,15 +188,5 @@ const styles = StyleSheet.create({
         color: '#1976d2',
         fontWeight: 'bold',
         fontSize: 16,
-    },
-    guestButton: {
-        marginTop: 16,
-        padding: 12,
-        alignItems: 'center',
-    },
-    guestButtonText: {
-        color: '#666',
-        fontSize: 15,
-        fontWeight: '500',
     }
 });

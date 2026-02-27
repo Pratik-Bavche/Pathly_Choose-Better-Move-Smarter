@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, BookOpen, ChevronRight, GraduationCap, Heart, Lock, Mail, MapPin, User } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
@@ -35,6 +34,7 @@ export default function SignUpScreen() {
     const [location, setLocation] = useState('');
     const [qualification, setQualification] = useState('');
     const [stream, setStream] = useState('');
+    const [marksType, setMarksType] = useState('Marks %');
     const [marks, setMarks] = useState('');
     const [interests, setInterests] = useState('');
 
@@ -64,9 +64,16 @@ export default function SignUpScreen() {
 
             if (error) throw error;
 
-            await AsyncStorage.setItem('mockSession', 'true');
-            await AsyncStorage.setItem('userData', JSON.stringify(data[0]));
-            router.replace('/(onboarding)');
+            Alert.alert(
+                'Account Created',
+                'Your account has been successfully created. Please log in to continue.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => router.back()
+                    }
+                ]
+            );
         } catch (error: any) {
             Alert.alert('Registration Failed', error.message || 'An unexpected error occurred.');
         } finally {
@@ -175,10 +182,17 @@ export default function SignUpScreen() {
                         <TextInput
                             onChangeText={setMarks}
                             value={marks}
-                            placeholder="Marks% / CGPA"
+                            placeholder={marksType === 'CGPA' ? "CGPA (e.g. 8.5)" : "Marks % (e.g. 85)"}
                             placeholderTextColor="#888"
+                            keyboardType="numeric"
                             style={styles.input}
                         />
+                        <TouchableOpacity
+                            style={styles.toggleButton}
+                            onPress={() => setMarksType(prev => prev === 'Marks %' ? 'CGPA' : 'Marks %')}
+                        >
+                            <Text style={styles.toggleButtonText}>{marksType}</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.inputWrapper}>
@@ -345,5 +359,17 @@ const styles = StyleSheet.create({
     linkText: {
         color: '#1976d2',
         fontWeight: 'bold',
+    },
+    toggleButton: {
+        backgroundColor: '#e1efff',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        borderRadius: 8,
+        marginLeft: 8,
+    },
+    toggleButtonText: {
+        color: '#1976d2',
+        fontWeight: '600',
+        fontSize: 12,
     },
 });

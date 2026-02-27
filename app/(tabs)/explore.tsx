@@ -1,34 +1,118 @@
 import { useLocalSearchParams } from 'expo-router';
-import { BookCheck, Building2, MapPin, Search, Star } from 'lucide-react-native';
+import { BookMarked, Briefcase, Building2, ChevronDown, ChevronUp, GraduationCap, MapPin, Search, Star, Wrench } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
 
-const ITEMS = [
-  { id: 1, name: 'Delhi University', location: 'New Delhi', fees: '₹15k/yr', rating: 4.8, type: 'Govt', category: 'edu' },
-  { id: 2, name: 'Mumbai University', location: 'Mumbai', fees: '₹20k/yr', rating: 4.5, type: 'Govt', category: 'edu' },
-  { id: 3, name: 'Amity University', location: 'Noida', fees: '₹1.5L/yr', rating: 4.2, type: 'Private', category: 'edu' },
-  { id: 4, name: 'IIT Madras', location: 'Chennai', fees: '₹2L/yr', rating: 4.9, type: 'Govt', category: 'edu' },
-  { id: 5, name: 'B.Sc Computer Science', location: 'Multiple Colleges', fees: '₹40k - 1L/yr', rating: 4.7, type: 'Degree', category: 'edu' },
-  { id: 6, name: 'Diploma in IT', location: 'Polytechnics', fees: '₹20k - 50k/yr', rating: 4.4, type: 'Diploma', category: 'edu' },
-  { id: 7, name: 'Data Entry Operator', location: 'Corporate / Govt', fees: '₹15k - 25k/mo', rating: 4.0, type: 'Job', category: 'job' },
-  { id: 8, name: 'SSC CHSL', location: 'Govt Services', fees: 'Stable Pay', rating: 4.6, type: 'Govt Job', category: 'job' },
-  { id: 9, name: 'Graphic Design', location: 'Online/Offline', fees: '₹10k - 30k', rating: 4.5, type: 'Skill', category: 'skill' },
-  { id: 10, name: 'Content Writing', location: 'Remote', fees: 'Per Project', rating: 4.3, type: 'Business', category: 'business' },
+const EDUCATION_PATHWAYS = [
+  {
+    id: 'hs_streams',
+    title: 'Higher Secondary Streams (Class 11–12)',
+    description: 'The foundation for higher education. Choose a stream based on your career interests.',
+    icon: <BookMarked color="#1976d2" size={24} />,
+    details: [
+      '• Science (PCM/PCB): For Engineering, Medical, Architecture, and Pure Sciences.',
+      '• Commerce: For Business, Finance, Accounting (CA/CS/CMA), and Economics.',
+      '• Arts/Humanities: For Civil Services, Law, Design, Journalism, and Social Sciences.',
+      '• Boards: CBSE, CISCE, State Boards, and Open Schooling (NIOS).'
+    ]
+  },
+  {
+    id: 'diploma',
+    title: 'Diploma (Polytechnic) Programs',
+    description: '3-year practical programs right after 10th. Offers lateral entry direct to 2nd year B.Tech/B.E.',
+    icon: <Building2 color="#1976d2" size={24} />,
+    details: [
+      '• Engineering Diplomas: Mechanical, Civil, Computer, Electronics, Electrical.',
+      '• Allied Diplomas: Design, Architecture Assistantship, Hospitality, Pharmacy.',
+      '• Healthcare Diplomas: DMLT, X-Ray Tech, Nursing Assistant.',
+    ]
+  },
+  {
+    id: 'iti',
+    title: 'ITI (Industrial Training Institute)',
+    description: 'Short-term training focusing on practical vocational trades for direct employment.',
+    icon: <Wrench color="#1976d2" size={24} />,
+    details: [
+      '• Engineering Trades: Fitter, Electrician, Welder, Machinist, Draftsman.',
+      '• Non-Engineering Trades: COPA (Computer Operator), Dress Making, Stenography.',
+    ]
+  },
+  {
+    id: 'vocational',
+    title: 'Vocational & Certificate Courses',
+    description: 'Short-term skill-based programs designed to make you industry-ready quickly.',
+    icon: <Briefcase color="#1976d2" size={24} />,
+    details: [
+      '• Popular Fields: Beauty & Wellness, Electronics Repair, Hardware & Networking, Computing.',
+      '• Other Skills: Tailoring, Culinary Arts, Front Office Management, Retail.',
+    ]
+  },
+  {
+    id: 'undergrad',
+    title: 'Undergraduate Degree Programs (After 12th)',
+    description: '3 to 5-year bachelor degree programs for professional and academic careers.',
+    icon: <GraduationCap color="#1976d2" size={24} />,
+    details: [
+      '• Programs: Engineering (B.E/B.Tech), Medicine (MBBS/BDS), Science (B.Sc), Commerce (B.Com), Arts (B.A).',
+      '• Specialized Degrees: Law (LLB), Design (B.Des), Hospitality (BHM), Nursing, Pharmacy.',
+      '• Key Entrance Exams: JEE (Engineering), NEET (Medical), NATA (Architecture), CUET (Central Universities).'
+    ]
+  },
+  {
+    id: 'specialized',
+    title: 'Specialized Fields',
+    description: 'Niche, fast-growing career paths with highly specialized training.',
+    icon: <Star color="#1976d2" size={24} />,
+    details: [
+      '• Paramedical Sciences, Physiotherapy, and Occupational Therapy.',
+      '• Agriculture, Forestry, and Veterinary Sciences.',
+      '• Fashion Design, Animation, VFX, and Multimedia.',
+      '• Forensic Science, Sports Sciences, and Aviation.'
+    ]
+  },
+  {
+    id: 'bridge',
+    title: 'Bridge / Pre-University Paths',
+    description: 'Alternative pathways and foundation programs to transition to university.',
+    icon: <MapPin color="#1976d2" size={24} />,
+    details: [
+      '• Open Schooling (NIOS) for flexible learning.',
+      '• Foundation / Coaching integrated programs for competitive exams.',
+      '• International Curricula (IB, A-Levels).',
+      '• Lateral-Entry Pathways from Diploma to Degree.'
+    ]
+  },
+  {
+    id: 'certification',
+    title: 'Professional / Technical Certifications',
+    description: 'Industry-recognized credentials to upskill or reskill at any stage.',
+    icon: <BookMarked color="#1976d2" size={24} />,
+    details: [
+      '• IT Certifications: Cisco (CCNA), AWS, Microsoft, CompTIA.',
+      '• Business & Finance: Tally, Accounting Software, Digital Marketing.',
+      '• Tech Skills: Programming Bootcamps, UI/UX Design Certifications.',
+    ]
+  },
+  {
+    id: 'alternative',
+    title: 'Other Alternative Education Paths',
+    description: 'Flexible learning, apprenticeships, and government initiatives.',
+    icon: <Building2 color="#1976d2" size={24} />,
+    details: [
+      '• Apprenticeships (Skill India) for earn-while-you-learn opportunities.',
+      '• Open Universities & Distance Learning (e.g., IGNOU).',
+      '• NSDC Skill Programs and Government Upskilling Schemes.',
+      '• Specialized Academies: Sports Academies, Fine Arts Institutes.'
+    ]
+  }
 ];
 
 export default function ExploreScreen() {
   const { category: categoryParam, search: searchParam } = useLocalSearchParams();
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState<string>(categoryParam as string || 'edu');
-  const [filter, setFilter] = useState('All');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const { t } = useLanguage();
-
-  useEffect(() => {
-    if (categoryParam) {
-      setActiveCategory(categoryParam as string);
-    }
-  }, [categoryParam]);
 
   useEffect(() => {
     if (searchParam) {
@@ -36,143 +120,84 @@ export default function ExploreScreen() {
     } else {
       setSearch('');
     }
-    setFilter('All');
   }, [searchParam]);
 
-  const filteredItems = ITEMS.filter(item => {
-    const matchesCategory = item.category === activeCategory;
-    const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.type.toLowerCase().includes(search.toLowerCase());
-    const matchesFilter = filter === 'All' || item.type === filter;
-
-    if (searchParam && search === searchParam) {
-      return item.name.toLowerCase().includes((searchParam as string).toLowerCase());
-    }
-
-    return matchesCategory && matchesSearch && matchesFilter;
-  });
-
-  const categories = [
-    { id: 'edu', label: t('further_edu') },
-    { id: 'job', label: t('start_working') },
-    { id: 'skill', label: t('skill_courses') },
-    { id: 'business', label: t('start_business') },
-  ];
-
-  const filters = [
-    { label: t('filter_all'), value: 'All' },
-    { label: t('filter_govt'), value: 'Govt' },
-    { label: t('filter_private'), value: 'Private' },
-  ];
+  const filteredItems = EDUCATION_PATHWAYS.filter(item =>
+    item.title.toLowerCase().includes(search.toLowerCase()) ||
+    item.description.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
       <View style={[styles.header, searchParam && styles.headerCompact]}>
-        <Text style={styles.headerTitle}>
-          {searchParam ? t('recommended') : categories.find(c => c.id === activeCategory)?.label || t('explore_title')}
-        </Text>
-        {!searchParam && <Text style={styles.headerSubtitle}>{t('explore_subtitle')}</Text>}
+        <Text style={styles.headerTitle}>Explore Education Options</Text>
+        <Text style={styles.headerSubtitle}>Discover all major pathways after 10th and 12th</Text>
       </View>
 
-      {!searchParam && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll} contentContainerStyle={styles.categoryRow}>
-          {categories.map(c => (
-            <TouchableOpacity
-              key={c.id}
-              style={[styles.categoryChip, activeCategory === c.id && styles.categoryChipActive]}
-              onPress={() => setActiveCategory(c.id)}
-            >
-              <Text style={[styles.categoryText, activeCategory === c.id && styles.categoryTextActive]}>{c.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-
-      {!searchParam && (
-        <View style={styles.searchContainer}>
-          <View style={styles.searchBar}>
-            <Search color="#888" size={20} />
-            <TextInput
-              placeholder={t('search_placeholder')}
-              style={styles.searchInput}
-              value={search}
-              onChangeText={setSearch}
-            />
-          </View>
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Search color="#888" size={20} />
+          <TextInput
+            placeholder="Search pathways, streams, degrees..."
+            placeholderTextColor="#888"
+            style={styles.searchInput}
+            value={search}
+            onChangeText={setSearch}
+          />
         </View>
-      )}
-
-      {!searchParam && (
-        <View style={styles.filterRow}>
-          {filters.map(f => (
-            <TouchableOpacity
-              key={f.value}
-              style={[styles.filterChip, filter === f.value && styles.filterChipActive]}
-              onPress={() => setFilter(f.value)}
-            >
-              <Text style={[styles.filterText, filter === f.value && styles.filterTextActive]}>{f.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      </View>
 
       <View style={styles.listContainer}>
-        {searchParam && (
-          <Text style={styles.recommendedTitle}>{t('recommended')}</Text>
-        )}
         <ScrollView
           style={styles.scrollArea}
           contentContainerStyle={{ paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
         >
-          {filteredItems.map((item) => (
-            <View key={item.id} style={styles.collegeCard}>
-              <View style={styles.cardHeader}>
-                <View style={styles.iconContainer}>
-                  <Building2 color="#1976d2" size={24} />
-                </View>
-                <View style={styles.cardHeaderDetails}>
-                  <Text style={styles.collegeName}>{item.name}</Text>
-                  <View style={styles.row}>
-                    <MapPin color="#666" size={14} />
-                    <Text style={styles.locationText}>{item.location}</Text>
+          {filteredItems.map((item) => {
+            const isExpanded = expandedId === item.id;
+
+            return (
+              <TouchableOpacity
+                key={item.id}
+                style={[styles.pathwayCard, isExpanded && styles.pathwayCardExpanded]}
+                onPress={() => setExpandedId(isExpanded ? null : item.id)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.cardHeader}>
+                  <View style={styles.iconContainer}>
+                    {item.icon}
+                  </View>
+                  <View style={styles.cardHeaderDetails}>
+                    <Text style={styles.pathwayTitle}>{item.title}</Text>
+                    <Text style={styles.pathwayDesc} numberOfLines={isExpanded ? undefined : 2}>
+                      {item.description}
+                    </Text>
+                  </View>
+                  <View style={styles.expandIcon}>
+                    {isExpanded ? <ChevronUp color="#888" size={20} /> : <ChevronDown color="#888" size={20} />}
                   </View>
                 </View>
-                <View style={styles.ratingBadge}>
-                  <Star color="#f5b041" size={12} fill="#f5b041" />
-                  <Text style={styles.ratingText}>{item.rating}</Text>
-                </View>
-              </View>
 
-              <View style={styles.cardBody}>
-                <View style={styles.infoCol}>
-                  <Text style={styles.infoLabel}>{t('tuition_fees')}</Text>
-                  <Text style={styles.infoValue}>{item.fees}</Text>
-                </View>
-                <View style={styles.infoCol}>
-                  <Text style={styles.infoLabel}>{t('college_type')}</Text>
-                  <Text style={styles.infoValue}>{item.type}</Text>
-                </View>
-                <View style={styles.infoCol}>
-                  <Text style={styles.infoLabel}>{t('placement')}</Text>
-                  <Text style={styles.infoValue}>90%</Text>
-                </View>
-              </View>
+                {isExpanded && (
+                  <View style={styles.cardExpandedContent}>
+                    <View style={styles.divider} />
+                    {item.details.map((detail, index) => (
+                      <Text key={index} style={styles.detailText}>
+                        {detail}
+                      </Text>
+                    ))}
+                    <TouchableOpacity style={styles.learnMoreBtn}>
+                      <Text style={styles.learnMoreText}>Find Associated Courses</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          })}
 
-              <View style={styles.cardFooter}>
-                <TouchableOpacity style={styles.saveBtn}>
-                  <BookCheck color="#1976d2" size={18} />
-                  <Text style={styles.saveBtnText}>{t('save')}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.applyBtn}>
-                  <Text style={styles.applyBtnText}>{t('view_details')}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
           {filteredItems.length === 0 && (
             <View style={styles.emptyContainer}>
-              <Text style={styles.noResults}>{t('no_bookmarks')}</Text>
+              <Text style={styles.noResults}>No matching pathways found.</Text>
             </View>
           )}
         </ScrollView>
@@ -182,61 +207,50 @@ export default function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcfcfc' },
-  header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, marginBottom: 20 },
+  container: { flex: 1, backgroundColor: '#f9fafc' },
+  header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 32, borderBottomRightRadius: 32, marginBottom: 20 },
   headerCompact: { paddingTop: 40, paddingBottom: 16, marginBottom: 12 },
-  headerTitle: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
-  headerSubtitle: { fontSize: 14, color: '#e3f2fd', marginTop: 4 },
+  headerTitle: { fontSize: 26, fontWeight: 'bold', color: '#ffffff', letterSpacing: -0.5 },
+  headerSubtitle: { fontSize: 14, color: '#e3f2fd', marginTop: 6, opacity: 0.9 },
   searchContainer: { paddingHorizontal: 24, marginBottom: 16 },
-  searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, borderWidth: 1, borderColor: '#e0e0e0', elevation: 2, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8 },
-  searchInput: { flex: 1, marginLeft: 12, fontSize: 16, color: '#333' },
-  filterRow: { flexDirection: 'row', paddingHorizontal: 24, marginBottom: 16 },
-  filterChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f0f0f0', marginRight: 12, borderWidth: 1, borderColor: '#e0e0e0' },
-  filterChipActive: { backgroundColor: '#e3f2fd', borderColor: '#1976d2' },
-  filterText: { color: '#666', fontWeight: '500' },
-  filterTextActive: { color: '#1976d2', fontWeight: 'bold' },
-  categoryScroll: { maxHeight: 50, marginBottom: 12 },
-  categoryRow: { paddingHorizontal: 24, gap: 12, alignItems: 'center' },
-  categoryChip: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 25,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    minWidth: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 }
-  },
-  categoryChipActive: { backgroundColor: '#0d47a1', borderColor: '#0d47a1' },
-  categoryText: { color: '#666', fontSize: 13, fontWeight: '600', textAlign: 'center' },
-  categoryTextActive: { color: '#ffffff', fontWeight: 'bold' },
-  listContainer: { flex: 1, paddingHorizontal: 24 },
-  recommendedTitle: { fontSize: 18, fontWeight: 'bold', color: '#1976d2', marginBottom: 12 },
+  searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 16, paddingHorizontal: 16, paddingVertical: 14, borderWidth: 1, borderColor: '#e1efff', elevation: 2, shadowColor: '#0d47a1', shadowOpacity: 0.05, shadowRadius: 8, shadowOffset: { width: 0, height: 4 } },
+  searchInput: { flex: 1, marginLeft: 12, fontSize: 15, color: '#333' },
+  listContainer: { flex: 1, paddingHorizontal: 20 },
   scrollArea: { flex: 1 },
-  collegeCard: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#eee', elevation: 2, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, shadowOffset: { width: 0, height: 4 } },
-  cardHeader: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 16 },
-  iconContainer: { width: 48, height: 48, backgroundColor: '#e3f2fd', borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
-  cardHeaderDetails: { flex: 1 },
-  collegeName: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 4 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  locationText: { fontSize: 12, color: '#666' },
-  ratingBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff8e1', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, gap: 4 },
-  ratingText: { fontSize: 12, fontWeight: 'bold', color: '#f5b041' },
-  cardBody: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderTopWidth: 1, borderTopColor: '#f0f0f0', borderBottomWidth: 1, borderBottomColor: '#f0f0f0', marginBottom: 16 },
-  infoCol: { alignItems: 'center', flex: 1 },
-  infoLabel: { fontSize: 10, color: '#888', textTransform: 'uppercase', marginBottom: 4 },
-  infoValue: { fontSize: 14, fontWeight: '600', color: '#333' },
-  cardFooter: { flexDirection: 'row', gap: 12 },
-  saveBtn: { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, paddingVertical: 12, backgroundColor: '#e3f2fd', borderRadius: 8 },
-  saveBtnText: { color: '#1976d2', fontWeight: 'bold' },
-  applyBtn: { flex: 2, justifyContent: 'center', alignItems: 'center', paddingVertical: 12, backgroundColor: '#1976d2', borderRadius: 8 },
-  applyBtnText: { color: '#fff', fontWeight: 'bold' },
+  pathwayCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginBottom: 14,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#eef2f9',
+    elevation: 2,
+    shadowColor: '#1976d2',
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 }
+  },
+  pathwayCardExpanded: {
+    borderColor: '#bbdefb',
+    backgroundColor: '#ffffff',
+  },
+  cardHeader: { flexDirection: 'row', alignItems: 'flex-start' },
+  iconContainer: { width: 48, height: 48, backgroundColor: '#eef6ff', borderRadius: 14, justifyContent: 'center', alignItems: 'center', marginRight: 14 },
+  cardHeaderDetails: { flex: 1, justifyContent: 'center' },
+  pathwayTitle: { fontSize: 16, fontWeight: 'bold', color: '#222', marginBottom: 6 },
+  pathwayDesc: { fontSize: 13, color: '#666', lineHeight: 18 },
+  expandIcon: { paddingLeft: 8, paddingTop: 4 },
+  cardExpandedContent: { marginTop: 12 },
+  divider: { height: 1, backgroundColor: '#f0f4f8', marginBottom: 16, marginTop: 4 },
+  detailText: { fontSize: 14, color: '#444', marginBottom: 10, lineHeight: 22 },
+  learnMoreBtn: {
+    marginTop: 12,
+    backgroundColor: '#eef6ff',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center'
+  },
+  learnMoreText: { color: '#1976d2', fontWeight: 'bold', fontSize: 14 },
   emptyContainer: { alignItems: 'center', paddingTop: 40 },
-  noResults: { color: '#888', fontSize: 16 },
+  noResults: { color: '#888', fontSize: 15 },
 });
