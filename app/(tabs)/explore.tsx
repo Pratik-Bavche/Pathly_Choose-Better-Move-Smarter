@@ -1,7 +1,8 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, BookOpen, Briefcase, Building, ChevronRight, GraduationCap, Plane, Target, Trophy, Wrench } from 'lucide-react-native';
+import { ArrowLeft, BookOpen, Briefcase, Building, ChevronDown, ChevronRight, ChevronUp, GraduationCap, Plane, Target, Trophy, Wrench } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { BRANCH_DETAILS } from '../../data/educationDetails';
 
 const QUALIFICATIONS = [
   { id: '10th', title: 'After 10th', subtitle: 'Start your foundation journey', icon: <BookOpen color="#1976d2" size={28} /> },
@@ -11,7 +12,7 @@ const QUALIFICATIONS = [
   { id: 'graduation', title: 'After Graduation', subtitle: 'Master degrees & top jobs', icon: <Trophy color="#1976d2" size={28} /> },
 ];
 
-const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc: string; icon: JSX.Element }[]> = {
+const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc: string; icon: React.ReactNode }[]> = {
   '10th': [
     { id: 'hs', title: 'Higher Secondary (11-12)', tags: ['Higher Study'], desc: 'Science, Commerce, Arts streams for higher education.', icon: <BookOpen color="#1976d2" size={20} /> },
     { id: 'dip', title: 'Diploma (Polytechnic)', tags: ['Skill-Based', 'Higher Study'], desc: '3-year engineering & non-engineering practical programs.', icon: <Building color="#1976d2" size={20} /> },
@@ -61,6 +62,8 @@ const FILTERS = ['All', 'Govt Job', 'Private Job', 'Higher Study', 'High Salary'
 export default function ExploreScreen() {
   const { category: categoryParam } = useLocalSearchParams();
   const [selectedQual, setSelectedQual] = useState<string | null>(null);
+  const [selectedPathway, setSelectedPathway] = useState<{ id: string, title: string } | null>(null);
+  const [expandedBranch, setExpandedBranch] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('All');
 
   // We check if "category" means the user explicitly clicked "Explore Education Options" from another screen
@@ -142,7 +145,12 @@ export default function ExploreScreen() {
         {/* Results List */}
         <ScrollView style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
           {filteredOptions.map(opt => (
-            <TouchableOpacity key={opt.id} style={styles.pathwayCard} activeOpacity={0.7}>
+            <TouchableOpacity
+              key={opt.id}
+              style={styles.pathwayCard}
+              activeOpacity={0.7}
+              onPress={() => setSelectedPathway({ id: opt.id, title: opt.title })}
+            >
               <View style={styles.pathwayHeader}>
                 <View style={styles.iconBox}>
                   {opt.icon}
@@ -174,6 +182,82 @@ export default function ExploreScreen() {
     );
   };
 
+  const renderStep3 = () => {
+    if (!selectedPathway) return null;
+    const branches = BRANCH_DETAILS[selectedPathway.id] || [];
+
+    return (
+      <View style={styles.stepContainer}>
+        {/* Step 3 Header */}
+        <View style={styles.backRow}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => {
+              setSelectedPathway(null);
+              setExpandedBranch(null);
+            }}
+          >
+            <ArrowLeft color="#1976d2" size={22} />
+          </TouchableOpacity>
+          <Text style={styles.selectedQualHeader} numberOfLines={1}>{selectedPathway.title}</Text>
+        </View>
+
+        <ScrollView style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
+          {branches.length > 0 ? branches.map((branch: any) => {
+            const isExpanded = expandedBranch === branch.id;
+            return (
+              <View key={branch.id} style={[styles.branchCard, isExpanded && styles.branchCardExpanded]}>
+                <TouchableOpacity
+                  style={styles.branchHeader}
+                  onPress={() => setExpandedBranch(isExpanded ? null : branch.id)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.branchTitle}>{branch.title}</Text>
+                  {isExpanded ? <ChevronUp color="#1976d2" size={20} /> : <ChevronDown color="#888" size={20} />}
+                </TouchableOpacity>
+
+                {isExpanded && (
+                  <View style={styles.branchDetails}>
+                    <Text style={styles.branchDesc}>{branch.desc}</Text>
+
+                    <View style={styles.detailItem}>
+                      <Text style={styles.detailLabel}>Duration:</Text>
+                      <Text style={styles.detailValue}>{branch.duration}</Text>
+                    </View>
+
+                    <View style={styles.detailItem}>
+                      <Text style={styles.detailLabel}>Eligibility:</Text>
+                      <Text style={styles.detailValue}>{branch.eligibility}</Text>
+                    </View>
+
+                    <Text style={styles.detailSubtitle}>🏛️ Govt Jobs / Options:</Text>
+                    {branch.govt.map((g: string, i: number) => (
+                      <Text key={i} style={styles.listItem}>• {g}</Text>
+                    ))}
+
+                    <Text style={[styles.detailSubtitle, { marginTop: 12 }]}>💼 Private Sector Roles:</Text>
+                    {branch.private.map((p: string, i: number) => (
+                      <Text key={i} style={styles.listItem}>• {p}</Text>
+                    ))}
+
+                    <Text style={[styles.detailSubtitle, { marginTop: 12 }]}>🎓 Higher Study Paths:</Text>
+                    {branch.higher.map((h: string, i: number) => (
+                      <Text key={i} style={styles.listItem}>• {h}</Text>
+                    ))}
+                  </View>
+                )}
+              </View>
+            );
+          }) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyStateText}>Detailed branches for this pathway are coming soon!</Text>
+            </View>
+          )}
+        </ScrollView>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -181,7 +265,11 @@ export default function ExploreScreen() {
         <Text style={styles.headerSubtitle}>Discover your perfect career route</Text>
       </View>
 
-      {selectedQual ? renderStep2() : renderStep1()}
+      {selectedPathway
+        ? renderStep3()
+        : selectedQual
+          ? renderStep2()
+          : renderStep1()}
     </View>
   );
 }
@@ -296,5 +384,44 @@ const styles = StyleSheet.create({
   microTagText: { fontSize: 10, color: '#555', fontWeight: '500' },
 
   emptyState: { padding: 40, alignItems: 'center' },
-  emptyStateText: { color: '#888', fontStyle: 'italic' }
+  emptyStateText: { color: '#888', fontStyle: 'italic', textAlign: 'center' },
+
+  // Step 3 (Branch details)
+  branchCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#e1efff',
+    elevation: 2,
+    shadowColor: '#1976d2',
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    overflow: 'hidden'
+  },
+  branchCardExpanded: {
+    borderColor: '#bbdefb',
+  },
+  branchHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  branchTitle: { fontSize: 16, fontWeight: 'bold', color: '#222', flex: 1, paddingRight: 10 },
+  branchDetails: {
+    padding: 16,
+    paddingTop: 0,
+    backgroundColor: '#fafcff',
+    borderTopWidth: 1,
+    borderTopColor: '#f0f6ff'
+  },
+  branchDesc: { fontSize: 13, color: '#555', lineHeight: 18, marginBottom: 12, marginTop: 12 },
+  detailItem: { flexDirection: 'row', marginBottom: 6 },
+  detailLabel: { fontSize: 13, fontWeight: 'bold', color: '#1976d2', width: 75 },
+  detailValue: { fontSize: 13, color: '#333', flex: 1 },
+  detailSubtitle: { fontSize: 14, fontWeight: 'bold', color: '#333', marginBottom: 6, marginTop: 8 },
+  listItem: { fontSize: 13, color: '#555', marginBottom: 4, paddingLeft: 8, lineHeight: 18 }
 });
