@@ -22,15 +22,15 @@ const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc
     { id: 'bridge', title: 'Open Schooling / Bridge', tags: ['Govt Job', 'Higher Study'], desc: 'NIOS or foundation courses for competitive exams.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   '12th': [
-    { id: 'eng', title: 'Engineering & Tech', tags: ['High Salary', 'Private Job', 'Higher Study'], desc: 'B.Tech/B.E in CS, Mechanical, Civil, AI, etc.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'med', title: 'Medical & Health', tags: ['High Salary', 'Private Job', 'Govt Job'], desc: 'MBBS, BDS, Nursing, Pharmacy, Physiotherapy.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'sci', title: 'Science & Research', tags: ['Higher Study', 'Govt Job'], desc: 'B.Sc, Agriculture, Biotechnology, Environmental Science.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'com', title: 'Commerce & Mgmt', tags: ['Private Job', 'High Salary'], desc: 'B.Com, BBA, CA, CS, CMA for banking and business.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'arts', title: 'Arts, Humanities, Law', tags: ['Govt Job', 'Higher Study'], desc: 'B.A., BA LLB, Journalism, Civil Services preparation.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'it', title: 'Computer & IT', tags: ['High Salary', 'Private Job'], desc: 'BCA, Cyber Security, Game Design, Multimedia.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'des', title: 'Design & Creative', tags: ['Private Job', 'Skill-Based'], desc: 'Fashion, Interior, Graphic Design, Fine Arts.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'hosp', title: 'Hospitality & Aviation', tags: ['Private Job'], desc: 'Hotel Management, Travel & Tourism, Cabin Crew.', icon: <Plane color="#1976d2" size={20} /> },
-    { id: 'gov', title: 'Govt & Defense Exams', tags: ['Govt Job'], desc: 'NDA, SSC, Banking, Police and Defense services.', icon: <Trophy color="#1976d2" size={20} /> }
+    { id: 'it', title: 'Computer & IT', tags: ['Govt Job', 'Private Job', 'High Salary', 'Study Abroad', 'Skill-Based'], desc: 'BCA, Cyber Security, Data Science, Cloud, Multimedia.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'med', title: 'Medical & Healthcare', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'MBBS, BDS, Nursing, Pharmacy, Physiotherapy.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'eng', title: 'Engineering & Tech', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'B.Tech/B.E in CS, Mechanical, Civil, AI, etc.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'com', title: 'Commerce & Mgmt', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study'], desc: 'B.Com, BBA, CA, CS, CMA for banking and business.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'des', title: 'Design & Creative', tags: ['Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Fashion, Interior, Graphic Design, B.Arch, Animation.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'arts', title: 'Arts, Humanities, Law', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study'], desc: 'B.A., BA LLB, Journalism, Civil Services prep.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'hosp', title: 'Hospitality & Aviation', tags: ['Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Hotel Management, Travel & Tourism, Culinary Arts.', icon: <Plane color="#1976d2" size={20} /> },
+    { id: 'gov', title: 'Govt & Defense Exams', tags: ['Govt Job', 'High Salary'], desc: 'NDA, SSC, Banking, Police and Defense services.', icon: <Trophy color="#1976d2" size={20} /> },
+    { id: 'sci', title: 'Pure Science & Research', tags: ['Govt Job', 'Private Job', 'Higher Study'], desc: 'B.Sc in Physics, Chem, Bio, Agriculture, Biotech.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   'diploma': [
     { id: 'lat', title: 'Lateral Entry B.Tech', tags: ['Higher Study'], desc: 'Direct 2nd year admission to B.E/B.Tech engineering degrees.', icon: <GraduationCap color="#1976d2" size={20} /> },

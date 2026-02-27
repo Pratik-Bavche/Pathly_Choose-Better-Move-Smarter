@@ -482,67 +482,717 @@ export const BRANCH_DETAILS: Record<string, { id: string, title: string, desc: s
         {
             id: 'cse',
             title: 'Computer Science Engineering (CSE)',
-            desc: 'Comprehensive study of computing systems, programming languages, software design, and AI.',
-            duration: '4 Years (8 Semesters)',
-            eligibility: '12th Pass with Physics, Chemistry, Mathematics (PCM) and valid entrance score (JEE/State CET)',
-            govt: ['Scientist (ISRO, DRDO, NIC)', 'Banking Specialist Officer (IT)', 'PSU IT roles'],
-            private: ['Software Developer', 'Data Scientist', 'Cloud Architect', 'Cybersecurity Analyst'],
-            higher: ['M.Tech / M.E.', 'MS in Computer Science (Abroad)', 'MBA']
+            desc: 'Focuses on programming, software development, AI, data structures, and system design.',
+            duration: '4 Years',
+            eligibility: '12th PCM (Math compulsory)',
+            govt: ['NIC', 'DRDO', 'ISRO (after exams)', 'SSC Technical Posts'],
+            private: ['Software Developer', 'Full Stack Developer', 'App Developer', 'System Engineer'],
+            higher: ['M.Tech CSE', 'MS Abroad', 'MBA IT', 'Data Science / AI Specialization']
         },
         {
-            id: 'ece',
-            title: 'Electronics & Communication',
-            desc: 'Designing and developing electronic equipment, communication systems, and integrated circuits.',
+            id: 'aiml',
+            title: 'Artificial Intelligence & Machine Learning',
+            desc: 'Focuses on AI systems, deep learning, automation, and predictive analytics.',
             duration: '4 Years',
-            eligibility: '12th Pass with PCM',
-            govt: ['BSNL JTO', 'AAI Electronics Officer', 'Defense Communication'],
-            private: ['Telecom Engineer', 'Network Planner', 'Embedded Systems Engineer', 'VLSI Designer'],
-            higher: ['M.Tech VLSI / Communications', 'MBA']
+            eligibility: '12th PCM',
+            govt: ['DRDO AI Projects', 'Smart City Tech Roles', 'Govt IT Departments'],
+            private: ['AI Engineer', 'ML Engineer', 'Data Scientist', 'NLP Engineer'],
+            higher: ['M.Tech AI', 'MS Data Science', 'Robotics Specialization']
+        },
+        {
+            id: 'cyber',
+            title: 'Cyber Security',
+            desc: 'Focuses on ethical hacking, digital forensics, network security.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['Cyber Crime Department', 'Defense Cyber Units', 'Intelligence Agencies'],
+            private: ['Ethical Hacker', 'Security Analyst', 'SOC Analyst', 'Cyber Consultant'],
+            higher: ['M.Tech Cyber Security', 'CEH Certification', 'Cloud Security']
+        },
+        {
+            id: 'ee',
+            title: 'Electrical Engineering',
+            desc: 'Focuses on power systems, electrical machines, and energy systems.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['SSC JE', 'State Electricity Boards', 'PSUs', 'Railways'],
+            private: ['Electrical Engineer', 'Power Plant Engineer', 'Maintenance Engineer'],
+            higher: ['M.Tech Electrical', 'Renewable Energy Specialization']
         },
         {
             id: 'me',
             title: 'Mechanical Engineering',
-            desc: 'Core engineering major focusing on design, analysis, and manufacturing of machines.',
+            desc: 'Focuses on machines, manufacturing, robotics, and thermal systems.',
             duration: '4 Years',
-            eligibility: '12th Pass with PCM',
-            govt: ['IES (Indian Engineering Services)', 'PSUs (ONGC, IOCL, GAIL)', 'RRB SSE'],
-            private: ['Automotive Engineer', 'Robotics Engineer', 'Manufacturing Specialist', 'Supply Chain Analyst'],
-            higher: ['M.Tech Thermal/Design', 'MS in Robotics']
+            eligibility: '12th PCM',
+            govt: ['DRDO', 'ISRO', 'Indian Railways', 'PSUs'],
+            private: ['Production Engineer', 'Design Engineer', 'Automotive Engineer', 'Plant Manager'],
+            higher: ['M.Tech Mechanical', 'Robotics', 'Automobile Specialization']
+        },
+        {
+            id: 'ce',
+            title: 'Civil Engineering',
+            desc: 'Focuses on construction, infrastructure, and structural design.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['PWD', 'CPWD', 'SSC JE', 'RRB JE'],
+            private: ['Site Engineer', 'Structural Engineer', 'Construction Manager', 'Urban Planner'],
+            higher: ['M.Tech Civil', 'Environmental Engineering']
+        },
+        {
+            id: 'ece',
+            title: 'Electronics & Communication Engineering (ECE)',
+            desc: 'Focuses on communication systems, electronics, embedded systems.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['ISRO', 'DRDO', 'Railways Signal Dept'],
+            private: ['Telecom Engineer', 'Embedded Engineer', 'PCB Designer'],
+            higher: ['M.Tech ECE', 'VLSI', 'IoT']
+        },
+        {
+            id: 'auto',
+            title: 'Automobile Engineering',
+            desc: 'Focuses on vehicle design and automotive systems.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['State Transport', 'Defense Motor Units'],
+            private: ['Automotive Engineer', 'EV Engineer', 'Design Engineer'],
+            higher: ['M.Tech Automobile', 'EV Technology']
+        },
+        {
+            id: 'cloud',
+            title: 'Cloud Computing',
+            desc: 'Focuses on cloud platforms, DevOps, virtualization.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['NIC', 'Govt Tech Projects'],
+            private: ['Cloud Engineer', 'DevOps Engineer', 'Cloud Architect'],
+            higher: ['M.Tech Cloud', 'AWS / Azure Certifications']
+        },
+        {
+            id: 'rob',
+            title: 'Robotics Engineering',
+            desc: 'Focuses on automation, robotics systems, AI integration.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['DRDO', 'Govt Automation Labs'],
+            private: ['Robotics Engineer', 'Automation Engineer', 'Industrial Programmer'],
+            higher: ['Mechatronics', 'AI Robotics']
+        },
+        {
+            id: 'chem',
+            title: 'Chemical Engineering',
+            desc: 'Focuses on industrial chemical processes and production.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['Oil & Gas PSUs', 'Fertilizer Plants'],
+            private: ['Process Engineer', 'Plant Engineer'],
+            higher: ['M.Tech Chemical', 'Petroleum Specialization']
+        },
+        {
+            id: 'aero',
+            title: 'Aerospace Engineering',
+            desc: 'Focuses on aircraft and spacecraft systems.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['ISRO', 'DRDO', 'HAL'],
+            private: ['Aerospace Engineer', 'Aircraft Maintenance Engineer'],
+            higher: ['M.Tech Aerospace', 'MS Abroad']
+        },
+        {
+            id: 'marine',
+            title: 'Marine Engineering',
+            desc: 'Focuses on ship machinery and marine systems.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['Indian Navy', 'Coast Guard'],
+            private: ['Marine Engineer', 'Ship Engineer'],
+            higher: ['Merchant Navy Certifications']
+        },
+        {
+            id: 'arch',
+            title: 'Architecture (B.Arch)',
+            desc: 'Focuses on building design and planning.',
+            duration: '5 Years',
+            eligibility: '12th PCM + NATA',
+            govt: ['PWD', 'Urban Development'],
+            private: ['Architect', 'Interior Designer'],
+            higher: ['M.Arch', 'Urban Planning']
         }
     ],
+
+    // After 12th - Medical & Healthcare
+    'med': [
+        {
+            id: 'mbbs',
+            title: 'MBBS (Bachelor of Medicine & Surgery)',
+            desc: 'Focuses on diagnosis, treatment, and prevention of diseases.',
+            duration: '5.5 Years',
+            eligibility: '12th PCB + NEET Qualification',
+            govt: ['Government Hospitals', 'Armed Forces Medical Services', 'Public Health Departments'],
+            private: ['Private Hospital Doctor', 'Clinic Owner', 'Specialist (after PG)'],
+            higher: ['MD / MS', 'Super Specialization (DM / MCh)']
+        },
+        {
+            id: 'bds',
+            title: 'BDS (Bachelor of Dental Surgery)',
+            desc: 'Focuses on dental care, oral surgery, and oral health.',
+            duration: '5 Years',
+            eligibility: '12th PCB + NEET',
+            govt: ['Government Dental Hospitals', 'Army Dental Corps'],
+            private: ['Dentist', 'Dental Clinic Owner'],
+            higher: ['MDS (Master of Dental Surgery)']
+        },
+        {
+            id: 'bpharm',
+            title: 'B.Pharm (Bachelor of Pharmacy)',
+            desc: 'Focuses on medicines, drug formulation, and pharmaceutical science.',
+            duration: '4 Years',
+            eligibility: '12th PCB or PCM',
+            govt: ['Drug Inspector', 'Government Hospitals', 'Pharma PSUs'],
+            private: ['Pharmacist', 'Medical Representative', 'Pharma Research Associate'],
+            higher: ['M.Pharm', 'Pharm.D', 'MBA Pharma']
+        },
+        {
+            id: 'nursing',
+            title: 'B.Sc Nursing',
+            desc: 'Focuses on patient care and hospital management.',
+            duration: '4 Years',
+            eligibility: '12th PCB',
+            govt: ['Government Hospitals', 'Military Nursing Services'],
+            private: ['Staff Nurse', 'ICU Nurse', 'Hospital Supervisor'],
+            higher: ['M.Sc Nursing', 'Nurse Practitioner Programs']
+        },
+        {
+            id: 'bpt',
+            title: 'BPT (Bachelor of Physiotherapy)',
+            desc: 'Focuses on physical rehabilitation and movement therapy.',
+            duration: '4.5 Years',
+            eligibility: '12th PCB',
+            govt: ['Government Hospitals', 'Sports Authorities'],
+            private: ['Physiotherapist', 'Sports Rehab Specialist', 'Clinic Owner'],
+            higher: ['MPT (Master of Physiotherapy)']
+        },
+        {
+            id: 'mlt',
+            title: 'B.Sc Medical Lab Technology (MLT)',
+            desc: 'Focuses on diagnostic lab testing and pathology.',
+            duration: '3-4 Years',
+            eligibility: '12th PCB',
+            govt: ['Government Labs', 'Public Health Departments'],
+            private: ['Lab Technologist', 'Diagnostic Center Technician'],
+            higher: ['M.Sc MLT']
+        },
+        {
+            id: 'radiology',
+            title: 'B.Sc Radiology / Imaging Technology',
+            desc: 'Focuses on X-ray, MRI, CT scan imaging systems.',
+            duration: '3-4 Years',
+            eligibility: '12th PCB',
+            govt: ['Government Hospitals', 'Railway Hospitals'],
+            private: ['Radiology Technologist', 'Imaging Specialist'],
+            higher: ['M.Sc Radiology']
+        },
+        {
+            id: 'bams',
+            title: 'BAMS (Ayurvedic Medicine)',
+            desc: 'Focuses on traditional Ayurvedic medicine.',
+            duration: '5.5 Years',
+            eligibility: '12th PCB + NEET',
+            govt: ['Government Ayurvedic Hospitals'],
+            private: ['Ayurvedic Doctor', 'Wellness Consultant'],
+            higher: ['MD/MS in Ayurveda']
+        },
+        {
+            id: 'bhms',
+            title: 'BHMS (Homeopathy)',
+            desc: 'Focuses on homeopathic treatment systems.',
+            duration: '5.5 Years',
+            eligibility: '12th PCB + NEET',
+            govt: ['Government Homeopathic Clinics'],
+            private: ['Homeopathic Doctor', 'Clinic Owner'],
+            higher: ['MD in Homeopathy']
+        },
+        {
+            id: 'biotech',
+            title: 'B.Sc Biotechnology',
+            desc: 'Focuses on genetic research and biological innovations.',
+            duration: '3-4 Years',
+            eligibility: '12th PCB or PCM',
+            govt: ['Research Labs', 'Agricultural Departments'],
+            private: ['Research Associate', 'Biotech Analyst'],
+            higher: ['M.Sc Biotechnology', 'Ph.D']
+        },
+        {
+            id: 'para_deg',
+            title: 'Allied Health / Paramedical Degrees',
+            desc: 'Dialysis Technology, OT Technology, Emergency Medicine, Optometry.',
+            duration: '3-4 Years',
+            eligibility: '12th PCB',
+            govt: ['Government Hospitals', 'Medical Colleges'],
+            private: ['Paramedical Staff', 'OT Technician', 'Optometrist'],
+            higher: ['M.Sc in Allied Health']
+        }
+    ],
+
+    // After 12th - Pure Science
+    'sci': [
+        {
+            id: 'physics',
+            title: 'B.Sc Physics',
+            desc: 'Focuses on mechanics, thermodynamics, quantum physics, electronics, and research.',
+            duration: '3 Years',
+            eligibility: '12th PCM',
+            govt: ['ISRO/DRDO (after M.Sc)', 'Research Labs', 'Teaching (after B.Ed)'],
+            private: ['Lab Analyst', 'Research Assistant', 'Technical Consultant'],
+            higher: ['M.Sc Physics', 'M.Tech', 'Data Science', 'Ph.D']
+        },
+        {
+            id: 'chemistry',
+            title: 'B.Sc Chemistry',
+            desc: 'Focuses on chemical reactions, organic/inorganic chemistry, industrial chemistry.',
+            duration: '3 Years',
+            eligibility: '12th PCM or PCB',
+            govt: ['Pollution Control Board', 'Public Health Labs'],
+            private: ['Chemical Analyst', 'Quality Control Officer', 'Pharma Research Assistant'],
+            higher: ['M.Sc Chemistry', 'Chemical Engineering']
+        },
+        {
+            id: 'biology',
+            title: 'B.Sc Biology / Life Sciences',
+            desc: 'Focuses on plant & animal sciences, genetics, microbiology.',
+            duration: '3 Years',
+            eligibility: '12th PCB',
+            govt: ['Forest Department', 'Agricultural Department', 'Research Labs'],
+            private: ['Lab Technician', 'Biotech Assistant', 'Environmental Analyst'],
+            higher: ['M.Sc Microbiology', 'M.Sc Biotechnology', 'Ph.D']
+        },
+        {
+            id: 'math',
+            title: 'B.Sc Mathematics',
+            desc: 'Focuses on advanced mathematics, statistics, and analytical methods.',
+            duration: '3 Years',
+            eligibility: '12th PCM',
+            govt: ['Statistical Departments', 'Banking Exams', 'Teaching'],
+            private: ['Data Analyst', 'Actuarial Assistant', 'Financial Analyst'],
+            higher: ['M.Sc Mathematics', 'Data Science', 'Actuarial Science']
+        },
+        {
+            id: 'env',
+            title: 'B.Sc Environmental Science',
+            desc: 'Focuses on climate change, pollution control, sustainability.',
+            duration: '3 Years',
+            eligibility: '12th Science',
+            govt: ['Pollution Control Board', 'Environmental Departments'],
+            private: ['Environmental Consultant', 'Sustainability Officer'],
+            higher: ['M.Sc Environmental Science', 'Disaster Management']
+        },
+        {
+            id: 'agri',
+            title: 'B.Sc Agriculture',
+            desc: 'Focuses on farming technology, crop production, agribusiness.',
+            duration: '4 Years',
+            eligibility: '12th PCB or Agriculture Stream',
+            govt: ['Agriculture Officer', 'FCI', 'NABARD'],
+            private: ['Agri Business Manager', 'Farm Consultant'],
+            higher: ['M.Sc Agriculture', 'Agricultural Research']
+        },
+        {
+            id: 'stats',
+            title: 'B.Sc Statistics',
+            desc: 'Focuses on data analysis, probability, and analytics.',
+            duration: '3 Years',
+            eligibility: '12th PCM',
+            govt: ['Statistical Departments', 'Census Departments'],
+            private: ['Data Analyst', 'Risk Analyst'],
+            higher: ['M.Sc Statistics', 'Data Science', 'Actuarial Science']
+        }
+    ],
+
     // After 12th - Commerce & Mgmt
     'com': [
         {
             id: 'bcom',
-            title: 'B.Com (General/Honors)',
-            desc: 'Foundational degree in commerce covering accounting, finance, taxation, and economics.',
-            duration: '3 Years (or 4 Years under NEP)',
-            eligibility: '12th Pass (Commerce preferred but any stream allowed)',
-            govt: ['SSC CGL (Auditor, Inspector)', 'Bank PO/Clerk', 'Accountant in Govt Depts'],
-            private: ['Corporate Accountant', 'Financial Analyst', 'Tax Consultant', 'Operations Executive'],
+            title: 'B.Com / B.Com (Hons)',
+            desc: 'Focuses on accounting, taxation, finance, auditing, and business laws.',
+            duration: '3 Years',
+            eligibility: '12th Pass (Commerce preferred)',
+            govt: ['Banking Exams', 'SSC CGL', 'Income Tax Department', 'RBI'],
+            private: ['Accountant', 'Tax Consultant', 'Financial Analyst', 'Auditor'],
             higher: ['M.Com', 'MBA', 'CA / CS / CMA']
         },
         {
             id: 'bba',
-            title: 'BBA (Business Admin)',
-            desc: 'Focuses on management principles, marketing, HR, and business operations.',
+            title: 'BBA (Bachelor of Business Administration)',
+            desc: 'Focuses on business management, marketing, HR, entrepreneurship.',
             duration: '3 Years',
-            eligibility: '12th Pass (Any stream)',
-            govt: ['General administrative banking roles', 'State PSC exams'],
-            private: ['Sales Executive', 'HR Coordinator', 'Business Development Rep', 'Marketing Analyst'],
-            higher: ['MBA (Marketing/HR/Finance)', 'PGDM']
+            eligibility: '12th Pass (Any Stream)',
+            govt: ['Banking', 'SSC', 'Government Administrative Roles'],
+            private: ['HR Executive', 'Marketing Executive', 'Business Development Manager'],
+            higher: ['MBA', 'PGDM', 'International Business Studies']
+        },
+        {
+            id: 'becon',
+            title: 'B.Econ (Bachelor of Economics)',
+            desc: 'Focuses on economic theory, statistics, financial systems.',
+            duration: '3 Years',
+            eligibility: '12th Pass (Math preferred)',
+            govt: ['RBI', 'Economic Advisory Departments', 'Statistical Services'],
+            private: ['Economist', 'Financial Analyst', 'Investment Banker'],
+            higher: ['M.A. Economics', 'MBA Finance', 'Actuarial Science']
         },
         {
             id: 'ca',
-            title: 'Chartered Accountancy (CA)',
-            desc: 'Premier professional accounting credential in India, heavily focused on audit, tax, and law.',
-            duration: '4.5 - 5 Years',
-            eligibility: '12th Pass (Any stream) -> Clear Foundation Exam',
-            govt: ['PSU Finance Officer', 'RBI Grade B (Finance)', 'SEBI Officer'],
-            private: ['Statutory Auditor', 'CFO', 'Tax Consultant', 'Investment Banker', 'Forensic Auditor'],
-            higher: ['CFA', 'CPA (US)', 'MBA Top tier']
+            title: 'Chartered Accountant (CA)',
+            desc: 'Focuses on auditing, taxation, corporate finance.',
+            duration: '4-5 Years',
+            eligibility: '12th Pass (Commerce preferred)',
+            govt: ['Government Audit Departments', 'CAG', 'PSU Finance Roles'],
+            private: ['Chartered Accountant', 'Tax Advisor', 'Corporate Finance Manager'],
+            higher: ['International Accounting Certifications']
+        },
+        {
+            id: 'cs',
+            title: 'Company Secretary (CS)',
+            desc: 'Focuses on corporate laws, company compliance, legal governance.',
+            duration: '3-5 Years',
+            eligibility: '12th Pass',
+            govt: ['Corporate Affairs Departments', 'PSU Legal Divisions'],
+            private: ['Company Secretary', 'Compliance Officer', 'Legal Advisor'],
+            higher: ['LLB', 'MBA']
+        },
+        {
+            id: 'cma',
+            title: 'CMA (Cost & Management Accountant)',
+            desc: 'Focuses on cost accounting and financial management.',
+            duration: '3-4 Years',
+            eligibility: '12th Pass',
+            govt: ['Cost Auditor in PSUs', 'Government Financial Services'],
+            private: ['Cost Accountant', 'Finance Controller', 'Budget Analyst'],
+            higher: ['CFA', 'MBA Finance']
+        },
+        {
+            id: 'baf',
+            title: 'Bachelor of Accounting & Finance',
+            desc: 'Focuses on banking, financial markets, and investment analysis.',
+            duration: '3 Years',
+            eligibility: '12th Commerce',
+            govt: ['Banking Exams', 'Govt Finance Sectors'],
+            private: ['Banking Executive', 'Financial Planner', 'Investment Analyst'],
+            higher: ['MBA Finance', 'CFA']
         }
     ],
+
+    // After 12th - Arts & Humanities
+    'arts': [
+        {
+            id: 'ba',
+            title: 'B.A. (Bachelor of Arts)',
+            desc: 'Focuses on history, political science, sociology, psychology, languages.',
+            duration: '3 Years',
+            eligibility: '12th Pass (Any Stream)',
+            govt: ['UPSC Civil Services', 'State PSC', 'SSC CGL', 'Teaching (after B.Ed)'],
+            private: ['Content Writer', 'HR Executive', 'NGO Officer', 'Social Worker'],
+            higher: ['M.A.', 'LLB', 'MBA', 'UPSC Preparation']
+        },
+        {
+            id: 'ballb',
+            title: 'BA LLB (Integrated Law)',
+            desc: 'Focuses on law, legal systems, constitutional law, corporate law.',
+            duration: '5 Years',
+            eligibility: '12th Pass (CLAT / Entrance Exam)',
+            govt: ['Judicial Services', 'Public Prosecutor', 'Legal Advisor (Govt)'],
+            private: ['Advocate', 'Corporate Lawyer', 'Legal Consultant'],
+            higher: ['LLM', 'Judicial Services Exam']
+        },
+        {
+            id: 'bjmc',
+            title: 'BJMC (Journalism & Mass Communication)',
+            desc: 'Focuses on media, news reporting, public relations, digital media.',
+            duration: '3 Years',
+            eligibility: '12th Pass',
+            govt: ['Press Information Bureau', 'Government Media Departments'],
+            private: ['Journalist', 'News Reporter', 'Content Creator', 'PR Executive'],
+            higher: ['M.A. Journalism', 'Digital Media Specialization']
+        },
+        {
+            id: 'psych',
+            title: 'B.A. Psychology',
+            desc: 'Focuses on human behavior, mental health, counseling.',
+            duration: '3 Years',
+            eligibility: '12th Pass',
+            govt: ['Government Hospitals', 'Rehabilitation Centers'],
+            private: ['Counselor', 'HR Specialist', 'Clinical Psychologist (after PG)'],
+            higher: ['M.A. Psychology', 'Clinical Psychology', 'Ph.D']
+        },
+        {
+            id: 'geo',
+            title: 'B.A. Geography',
+            desc: 'Focuses on environmental systems, mapping, urban planning.',
+            duration: '3 Years',
+            eligibility: '12th Pass',
+            govt: ['Survey of India', 'Urban Development Departments'],
+            private: ['GIS Analyst', 'Urban Planner'],
+            higher: ['M.A./M.Sc Geography', 'Disaster Management']
+        },
+        {
+            id: 'bed',
+            title: 'B.A. + B.Ed (Teaching Path)',
+            desc: 'Focuses on becoming a school teacher.',
+            duration: '4 Years',
+            eligibility: '12th Pass',
+            govt: ['Government School Teacher (after TET/CTET)'],
+            private: ['School Teacher', 'Education Coordinator'],
+            higher: ['M.Ed', 'Educational Administration']
+        },
+        {
+            id: 'bsw',
+            title: 'BSW (Bachelor of Social Work)',
+            desc: 'Focuses on community development and social welfare.',
+            duration: '3 Years',
+            eligibility: '12th Pass',
+            govt: ['Social Welfare Departments', 'NGOs'],
+            private: ['Social Worker', 'Community Coordinator'],
+            higher: ['MSW']
+        }
+    ],
+
+    // Computer & IT
+    'it': [
+        {
+            id: 'bca',
+            title: 'BCA (Bachelor of Computer Applications)',
+            desc: 'Focuses on programming, software development, databases, and web technologies.',
+            duration: '3 Years',
+            eligibility: '12th Pass (Math or CS preferred)',
+            govt: ['Government IT Departments', 'SSC IT Posts', 'NIC Technical Assistant'],
+            private: ['Software Developer', 'Web Developer', 'App Developer', 'IT Support'],
+            higher: ['MCA', 'M.Sc Computer Science', 'MBA IT']
+        },
+        {
+            id: 'bsc_cs',
+            title: 'B.Sc Computer Science',
+            desc: 'Focuses on algorithms, data structures, operating systems, and programming.',
+            duration: '3 Years',
+            eligibility: '12th PCM',
+            govt: ['SSC Technical Posts', 'Banking IT Officer'],
+            private: ['System Analyst', 'Backend Developer', 'Software Engineer'],
+            higher: ['M.Sc CS', 'MCA', 'MS Abroad']
+        },
+        {
+            id: 'bsc_it',
+            title: 'B.Sc Information Technology (IT)',
+            desc: 'Focuses on networking, cybersecurity basics, cloud systems, databases.',
+            duration: '3 Years',
+            eligibility: '12th Pass (Math preferred)',
+            govt: ['Govt Tech Support', 'NIC Networks'],
+            private: ['Network Administrator', 'IT Support Specialist', 'System Administrator', 'Cloud Support Executive'],
+            higher: ['M.Sc IT', 'Cyber Security Specialization']
+        },
+        {
+            id: 'btech_cse',
+            title: 'B.Tech CSE',
+            desc: 'Focuses on advanced computing, AI, machine learning, software engineering.',
+            duration: '4 Years',
+            eligibility: '12th PCM + Entrance Exam',
+            govt: ['ISRO', 'DRDO', 'Defense IT Units'],
+            private: ['Software Engineer', 'Data Scientist', 'Cloud Architect'],
+            higher: ['M.Tech', 'MS Abroad', 'MBA']
+        },
+        {
+            id: 'btech_aiml',
+            title: 'B.Tech AI / Machine Learning',
+            desc: 'Focuses on machine learning models, robotics, automation systems.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['Govt AI/Tech hubs'],
+            private: ['AI Developer', 'ML Engineer', 'Data Scientist'],
+            higher: ['M.Tech AI']
+        },
+        {
+            id: 'btech_cyber',
+            title: 'B.Tech Cyber Security',
+            desc: 'Focuses on ethical hacking, digital forensics, network security.',
+            duration: '4 Years',
+            eligibility: '12th PCM',
+            govt: ['CERT-In', 'Cyber Police', 'Defense Cyber Probes'],
+            private: ['Cyber Security Analyst', 'Ethical Hacker', 'SOC Engineer'],
+            higher: ['M.Tech Cyber Security']
+        }
+    ],
+
+    // Design & Creative
+    'des': [
+        {
+            id: 'bdes',
+            title: 'B.Des (Product, UI/UX, Interaction)',
+            desc: 'Focuses on creativity, product innovation, user experience, and visual communication.',
+            duration: '4 Years',
+            eligibility: '12th Pass (Entrance exam for top institutes)',
+            govt: ['Design Departments in PSUs', 'Government Innovation Projects'],
+            private: ['Product Designer', 'UI/UX Designer', 'Creative Director'],
+            higher: ['M.Des', 'International Design Programs']
+        },
+        {
+            id: 'bdes_fas',
+            title: 'B.Des Fashion Design',
+            desc: 'Focuses on garment design, textile innovation, fashion styling.',
+            duration: '4 Years',
+            eligibility: '12th Pass (NIFT/NID entrance)',
+            govt: ['Textile Boards', 'Handloom & Handicraft Departments'],
+            private: ['Fashion Designer', 'Stylist', 'Apparel Merchandiser'],
+            higher: ['M.Des Fashion']
+        },
+        {
+            id: 'bdes_int',
+            title: 'B.Des Interior Design',
+            desc: 'Focuses on space planning, architecture interiors, and aesthetics.',
+            duration: '4 Years',
+            eligibility: '12th Pass',
+            govt: ['PWD Architecture Wings'],
+            private: ['Interior Designer', 'Space Planner', '3D Visualizer'],
+            higher: ['Advanced Interior Architecture']
+        },
+        {
+            id: 'barch',
+            title: 'B.Arch (Architecture)',
+            desc: 'Focuses on building planning, construction design, structural concepts.',
+            duration: '5 Years',
+            eligibility: '12th PCM + NATA',
+            govt: ['PWD', 'Urban Development Departments', 'Municipal Corporations'],
+            private: ['Architect', 'Urban Planner', 'Project Designer'],
+            higher: ['M.Arch', 'Urban Planning']
+        },
+        {
+            id: 'anim',
+            title: 'B.Sc Animation & Multimedia',
+            desc: 'Focuses on 2D/3D animation, VFX, film production, digital media.',
+            duration: '3 Years',
+            eligibility: '12th Pass',
+            govt: ['Doordarshan', 'Film Division of India'],
+            private: ['Animator', 'VFX Artist', 'Video Editor', 'Motion Graphics Designer'],
+            higher: ['Advanced VFX', 'Film Direction']
+        },
+        {
+            id: 'game',
+            title: 'Game Design & Development',
+            desc: 'Focuses on game engines, storytelling, and digital graphics.',
+            duration: '3-4 Years',
+            eligibility: '12th Pass',
+            govt: ['Educational Game Projects'],
+            private: ['Game Designer', 'Unity Developer', 'Level Designer'],
+            higher: ['MS in Game Design']
+        },
+        {
+            id: 'bfa',
+            title: 'Bachelor of Fine Arts (BFA)',
+            desc: 'Focuses on painting, sculpture, applied arts, photography.',
+            duration: '3-4 Years',
+            eligibility: '12th Pass',
+            govt: ['Museum Curators', 'Art Teachers'],
+            private: ['Professional Artist', 'Illustrator', 'Art Director'],
+            higher: ['MFA']
+        }
+    ],
+
+    // Hospitality
+    'hosp': [
+        {
+            id: 'bhm',
+            title: 'Bachelor of Hotel Management (BHM)',
+            desc: 'Focuses on hotel operations, food production, hospitality management.',
+            duration: '3-4 Years',
+            eligibility: '12th Pass',
+            govt: ['Tourism Department', 'Railway Catering Services', 'Government Hotels'],
+            private: ['Hotel Manager', 'Food & Beverage Manager', 'Cruise Line Staff'],
+            higher: ['MBA Hospitality', 'International Hotel Management']
+        },
+        {
+            id: 'avn',
+            title: 'BBA / Diploma in Aviation',
+            desc: 'Focuses on airport operations, airline services, ground handling.',
+            duration: '1-3 Years',
+            eligibility: '12th Pass',
+            govt: ['AAI (Airports Authority of India) Jobs'],
+            private: ['Airport Ground Staff', 'Airline Executive', 'Cabin Crew'],
+            higher: ['MBA Aviation']
+        },
+        {
+            id: 'tour',
+            title: 'B.A / BBA Travel & Tourism',
+            desc: 'Focuses on tourism planning, travel management, tour operations.',
+            duration: '3 Years',
+            eligibility: '12th Pass',
+            govt: ['Ministry of Tourism', 'State Tourism Boards'],
+            private: ['Tour Manager', 'Travel Consultant', 'Airline Ticketing'],
+            higher: ['MBA Tourism']
+        },
+        {
+            id: 'cul',
+            title: 'Culinary Arts / Bakery',
+            desc: 'Focuses on cooking, food production, bakery & confectionery.',
+            duration: '1-3 Years',
+            eligibility: '12th Pass',
+            govt: ['Railway Catering'],
+            private: ['Chef', 'Pastry Chef', 'Catering Entrepreneur'],
+            higher: ['Advanced Culinary Studies']
+        }
+    ],
+
+    // Govt & Exams
+    'gov': [
+        {
+            id: 'nda',
+            title: 'NDA (National Defence Academy)',
+            desc: 'Army, Navy, Air Force Officer Training.',
+            duration: '3 Years Training + Service',
+            eligibility: '12th PCM (Navy/AF), 12th Any (Army)',
+            govt: ['Army Officer', 'Naval Officer', 'Air Force Officer'],
+            private: ['N/A (Strictly Govt/Defense)'],
+            higher: ['Defense Studies, Specialized Military Courses']
+        },
+        {
+            id: 'ssc',
+            title: 'SSC Exams (CHSL / MTS)',
+            desc: 'Entry-level clerical, data-entry, and support roles in Govt.',
+            duration: 'Exam Based',
+            eligibility: '12th Pass',
+            govt: ['Clerk', 'Data Entry Operator', 'MTS'],
+            private: ['N/A'],
+            higher: ['Graduation for SSC CGL']
+        },
+        {
+            id: 'rail',
+            title: 'Railway Jobs (RRB 12th Level)',
+            desc: 'Clerical, typing, and ticketing lines for 12th pass.',
+            duration: 'Exam Based',
+            eligibility: '12th Pass',
+            govt: ['Ticket Clerk', 'Junior Clerk', 'Typist'],
+            private: ['N/A'],
+            higher: ['Graduation for NTPC Higher Levels']
+        },
+        {
+            id: 'police',
+            title: 'State Police Services',
+            desc: 'Constable and state police recruitment drives.',
+            duration: 'Exam Based',
+            eligibility: '12th Pass + Physical Tests',
+            govt: ['Constable', 'Armed Forces Reserves'],
+            private: ['Security Contract Firms'],
+            higher: ['Graduation for Sub-Inspector']
+        },
+        {
+            id: 'tes',
+            title: 'Defense Technical Entry (TES)',
+            desc: 'Direct Officer entry for Technical roles based on PCM & SSB interview.',
+            duration: '4-5 Years Training',
+            eligibility: '12th PCM',
+            govt: ['Technical Officer (Indian Army)'],
+            private: ['N/A'],
+            higher: ['Military Technical Programs']
+        }
+    ],
+
     // After Graduation - Postgrad
     'pg': [
         {
