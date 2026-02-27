@@ -17,7 +17,8 @@ export default function TabLayout() {
           backgroundColor: colorScheme === 'dark' ? '#121212' : '#ffffff',
           borderTopWidth: 1,
           borderTopColor: colorScheme === 'dark' ? '#333' : '#e0e0e0',
-          paddingBottom: 5,
+          paddingBottom: 12,
+          height: 60,
         },
         tabBarLabelStyle: {
           fontWeight: 'bold',
@@ -52,7 +53,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <User color={color} size={24} />,
         }}
       />
-    </Tabs>
+    </Tabs >
   );
 }
 
