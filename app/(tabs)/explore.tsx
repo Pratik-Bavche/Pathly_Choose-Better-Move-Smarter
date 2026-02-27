@@ -47,17 +47,17 @@ const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc
     { id: 'iti_adv', title: 'Advanced ITI Courses', tags: ['Higher Study', 'Skill-Based', 'Study Abroad', 'High Salary'], desc: 'CNC, PLC, HVAC, Industrial Safety Specializations.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   'graduation': [
-    { id: 'pg', title: 'Postgraduate Degrees', tags: ['Higher Study'], desc: 'M.Tech, MBA, M.Sc, M.Com, M.A. for specializations.', icon: <GraduationCap color="#1976d2" size={20} /> },
-    { id: 'prof', title: 'Professional Courses', tags: ['High Salary', 'Private Job'], desc: 'CA, CS, CMA, PG Diplomas, LLB.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'gov', title: 'Govt & Comp Exams', tags: ['Govt Job'], desc: 'UPSC Civil Services, State PSC, SSC CGL, Bank PO.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'abroad', title: 'Study Abroad', tags: ['Study Abroad', 'Higher Study'], desc: 'MS, MBA, exams like GRE, GMAT, IELTS, TOEFL.', icon: <Plane color="#1976d2" size={20} /> },
-    { id: 'res', title: 'Research & Academic', tags: ['Higher Study', 'Govt Job'], desc: 'Ph.D., M.Phil, UGC NET for professorship.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'ent', title: 'Entrepreneurship', tags: ['Private Job'], desc: 'Startups, Freelancing, Family Business Expansion.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'skill', title: 'Skill Certifications', tags: ['Skill-Based', 'High Salary'], desc: 'Data Science, Cloud Computing, Digital Marketing.', icon: <Wrench color="#1976d2" size={20} /> }
+    { id: 'grad_gov', title: 'Government Exams', tags: ['Govt Job', 'High Salary', 'Higher Study'], desc: 'UPSC, SSC CGL, Banking, State PSC.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'grad_pg', title: 'Postgraduate Degrees', tags: ['Private Job', 'Higher Study', 'High Salary'], desc: 'MBA, M.Tech, MCA, MD/MS, MA, M.Sc.', icon: <GraduationCap color="#1976d2" size={20} /> },
+    { id: 'grad_prof', title: 'Professional Courses', tags: ['Private Job', 'High Salary'], desc: 'CA, CS, CMA, Data Certifications.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'grad_skill', title: 'Skill Certifications', tags: ['Skill-Based', 'Private Job', 'High Salary'], desc: 'Data Science, Cyber Security, Cloud Computing.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'grad_abroad', title: 'Study Abroad', tags: ['Study Abroad', 'Higher Study', 'High Salary'], desc: 'MS, MBA, Healthcare Programs Abroad.', icon: <Plane color="#1976d2" size={20} /> },
+    { id: 'grad_res', title: 'Research & Academic', tags: ['Higher Study', 'Govt Job', 'Study Abroad'], desc: 'Ph.D., M.Tech (Research), Academic roles.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'grad_ent', title: 'Entrepreneurship', tags: ['Entrepreneurship', 'Private Job', 'High Salary'], desc: 'Tech Startup, Consulting, Digital Agency.', icon: <Target color="#1976d2" size={20} /> }
   ]
 };
 
-const FILTERS = ['All', 'Govt Job', 'Private Job', 'Higher Study', 'High Salary', 'Skill-Based', 'Study Abroad'];
+const FILTERS = ['All', 'Govt Job', 'Private Job', 'Higher Study', 'High Salary', 'Skill-Based', 'Study Abroad', 'Entrepreneurship'];
 
 export default function ExploreScreen() {
   const { category: categoryParam } = useLocalSearchParams();

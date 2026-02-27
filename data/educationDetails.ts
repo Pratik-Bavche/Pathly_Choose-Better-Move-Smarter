@@ -1964,26 +1964,470 @@ export const BRANCH_DETAILS: Record<string, { id: string, title: string, desc: s
     ],
 
     // After Graduation - Postgrad
-    'pg': [
+    'grad_pg': [
         {
             id: 'mba',
-            title: 'MBA (Master of Business Admin)',
-            desc: 'Premier postgraduate degree for leadership, management capabilities, and business scaling.',
+            title: 'MBA (Master of Business Administration)',
+            desc: 'Focuses on business management, leadership, finance, marketing, HR.',
             duration: '2 Years',
-            eligibility: 'Bachelor\'s Degree with min 50% + Entrance (CAT/XAT/MAT/GMAT)',
-            govt: ['Management Trainee in PSUs', 'RBI Grade B General'],
-            private: ['Product Manager', 'Management Consultant', 'Investment Banker', 'Marketing Director'],
+            eligibility: 'Bachelor\'s Degree (Any Stream) + Entrance (CAT/MAT/XAT/State CET)',
+            govt: ['Bank PO', 'PSU Management Trainee', 'RBI Grade B General'],
+            private: ['Business Manager', 'Investment Banker', 'HR Manager', 'Marketing Head', 'Operations Manager'],
             higher: ['Ph.D. in Management', 'Executive Leadership Programs']
         },
         {
             id: 'mtech',
-            title: 'M.Tech / M.E.',
-            desc: 'Deep specialization in engineering disciplines (e.g. AI, Structural, Thermal, VLSI).',
+            title: 'M.Tech (Master of Technology)',
+            desc: 'Focuses on advanced technical specialization in engineering (AI, Data Science, Structural, Robotics).',
             duration: '2 Years',
-            eligibility: 'B.Tech/B.E. + GATE score',
-            govt: ['Scientist \'B\' roles (DRDO, ISRO, BARC)', 'Assistant Professor (via NET)'],
-            private: ['R&D Engineer', 'Principal Software Engineer', 'Data Scientist', 'Specialized Consultant'],
-            higher: ['Ph.D. in Engineering', 'Post-Doc Fellowships']
+            eligibility: 'B.Tech / B.E. + GATE Exam (for top institutes)',
+            govt: ['Senior Engineer', 'PSU Officer', 'Scientist (DRDO, ISRO)'],
+            private: ['Research Scientist', 'Technical Consultant', 'R&D Engineer'],
+            higher: ['Ph.D. in Engineering', 'MS Abroad']
+        },
+        {
+            id: 'mca',
+            title: 'MCA (Master of Computer Applications)',
+            desc: 'Focuses on advanced programming and software development.',
+            duration: '2 Years',
+            eligibility: 'BCA / B.Sc IT / Any Graduate with Math',
+            govt: ['NIC Scientist', 'IT Officer in Banks', 'Govt Tech Projects'],
+            private: ['Software Engineer', 'System Architect', 'Data Analyst', 'Cyber Security Specialist'],
+            higher: ['Ph.D. in Computer Science', 'M.Tech']
+        },
+        {
+            id: 'mcom',
+            title: 'M.Com (Master of Commerce)',
+            desc: 'Focuses on finance, accounting, taxation, economics.',
+            duration: '2 Years',
+            eligibility: 'B.Com / Related Degree',
+            govt: ['Accounts Officer', 'Tax Assistant', 'Lecturer (after NET)'],
+            private: ['Accountant', 'Financial Analyst', 'Banking Officer'],
+            higher: ['Ph.D.', 'CA / CMA']
+        },
+        {
+            id: 'ma',
+            title: 'M.A. (Master of Arts)',
+            desc: 'Focuses on humanities and social sciences specialization (English, Political Science, Psychology, Sociology, Economics).',
+            duration: '2 Years',
+            eligibility: 'B.A. or relevant Bachelor\'s degree',
+            govt: ['Civil Services', 'Lecturer (after NET)', 'Social Worker'],
+            private: ['Research Analyst', 'Content Strategist', 'HR Specialist'],
+            higher: ['Ph.D. in Arts/Humanities']
+        },
+        {
+            id: 'msc',
+            title: 'M.Sc (Master of Science)',
+            desc: 'Focuses on scientific research and specialization.',
+            duration: '2 Years',
+            eligibility: 'B.Sc in relevant field',
+            govt: ['Research Scientist', 'Lab Officer', 'Teaching (after NET)'],
+            private: ['Data Analyst', 'R&D Specialist', 'Pharma Analyst'],
+            higher: ['Ph.D.', 'Post-Doc']
+        },
+        {
+            id: 'llm',
+            title: 'LLM (Master of Law)',
+            desc: 'Focuses on advanced legal studies and specialization.',
+            duration: '1-2 Years',
+            eligibility: 'LLB Degree',
+            govt: ['Judge (after exams)', 'Govt Legal Advisor', 'Law Professor'],
+            private: ['Senior Advocate', 'Corporate Legal Advisor', 'Legal Consultant'],
+            higher: ['Ph.D. in Law']
+        },
+        {
+            id: 'mdes',
+            title: 'M.Des (Master of Design)',
+            desc: 'Focuses on advanced product design and UI/UX specialization.',
+            duration: '2 Years',
+            eligibility: 'B.Des / Related Degree',
+            govt: ['Government Design Institutes', 'PSU Design Roles'],
+            private: ['Senior UX Designer', 'Product Designer', 'Creative Director'],
+            higher: ['Ph.D. in Design']
+        },
+        {
+            id: 'md_ms',
+            title: 'MD / MS (Medical Postgraduate)',
+            desc: 'Focuses on medical specialization (Surgery, Pediatrics, Cardiology, Orthopedics).',
+            duration: '3 Years',
+            eligibility: 'MBBS + NEET PG',
+            govt: ['Govt Hospital Specialist', 'Medical College Professor'],
+            private: ['Specialist Doctor', 'Surgeon', 'Private Clinic Owner'],
+            higher: ['Super Specialization (DM / MCh)']
+        }
+    ],
+
+    // After Graduation - Professional Courses
+    'grad_prof': [
+        {
+            id: 'ca',
+            title: 'CA (Chartered Accountant)',
+            desc: 'Focuses on auditing, taxation, financial reporting, corporate finance.',
+            duration: '3-5 Years (depends on exam clearance)',
+            eligibility: 'Graduation (Commerce preferred)',
+            govt: ['PSU Finance Officer', 'RBI Grade B', 'SEBI Officer'],
+            private: ['Chartered Accountant', 'Tax Consultant', 'Financial Advisor', 'Audit Manager'],
+            higher: ['CFA', 'CPA (US)']
+        },
+        {
+            id: 'cs',
+            title: 'CS (Company Secretary)',
+            desc: 'Focuses on corporate law, compliance, company governance.',
+            duration: '3-4 Years',
+            eligibility: 'Graduation (Any Stream)',
+            govt: ['Corporate Affairs Depts', 'PSU Legal Divisions'],
+            private: ['Company Secretary', 'Corporate Legal Advisor', 'Compliance Officer'],
+            higher: ['LLB', 'MBA']
+        },
+        {
+            id: 'cma',
+            title: 'CMA (Cost & Management Accountant)',
+            desc: 'Focuses on cost accounting and financial strategy.',
+            duration: '3-4 Years',
+            eligibility: 'Graduation (Commerce preferred)',
+            govt: ['Cost Auditor in PSUs', 'Govt Finance Services'],
+            private: ['Cost Accountant', 'Financial Controller', 'Budget Analyst'],
+            higher: ['CFA', 'MBA Finance']
+        },
+        {
+            id: 'data_cert',
+            title: 'Data Science Certification',
+            desc: 'Focuses on data analytics, machine learning, business intelligence.',
+            duration: '6 Months - 1 Year',
+            eligibility: 'Any Graduate (Math/IT preferred)',
+            govt: ['E-Governance Projects', 'Govt Data Centers'],
+            private: ['Data Scientist', 'Business Analyst', 'Data Engineer'],
+            higher: ['MS in Data Science']
+        },
+        {
+            id: 'cyber_cert',
+            title: 'Cyber Security Certification',
+            desc: 'CEH, CompTIA Security+, CISSP. Focuses on ethical hacking and info security.',
+            duration: '3-12 Months',
+            eligibility: 'Graduate (IT Background Preferred)',
+            govt: ['CERT-In', 'Police Cyber Cells'],
+            private: ['Cyber Security Analyst', 'Ethical Hacker', 'Security Consultant'],
+            higher: ['MS in Cyber Security']
+        },
+        {
+            id: 'cloud_cert',
+            title: 'Cloud Computing Certification',
+            desc: 'AWS, Microsoft Azure, Google Cloud. Focuses on cloud infrastructure and DevOps.',
+            duration: '3-9 Months',
+            eligibility: 'Any Graduate (IT Preferred)',
+            govt: ['NIC', 'Govt Tech Infrastructure'],
+            private: ['Cloud Engineer', 'DevOps Engineer', 'Cloud Architect'],
+            higher: ['Advanced Architect Certifications']
+        },
+        {
+            id: 'cfa',
+            title: 'CFA (Chartered Financial Analyst)',
+            desc: 'Focuses on investment banking and financial analysis.',
+            duration: '2-3 Years (3 Levels)',
+            eligibility: 'Graduation',
+            govt: ['RBI / SEBI Specialist Roles'],
+            private: ['Investment Banker', 'Portfolio Manager', 'Financial Analyst'],
+            higher: ['MBA Finance']
+        },
+        {
+            id: 'pgdm',
+            title: 'PGDM (Post Graduate Diploma in Management)',
+            desc: 'Focuses on business and management specialization.',
+            duration: '2 Years',
+            eligibility: 'Graduation + Entrance Exam',
+            govt: ['PSU Management Roles'],
+            private: ['Business Manager', 'Marketing Manager', 'HR Manager'],
+            higher: ['Executive Programs']
+        },
+        {
+            id: 'bed',
+            title: 'B.Ed (Bachelor of Education)',
+            desc: 'Focuses on the teaching profession.',
+            duration: '2 Years',
+            eligibility: 'Graduation',
+            govt: ['Government School Teacher', 'Education Officer'],
+            private: ['Private School Teacher', 'Educational Consultant'],
+            higher: ['M.Ed', 'Ph.D. in Education']
+        }
+    ],
+
+    // After Graduation - Govt Exams
+    'grad_gov': [
+        {
+            id: 'upsc',
+            title: 'UPSC Civil Services Examination',
+            desc: 'Top administrative positions in India (IAS, IPS, IFS, IRS).',
+            duration: 'Preparation Based',
+            eligibility: 'Bachelor\'s Degree (Any Stream)',
+            govt: ['IAS', 'IPS', 'IFS', 'IRS'],
+            private: ['N/A'],
+            higher: ['Policy Making Roles']
+        },
+        {
+            id: 'state_psc',
+            title: 'State PSC (Public Service Commission)',
+            desc: 'Focuses on state-level administrative services.',
+            duration: 'Preparation Based',
+            eligibility: 'Graduation',
+            govt: ['Deputy Collector', 'DSP', 'Tehsildar', 'State Administrative Officer'],
+            private: ['N/A'],
+            higher: ['Promotions to IAS/IPS levels via state quota']
+        },
+        {
+            id: 'bank_po',
+            title: 'Banking Exams (IBPS / SBI / RBI)',
+            desc: 'Focuses on banking officer and clerical roles.',
+            duration: 'Preparation Based',
+            eligibility: 'Graduation',
+            govt: ['Probationary Officer (PO)', 'Clerk', 'Specialist Officer', 'RBI Grade B Officer'],
+            private: ['N/A'],
+            higher: ['Banking Management Promotions']
+        },
+        {
+            id: 'ssc_cgl',
+            title: 'SSC CGL (Combined Graduate Level)',
+            desc: 'Focuses on central government administrative posts.',
+            duration: 'Preparation Based',
+            eligibility: 'Graduation',
+            govt: ['Income Tax Inspector', 'CBI Sub-Inspector', 'Assistant Section Officer', 'Auditor'],
+            private: ['N/A'],
+            higher: ['Departmental Promotions']
+        },
+        {
+            id: 'cds',
+            title: 'Defense Services (CDS)',
+            desc: 'Focuses on officer-level posts in defense forces.',
+            duration: 'Preparation Based',
+            eligibility: 'Graduation (PCM required for some posts)',
+            govt: ['Army Officer', 'Navy Officer', 'Air Force Officer'],
+            private: ['N/A'],
+            higher: ['Higher Military Ranks']
+        },
+        {
+            id: 'rrb_ntpc',
+            title: 'Railway Exams (RRB NTPC / Graduate Level)',
+            desc: 'Focuses on administrative and technical posts in railways.',
+            duration: 'Preparation Based',
+            eligibility: 'Graduation',
+            govt: ['Station Master', 'Goods Guard', 'Traffic Assistant'],
+            private: ['N/A'],
+            higher: ['Divisional Level Promotions']
+        },
+        {
+            id: 'judiciary',
+            title: 'Judiciary Services',
+            desc: 'Focuses on becoming a judge at district level.',
+            duration: 'Preparation Based',
+            eligibility: 'LLB Degree',
+            govt: ['Civil Judge', 'Judicial Magistrate'],
+            private: ['N/A'],
+            higher: ['High Court/Supreme Court Judge']
+        },
+        {
+            id: 'ugc_net',
+            title: 'Teaching (UGC NET)',
+            desc: 'Focuses on lecturer and assistant professor positions.',
+            duration: 'Preparation Based',
+            eligibility: 'Postgraduate Degree',
+            govt: ['Assistant Professor', 'Research Scholar'],
+            private: ['Private University Professor'],
+            higher: ['Ph.D.', 'Professor']
+        }
+    ],
+
+    // After Graduation - Study Abroad
+    'grad_abroad': [
+        {
+            id: 'ms_abroad',
+            title: 'MS (Master of Science) Abroad',
+            desc: 'Focuses on advanced technical and scientific specialization (Data Science, AI, CS, Engineering).',
+            duration: '1-2 Years',
+            eligibility: 'Bachelor\'s Degree + IELTS/TOEFL + GRE (sometimes)',
+            govt: ['N/A'],
+            private: ['Software Engineer', 'Research Scientist', 'Data Analyst', 'Automation Engineer'],
+            higher: ['Ph.D. Abroad']
+        },
+        {
+            id: 'mba_abroad',
+            title: 'MBA Abroad',
+            desc: 'Focuses on global business management and leadership.',
+            duration: '1-2 Years',
+            eligibility: 'Graduation + IELTS/TOEFL + GMAT + Work Experience (preferred)',
+            govt: ['N/A'],
+            private: ['Business Consultant', 'Investment Banker', 'Marketing Director', 'Global Manager'],
+            higher: ['Executive Leadership Programs']
+        },
+        {
+            id: 'meng_abroad',
+            title: 'M.Tech / MEng Abroad',
+            desc: 'Focuses on technical engineering specialization.',
+            duration: '1-2 Years',
+            eligibility: 'B.Tech / B.E. + IELTS',
+            govt: ['N/A'],
+            private: ['Senior Engineer', 'R&D Engineer', 'Industrial Consultant'],
+            higher: ['Ph.D. in Engineering']
+        },
+        {
+            id: 'health_abroad',
+            title: 'Healthcare Programs Abroad',
+            desc: 'Focuses on nursing, public health, and healthcare management.',
+            duration: '1-2 Years',
+            eligibility: 'Relevant Bachelor\'s Degree + IELTS',
+            govt: ['Public Health Officer Abroad'],
+            private: ['Registered Nurse', 'Healthcare Administrator'],
+            higher: ['Specialized Medical Fellowships']
+        },
+        {
+            id: 'des_abroad',
+            title: 'Design & Creative Programs Abroad',
+            desc: 'Focuses on product design, animation, UX/UI.',
+            duration: '1-2 Years',
+            eligibility: 'Relevant Bachelor\'s Degree + Portfolio + IELTS',
+            govt: ['N/A'],
+            private: ['Product Designer', 'Creative Director', 'Animation Specialist'],
+            higher: ['Advanced Creative Arts Studies']
+        }
+    ],
+
+    // After Graduation - Research
+    'grad_res': [
+        {
+            id: 'mtech_res',
+            title: 'M.Tech (Research-Oriented)',
+            desc: 'Focuses on advanced technical research and engineering innovation.',
+            duration: '2 Years',
+            eligibility: 'B.Tech / B.E. + GATE',
+            govt: ['PSU Technical Officer', 'DRDO/ISRO Scientist'],
+            private: ['Research Engineer', 'R&D Specialist'],
+            higher: ['Ph.D. in Engineering']
+        },
+        {
+            id: 'phd',
+            title: 'Ph.D (Doctor of Philosophy)',
+            desc: 'Focuses on advanced independent research and thesis work.',
+            duration: '3-6 Years',
+            eligibility: 'Master\'s Degree + NET/GATE/Entrance',
+            govt: ['Scientist (CSIR, ICMR, ISRO)', 'Professor', 'Policy Advisor'],
+            private: ['Research Scientist', 'Lead R&D Specialist'],
+            higher: ['Post-Doctoral Fellowships']
+        }
+    ],
+
+    // After Graduation - Entrepreneurship
+    'grad_ent': [
+        {
+            id: 'tech_startup',
+            title: 'Tech Startup (IT / Software)',
+            desc: 'Focuses on software products, apps, SaaS platforms, AI tools.',
+            duration: 'Variable',
+            eligibility: 'Tech skills (B.Tech / BCA / MCA)',
+            govt: ['N/A (Startup India Support available)'],
+            private: ['Founder / CEO', 'Product Leader'],
+            higher: ['Business Scaling']
+        },
+        {
+            id: 'consulting_biz',
+            title: 'Consulting & Professional Services',
+            desc: 'Financial, legal, HR, or career consulting businesses.',
+            duration: 'Variable',
+            eligibility: 'Domain expertise (Commerce/Law/MBA)',
+            govt: ['N/A'],
+            private: ['Consultancy Firm Owner', 'Lead Consultant'],
+            higher: ['Firm Expansion']
+        },
+        {
+            id: 'ecom_biz',
+            title: 'E-Commerce & Online Business',
+            desc: 'Selling products online via Amazon, Shopify, Dropshipping.',
+            duration: 'Variable',
+            eligibility: 'Business acumen',
+            govt: ['N/A'],
+            private: ['E-commerce Founder', 'Online Store Owner'],
+            higher: ['Global Export/Brand Scaling']
+        },
+        {
+            id: 'digital_agency',
+            title: 'Creative / Digital Marketing Agency',
+            desc: 'Providing design, social media, and digital marketing services.',
+            duration: 'Variable',
+            eligibility: 'Creative/Marketing skills',
+            govt: ['N/A'],
+            private: ['Agency Owner', 'Creative Director'],
+            higher: ['Full Service Agency']
+        }
+    ],
+
+    // After Graduation - Skill Certificates
+    'grad_skill': [
+        {
+            id: 'data_skill',
+            title: 'Data Science / Business Analytics',
+            desc: 'Focuses on data analysis, machine learning, Python, SQL, visualization tools.',
+            duration: '6-12 Months',
+            eligibility: 'Any Graduate',
+            govt: ['Govt Data Analysis Roles'],
+            private: ['Data Analyst', 'Business Intelligence Analyst'],
+            higher: ['MS in Data Science']
+        },
+        {
+            id: 'cyber_skill',
+            title: 'Cyber Security Certification',
+            desc: 'Focuses on network security and ethical hacking.',
+            duration: '3-9 Months',
+            eligibility: 'IT Background',
+            govt: ['Cyber Security Analyst'],
+            private: ['SOC Analyst', 'Ethical Hacker'],
+            higher: ['Advanced Security Certs']
+        },
+        {
+            id: 'cloud_skill',
+            title: 'Cloud Computing (AWS / Azure)',
+            desc: 'Focuses on cloud infrastructure and DevOps.',
+            duration: '3-6 Months',
+            eligibility: 'Any Graduate',
+            govt: ['Govt Cloud Roles'],
+            private: ['Cloud Engineer', 'DevOps Engineer'],
+            higher: ['Cloud Architect Certs']
+        },
+        {
+            id: 'digi_mktg',
+            title: 'Digital Marketing Certification',
+            desc: 'Focuses on SEO, social media marketing, Google Ads, branding.',
+            duration: '3-6 Months',
+            eligibility: 'Any Graduate',
+            govt: ['Govt PR / Media Cells'],
+            private: ['Digital Marketing Executive', 'SEO Specialist', 'Social Media Manager'],
+            higher: ['Advanced Growth Hacking']
+        },
+        {
+            id: 'uiux_skill',
+            title: 'UI/UX Design Certification',
+            desc: 'Focuses on user interface design and user experience research.',
+            duration: '4-8 Months',
+            eligibility: 'Any Graduate',
+            govt: ['Govt Digital Projects'],
+            private: ['UI Designer', 'UX Researcher', 'Product Designer'],
+            higher: ['M.Des']
+        },
+        {
+            id: 'tally_skill',
+            title: 'Tally / Accounting Certification',
+            desc: 'Focuses on GST, taxation, accounting software.',
+            duration: '3-6 Months',
+            eligibility: 'Commerce Graduate',
+            govt: ['Tax Assistant'],
+            private: ['Accountant', 'GST Executive'],
+            higher: ['CA / CMA']
+        },
+        {
+            id: 'lang_skill',
+            title: 'Foreign Language Certification',
+            desc: 'German, French, Japanese, Spanish.',
+            duration: '6-12 Months',
+            eligibility: 'Any Graduate',
+            govt: ['Embassies / Foreign Affairs'],
+            private: ['Translator', 'International Business Executive'],
+            higher: ['Advanced Language Levels']
         }
     ]
 };
