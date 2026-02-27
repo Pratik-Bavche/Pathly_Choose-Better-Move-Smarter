@@ -46,7 +46,7 @@ export default function ProfileSetup() {
     };
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
+        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
             <Text style={styles.header}>Let's verify your profile</Text>
             <Text style={styles.subtextHeader}>We've pre-filled this from your registration. Feel free to adjust.</Text>
 

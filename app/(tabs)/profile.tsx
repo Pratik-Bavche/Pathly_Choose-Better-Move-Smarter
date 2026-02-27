@@ -106,7 +106,7 @@ export default function ProfileScreen() {
 
     return (
         <View style={{ flex: 1 }}>
-            <ScrollView style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.avatar}>
                         <Text style={styles.avatarText}>{displayName.charAt(0).toUpperCase()}</Text>
@@ -177,6 +177,7 @@ export default function ProfileScreen() {
                             <Text style={styles.modalTitle}>{t('choose_lang')}</Text>
                         </View>
                         <FlatList
+                            showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
                             data={LANGUAGES}
                             keyExtractor={(item) => item.id}
                             renderItem={({ item }) => (
@@ -219,7 +220,7 @@ export default function ProfileScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <ScrollView style={styles.editForm}>
+                        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.editForm}>
                             <Text style={styles.editLabel}>Full Name</Text>
                             <TextInput
                                 style={styles.editInput}

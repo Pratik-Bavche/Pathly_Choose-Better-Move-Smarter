@@ -104,7 +104,8 @@ export default function SignUpScreen() {
                 <ScrollView
                     style={styles.formSection}
                     contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={true}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     nestedScrollEnabled={true}
                 >
                     <View style={styles.inputWrapper}>

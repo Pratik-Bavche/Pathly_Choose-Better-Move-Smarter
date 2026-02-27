@@ -38,7 +38,7 @@ export default function ChatScreen() {
                 <Text style={styles.headerTitle}>{t('assist_title')}</Text>
             </View>
 
-            <ScrollView style={styles.chatArea} contentContainerStyle={{ paddingBottom: 20 }}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.chatArea} contentContainerStyle={{ paddingBottom: 20 }}>
                 {messages.map((msg) => (
                     <View key={msg.id} style={[styles.messageRow, msg.sender === 'user' ? styles.messageUserRow : styles.messageBotRow]}>
                         {msg.sender === 'bot' && (

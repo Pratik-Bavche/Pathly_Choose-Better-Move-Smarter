@@ -14,12 +14,12 @@ const QUALIFICATIONS = [
 
 const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc: string; icon: React.ReactNode }[]> = {
   '10th': [
-    { id: 'hs', title: 'Higher Secondary (11-12)', tags: ['Higher Study'], desc: 'Science, Commerce, Arts streams for higher education.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'dip', title: 'Diploma (Polytechnic)', tags: ['Skill-Based', 'Higher Study'], desc: '3-year engineering & non-engineering practical programs.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'iti', title: 'ITI Courses', tags: ['Private Job', 'Govt Job', 'Skill-Based'], desc: 'Government recognized short-term vocational training.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'dip', title: 'Diploma (Polytechnic)', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: '3-year engineering & non-engineering practical programs.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'iti', title: 'ITI Courses', tags: ['Govt Job', 'Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Government recognized short-term vocational training.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'para', title: 'Paramedical', tags: ['Govt Job', 'Private Job', 'High Salary', 'Skill-Based', 'Study Abroad'], desc: 'DMLT, X-Ray Technician, Assistant roles in healthcare.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'hs', title: 'Higher Secondary (11-12)', tags: ['Govt Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'Science, Commerce, Arts streams for higher education.', icon: <BookOpen color="#1976d2" size={20} /> },
     { id: 'voc', title: 'Vocational Courses', tags: ['Private Job', 'Skill-Based'], desc: 'Short-term training for quick employment in various sectors.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'para', title: 'Paramedical', tags: ['Private Job', 'Skill-Based'], desc: 'DMLT, X-Ray Technician, Assistant roles in healthcare.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'bridge', title: 'Open Schooling / Bridge', tags: ['Higher Study'], desc: 'NIOS or foundation courses for competitive exams.', icon: <BookOpen color="#1976d2" size={20} /> }
+    { id: 'bridge', title: 'Open Schooling / Bridge', tags: ['Govt Job', 'Higher Study'], desc: 'NIOS or foundation courses for competitive exams.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   '12th': [
     { id: 'eng', title: 'Engineering & Tech', tags: ['High Salary', 'Private Job', 'Higher Study'], desc: 'B.Tech/B.E in CS, Mechanical, Civil, AI, etc.', icon: <Wrench color="#1976d2" size={20} /> },
@@ -143,7 +143,7 @@ export default function ExploreScreen() {
         </View>
 
         {/* Results List */}
-        <ScrollView style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
+        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
           {filteredOptions.map(opt => (
             <TouchableOpacity
               key={opt.id}
@@ -202,7 +202,7 @@ export default function ExploreScreen() {
           <Text style={styles.selectedQualHeader} numberOfLines={1}>{selectedPathway.title}</Text>
         </View>
 
-        <ScrollView style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
+        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
           {branches.length > 0 ? branches.map((branch: any) => {
             const isExpanded = expandedBranch === branch.id;
             return (

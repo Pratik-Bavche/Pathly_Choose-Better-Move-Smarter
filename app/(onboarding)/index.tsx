@@ -71,6 +71,7 @@ export default function OnboardingIndex() {
                             <Text style={styles.modalTitle}>{t('choose_lang')}</Text>
                         </View>
                         <FlatList
+                            showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}
                             data={LANGUAGES}
                             keyExtractor={(item) => item.id}
                             renderItem={({ item }) => (
