@@ -1,6 +1,6 @@
-import { useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, BookOpen, Briefcase, Building, ChevronDown, ChevronRight, ChevronUp, GraduationCap, Plane, Target, Trophy, Wrench } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { ArrowLeft, BookOpen, Briefcase, Building, ChevronDown, ChevronRight, ChevronUp, GraduationCap, Plane, Rocket, Target, Trophy, Wrench } from 'lucide-react-native';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BRANCH_DETAILS } from '../../data/educationDetails';
 
@@ -68,9 +68,15 @@ export default function ExploreScreen() {
 
   // We check if "category" means the user explicitly clicked "Explore Education Options" from another screen
   // For context, they will just arrive here. If they want to reset, they hit the back arrow.
-  useEffect(() => {
-    // Reset state when tab is focused if needed
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // Reset state when tab is focused, preventing retained states 
+      setSelectedQual(null);
+      setSelectedPathway(null);
+      setExpandedBranch(null);
+      setActiveFilter('All');
+    }, [])
+  );
 
   const renderStep1 = () => (
     <View style={styles.stepContainer}>
@@ -258,18 +264,47 @@ export default function ExploreScreen() {
     );
   };
 
+  let headerTitle = 'Explore Pathways';
+  let headerSubtitle = 'Discover your perfect career route';
+
+  if (categoryParam === 'job') {
+    headerTitle = 'Start Working';
+    headerSubtitle = 'Find job opportunities tailored for you';
+  } else if (categoryParam === 'skill') {
+    headerTitle = 'Skill Courses';
+    headerSubtitle = 'Short-term certifications to boost your career';
+  } else if (categoryParam === 'business') {
+    headerTitle = 'Start a Business';
+    headerSubtitle = 'Entrepreneurship pathways and startups';
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Explore Pathways</Text>
-        <Text style={styles.headerSubtitle}>Discover your perfect career route</Text>
+        <Text style={styles.headerTitle}>{headerTitle}</Text>
+        <Text style={styles.headerSubtitle}>{headerSubtitle}</Text>
       </View>
 
-      {selectedPathway
-        ? renderStep3()
-        : selectedQual
-          ? renderStep2()
-          : renderStep1()}
+      {(!categoryParam || categoryParam === 'edu') ? (
+        selectedPathway
+          ? renderStep3()
+          : selectedQual
+            ? renderStep2()
+            : renderStep1()
+      ) : (
+        <View style={[styles.stepContainer, { justifyContent: 'center', alignItems: 'center' }]}>
+          {categoryParam === 'job' && <Briefcase color="#ccc" size={60} style={{ marginBottom: 20 }} />}
+          {categoryParam === 'skill' && <Wrench color="#ccc" size={60} style={{ marginBottom: 20 }} />}
+          {categoryParam === 'business' && <Rocket color="#ccc" size={60} style={{ marginBottom: 20 }} />}
+
+          <Text style={[styles.stepTitle, { textAlign: 'center', color: '#888' }]}>
+            Coming Soon
+          </Text>
+          <Text style={[styles.stepSubtitle, { textAlign: 'center' }]}>
+            We are building the perfect {headerTitle} pathways for you. Check back soon!
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
