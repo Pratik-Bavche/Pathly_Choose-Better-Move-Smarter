@@ -1193,6 +1193,396 @@ export const BRANCH_DETAILS: Record<string, { id: string, title: string, desc: s
         }
     ],
 
+    // After Diploma - B.Tech (Lateral Entry)
+    'dip_lat': [
+        {
+            id: 'ce',
+            title: 'Civil Engineering (Lateral Entry)',
+            desc: 'Focuses on construction, infrastructure, structural design, highways, bridges.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Civil Engineering',
+            govt: ['PWD Engineer', 'Irrigation Dept JE', 'Municipal Corporation Engineer'],
+            private: ['Structural Engineer', 'Site Engineer', 'Construction Project Manager'],
+            higher: ['M.Tech Civil', 'MBA', 'MS Abroad']
+        },
+        {
+            id: 'me',
+            title: 'Mechanical Engineering (Lateral Entry)',
+            desc: 'Focuses on machines, manufacturing systems, robotics, automobile systems.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Mechanical Engineering',
+            govt: ['SSC JE', 'RRB JE', 'PSU Engineer (BHEL, NTPC)'],
+            private: ['Production Engineer', 'Design Engineer', 'Plant Manager', 'Automotive Engineer'],
+            higher: ['M.Tech Mechanical', 'MBA', 'MS in Robotics']
+        },
+        {
+            id: 'ee',
+            title: 'Electrical Engineering (Lateral Entry)',
+            desc: 'Focuses on power systems, electrical machines, energy distribution.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Electrical Engineering',
+            govt: ['State Electricity Board Officer', 'SSC JE (Electrical)', 'Railways JE'],
+            private: ['Electrical Engineer', 'Power Plant Engineer', 'Maintenance Manager'],
+            higher: ['M.Tech Electrical', 'MBA']
+        },
+        {
+            id: 'cse',
+            title: 'Computer Science Engineering (Lateral Entry)',
+            desc: 'Focuses on programming, AI, software development, system design.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Computer / IT / ECE',
+            govt: ['NIC Scientist', 'PSU IT Officer', 'Banking Tech Specialist'],
+            private: ['Software Engineer', 'Full Stack Developer', 'System Architect', 'Data Engineer'],
+            higher: ['M.Tech CSE', 'MS Abroad', 'MBA IT']
+        },
+        {
+            id: 'ai',
+            title: 'AI & Machine Learning (Lateral Entry)',
+            desc: 'Focuses on AI systems, deep learning, automation technologies.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Computer / IT / Related Branch',
+            govt: ['Govt IT Projects', 'Smart City Developer'],
+            private: ['AI Engineer', 'Machine Learning Engineer', 'Robotics Engineer'],
+            higher: ['M.Tech AI', 'MS Data Science']
+        },
+        {
+            id: 'ds',
+            title: 'Data Science (Lateral Entry)',
+            desc: 'Focuses on big data analytics, business intelligence, predictive modeling.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Computer / IT',
+            govt: ['Govt Data Centers', 'Statistical Depts'],
+            private: ['Data Scientist', 'Business Analyst', 'Data Engineer'],
+            higher: ['M.Tech Data Science']
+        },
+        {
+            id: 'cyber',
+            title: 'Cyber Security (Lateral Entry)',
+            desc: 'Focuses on ethical hacking, network security, digital forensics.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Computer / IT / ECE',
+            govt: ['Cyber Crime Dept', 'Defense IT Units'],
+            private: ['Cyber Security Analyst', 'Ethical Hacker', 'Security Consultant'],
+            higher: ['M.Tech Cyber Security']
+        },
+        {
+            id: 'ece',
+            title: 'Electronics & Communication (Lateral Entry)',
+            desc: 'Focuses on embedded systems, communication networks, telecom systems.',
+            duration: '3 Years',
+            eligibility: 'Diploma in ECE',
+            govt: ['BSNL JTO', 'AAI Electronics Officer', 'Railways Signal Dept'],
+            private: ['Telecom Engineer', 'Embedded Systems Engineer', 'Signal Engineer'],
+            higher: ['M.Tech VLSI / Communications']
+        },
+        {
+            id: 'auto',
+            title: 'Automobile Engineering (Lateral Entry)',
+            desc: 'Focuses on vehicle systems, EV technology, automotive design.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Mechanical / Automobile',
+            govt: ['State Transport Units', 'Defense Motor Units'],
+            private: ['Automotive Engineer', 'EV Specialist', 'R&D Engineer'],
+            higher: ['M.Tech Automobile', 'EV Technology']
+        },
+        {
+            id: 'chem',
+            title: 'Chemical Engineering (Lateral Entry)',
+            desc: 'Focuses on industrial chemical processes, production plants.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Chemical Engineering',
+            govt: ['ONGC', 'GAIL', 'Fertilizer Plants'],
+            private: ['Process Engineer', 'Plant Engineer', 'Oil & Gas Industry Engineer'],
+            higher: ['M.Tech Chemical']
+        },
+        {
+            id: 'cloud',
+            title: 'Cloud Computing (Lateral Entry)',
+            desc: 'Focuses on cloud platforms, DevOps, virtualization.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Computer / IT',
+            govt: ['NIC', 'Govt Tech Support'],
+            private: ['Cloud Engineer', 'DevOps Engineer', 'Cloud Architect'],
+            higher: ['M.Tech Cloud', 'AWS Certified Solutions Architect']
+        },
+        {
+            id: 'rob',
+            title: 'Robotics Engineering (Lateral Entry)',
+            desc: 'Focuses on automation systems and industrial robotics.',
+            duration: '3 Years',
+            eligibility: 'Diploma in Mechanical / Electronics / Mechatronics',
+            govt: ['DRDO', 'Defense Production Units'],
+            private: ['Robotics Engineer', 'Automation Engineer', 'Industrial Programmer'],
+            higher: ['M.Tech Robotics', 'Mechatronics']
+        },
+        {
+            id: 'arch',
+            title: 'Architecture (If Eligible)',
+            desc: 'Focuses on building planning and structural design.',
+            duration: '3-4 Years',
+            eligibility: 'Diploma in Architecture Assistantship + NATA (if required)',
+            govt: ['PWD', 'Urban Development Departments'],
+            private: ['Architect', 'Urban Planner', 'Interior Planner'],
+            higher: ['M.Arch', 'Urban Planning']
+        }
+    ],
+
+    // After Diploma - AMIE
+    'dip_amie': [
+        {
+            id: 'amie_all',
+            title: 'AMIE (Associate Member of the Institution of Engineers)',
+            desc: 'Equivalent to B.E./B.Tech. Flexible learning mode for working professionals. Focuses on upgrading engineering qualifications.',
+            duration: 'Flexible (Typically 3-4 Years)',
+            eligibility: 'Diploma in Engineering OR B.Sc (Mathematics)',
+            govt: ['SSC JE / AE', 'State PWD Engineer', 'PSU Technical Officer', 'Railways Engineering Posts'],
+            private: ['Senior Engineer', 'Project Engineer', 'Technical Manager', 'Plant Engineer'],
+            higher: ['M.Tech', 'MBA', 'MS Abroad', 'Ph.D']
+        }
+    ],
+
+    // After Diploma - Bachelor Degrees
+    'dip_bde': [
+        {
+            id: 'bca',
+            title: 'BCA (Bachelor of Computer Applications)',
+            desc: 'Focuses on programming, software development, web technologies, and databases.',
+            duration: '3 Years',
+            eligibility: 'Diploma (any branch, but Computer/IT preferred)',
+            govt: ['Govt IT Assistant', 'Data Entry Officer'],
+            private: ['Software Developer', 'Web Developer', 'App Developer', 'IT Support Engineer'],
+            higher: ['MCA', 'MBA IT', 'Data Science Certifications']
+        },
+        {
+            id: 'bsc_it',
+            title: 'B.Sc IT (Info. Tech)',
+            desc: 'Focuses on networking, cybersecurity basics, databases, and cloud systems.',
+            duration: '3 Years',
+            eligibility: 'Diploma (preferably Computer / IT / ECE)',
+            govt: ['NIC Network Tech', 'Govt Tech Support'],
+            private: ['Network Administrator', 'System Administrator', 'IT Executive', 'Cloud Support Engineer'],
+            higher: ['M.Sc IT', 'MCA']
+        },
+        {
+            id: 'bba',
+            title: 'BBA (Bachelor of Business Administration)',
+            desc: 'Focuses on business management, marketing, HR, entrepreneurship.',
+            duration: '3 Years',
+            eligibility: 'Diploma (any branch)',
+            govt: ['Banking Roles', 'SSC Administrative roles'],
+            private: ['Business Development Executive', 'HR Executive', 'Marketing Manager', 'Operations Manager'],
+            higher: ['MBA', 'PGDM']
+        },
+        {
+            id: 'bcom',
+            title: 'B.Com (Bachelor of Commerce)',
+            desc: 'Focuses on accounting, finance, taxation, and business law.',
+            duration: '3 Years',
+            eligibility: 'Diploma (any branch)',
+            govt: ['SSC CGL', 'Banking Exams', 'Tax Assistant'],
+            private: ['Accountant', 'Financial Analyst', 'Banking Executive', 'Tax Consultant'],
+            higher: ['M.Com', 'MBA', 'CA / CMA']
+        },
+        {
+            id: 'bsc_gen',
+            title: 'B.Sc (General / Specialized)',
+            desc: 'Focuses on science-based academic or technical fields.',
+            duration: '3 Years',
+            eligibility: 'Diploma (relevant branch preferred)',
+            govt: ['Research Assistant', 'Lab Technician', 'Environmental Dept'],
+            private: ['Data Analyst', 'Lab Technician', 'Technical Assistant'],
+            higher: ['M.Sc', 'Ph.D']
+        },
+        {
+            id: 'bdes',
+            title: 'B.Des (Design)',
+            desc: 'Focuses on product design, UI/UX, digital media.',
+            duration: '4 Years',
+            eligibility: 'Diploma + Entrance Exam (in some institutes)',
+            govt: ['PSU Design Depts', 'Handloom & Handicrafts Board'],
+            private: ['UI/UX Designer', 'Product Designer', 'Creative Director'],
+            higher: ['M.Des', 'Interaction Design']
+        },
+        {
+            id: 'bhm',
+            title: 'BHM (Hotel Management)',
+            desc: 'Focuses on hospitality operations and hotel administration.',
+            duration: '3-4 Years',
+            eligibility: 'Diploma (any branch)',
+            govt: ['Tourism Dept', 'Govt Hotel Admin'],
+            private: ['Hotel Manager', 'Cruise Staff', 'Tourism Executive'],
+            higher: ['MBA Hospitality']
+        },
+        {
+            id: 'llb',
+            title: 'LLB (3-Year Law Degree)',
+            desc: 'Focuses on legal systems and corporate law.',
+            duration: '3 Years',
+            eligibility: 'Diploma + Graduation Equivalent Criteria',
+            govt: ['Public Prosecutor', 'State Judicial Services (after further prep)'],
+            private: ['Advocate', 'Legal Advisor', 'Corporate Lawyer'],
+            higher: ['LLM', 'Corporate Law Specialization']
+        }
+    ],
+
+    // Govt Jobs
+    'dip_gov': [
+        {
+            id: 'ssc_je',
+            title: 'SSC JE (Staff Selection Commission)',
+            desc: 'Focuses on technical engineering posts in central government departments. Posts in CPWD, MES, CWC.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma or B.Tech in Civil / Mechanical / Electrical',
+            govt: ['Junior Engineer', 'Technical Supervisor', 'Departmental Engineer'],
+            private: ['N/A'],
+            higher: ['Promotions through departmental exams']
+        },
+        {
+            id: 'rrb_je',
+            title: 'RRB JE (Railway Junior Engineer)',
+            desc: 'Focuses on railway technical operations and infrastructure.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in relevant branch',
+            govt: ['Junior Engineer', 'Section Engineer', 'Maintenance Engineer'],
+            private: ['N/A'],
+            higher: ['Promotions through departmental exams']
+        },
+        {
+            id: 'seb_je',
+            title: 'State Electricity Board JE',
+            desc: 'Focuses on power generation and distribution.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Electrical / Related Branch',
+            govt: ['Junior Electrical Engineer', 'Assistant Engineer (after promotion)'],
+            private: ['N/A'],
+            higher: ['B.Tech for faster promotions']
+        },
+        {
+            id: 'pwd_je',
+            title: 'PWD (Public Works Department) JE',
+            desc: 'Focuses on government construction and infrastructure projects.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Civil Engineering',
+            govt: ['Junior Engineer', 'Assistant Engineer (after experience)'],
+            private: ['N/A'],
+            higher: ['B.Tech or AMIE for promotions']
+        },
+        {
+            id: 'psu',
+            title: 'PSU Technical Posts',
+            desc: 'Technical operations in govt companies (BHEL, NTPC, ONGC, GAIL).',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Engineering',
+            govt: ['Technical Assistant', 'Supervisor', 'Plant Operator'],
+            private: ['N/A'],
+            higher: ['Part-time B.Tech for advancement']
+        },
+        {
+            id: 'def_tech',
+            title: 'Defense Technical Posts',
+            desc: 'Technical roles in Army, Navy Dockyard, Air Force.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in relevant engineering branch',
+            govt: ['Technical Officer', 'Maintenance Engineer', 'Dockyard Supervisor'],
+            private: ['N/A'],
+            higher: ['Internal military courses']
+        },
+        {
+            id: 'muni_je',
+            title: 'Municipal Corporation Engineer',
+            desc: 'Focuses on city development and maintenance.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Civil / Electrical',
+            govt: ['Municipal Engineer', 'Site Supervisor'],
+            private: ['N/A'],
+            higher: ['AMIE or B.Tech for promotions']
+        }
+    ],
+
+    // Private Sector
+    'dip_priv': [
+        {
+            id: 'civil_pvt',
+            title: 'Civil Engineer (Private Sector)',
+            desc: 'Focuses on construction projects, infrastructure development, and site supervision.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Civil Engineering',
+            govt: ['N/A'],
+            private: ['Site Engineer', 'Site Supervisor', 'Billing Engineer', 'Quantity Surveyor', 'CAD Draftsman'],
+            higher: ['B.Tech lateral entry for career growth']
+        },
+        {
+            id: 'mech_pvt',
+            title: 'Mechanical Engineer (Private Sector)',
+            desc: 'Focuses on manufacturing plants, machinery, and production units.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Mechanical Engineering',
+            govt: ['N/A'],
+            private: ['Production Supervisor', 'Maintenance Engineer', 'Quality Control Engineer', 'CNC Operator', 'Plant Technician'],
+            higher: ['B.Tech or AMIE for managerial roles']
+        },
+        {
+            id: 'elec_pvt',
+            title: 'Electrical Engineer (Private Sector)',
+            desc: 'Focuses on power systems, electrical maintenance, and industrial operations.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Electrical Engineering',
+            govt: ['N/A'],
+            private: ['Electrical Maintenance Engineer', 'Panel Board Technician', 'Site Electrical Supervisor', 'Power Plant Technician'],
+            higher: ['B.Tech lateral entry']
+        },
+        {
+            id: 'ece_pvt',
+            title: 'Electronics & Communication (Private Sector)',
+            desc: 'Focuses on telecom systems, embedded devices, electronics servicing.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in ECE',
+            govt: ['N/A'],
+            private: ['Telecom Engineer', 'Service Engineer', 'Embedded Technician', 'Network Support Engineer'],
+            higher: ['B.Tech lateral entry']
+        },
+        {
+            id: 'it_pvt',
+            title: 'Computer / IT (Private Sector)',
+            desc: 'Focuses on software, networking, and IT services.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Computer / IT / ECE',
+            govt: ['N/A'],
+            private: ['Junior Software Developer', 'Web Developer', 'IT Support Executive', 'Network Administrator', 'QA Tester'],
+            higher: ['BCA or B.Tech (CS)']
+        },
+        {
+            id: 'mfg_pvt',
+            title: 'Manufacturing & Production Companies',
+            desc: 'Roles in Automobile Companies, Steel Plants, Cement Industries, FMCG.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma in Core Branches',
+            govt: ['N/A'],
+            private: ['Shift Engineer', 'Plant Supervisor', 'Operations Executive'],
+            higher: ['B.Tech for managerial growth']
+        },
+        {
+            id: 'abroad_pvt',
+            title: 'Abroad Private Jobs (With Experience)',
+            desc: 'Skilled roles in Gulf, Middle East, and Europe.',
+            duration: 'Direct Job',
+            eligibility: 'Diploma + Relevant Work Experience',
+            govt: ['N/A'],
+            private: ['Construction Engineer (Gulf)', 'Manufacturing Tech', 'HVAC Technician (Middle East)', 'Power Sector Staff'],
+            higher: ['Skill certifications related to role']
+        },
+        {
+            id: 'entrep',
+            title: 'Entrepreneurship (Self-Employed)',
+            desc: 'Start your own contracting business or garage.',
+            duration: 'Self-Employed',
+            eligibility: 'Diploma + Business Acumen',
+            govt: ['N/A'],
+            private: ['Construction Contractor', 'Electrical Contractor', 'Fabrication Workshop Owner', 'IT Service Business'],
+            higher: ['Business expansion']
+        }
+    ],
+
     // After Graduation - Postgrad
     'pg': [
         {

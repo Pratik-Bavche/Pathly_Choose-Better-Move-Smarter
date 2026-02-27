@@ -33,11 +33,11 @@ const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc
     { id: 'sci', title: 'Pure Science & Research', tags: ['Govt Job', 'Private Job', 'Higher Study'], desc: 'B.Sc in Physics, Chem, Bio, Agriculture, Biotech.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   'diploma': [
-    { id: 'lat', title: 'Lateral Entry B.Tech', tags: ['Higher Study'], desc: 'Direct 2nd year admission to B.E/B.Tech engineering degrees.', icon: <GraduationCap color="#1976d2" size={20} /> },
-    { id: 'amie', title: 'AMIE Equivalency', tags: ['Higher Study'], desc: 'Equivalent to B.Tech for working professionals by IEI.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'bde', title: 'Bachelor Degrees', tags: ['Higher Study'], desc: 'BCA, B.Sc IT, BBA for non-engineering progression.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'gov', title: 'Govt Jobs (JE)', tags: ['Govt Job'], desc: 'SSC JE, Railway Tech, State Electricity Boards.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'priv', title: 'Private Sector', tags: ['Private Job'], desc: 'Site Engineer, Supervisor, CAD Designer, Technician.', icon: <Wrench color="#1976d2" size={20} /> }
+    { id: 'dip_gov', title: 'Government Jobs (JE)', tags: ['Govt Job', 'High Salary'], desc: 'SSC JE, RRB JE, PSU Technical Posts, State Electricity.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'dip_priv', title: 'Private Sector', tags: ['Private Job', 'Skill-Based', 'High Salary', 'Study Abroad'], desc: 'Core Engineering, IT, Manufacturing, Abroad Jobs.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'dip_lat', title: 'B.Tech (Lateral Entry)', tags: ['Higher Study', 'High Salary', 'Study Abroad'], desc: 'Direct 2nd-year B.Tech admission for higher growth.', icon: <GraduationCap color="#1976d2" size={20} /> },
+    { id: 'dip_bde', title: 'Bachelor Degrees', tags: ['Higher Study', 'Private Job', 'High Salary'], desc: 'BCA, B.Sc IT, BBA for IT/Management progression.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'dip_amie', title: 'AMIE Equivalency', tags: ['Higher Study', 'Govt Job', 'Private Job'], desc: 'Equivalent to B.Tech for working professionals.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   'iti': [
     { id: 'app', title: 'Apprenticeships', tags: ['Govt Job', 'Private Job', 'Skill-Based'], desc: 'Skill India schemes and industry-based paid training.', icon: <Briefcase color="#1976d2" size={20} /> },
