@@ -1,256 +1,300 @@
 import { useLocalSearchParams } from 'expo-router';
-import { BookMarked, Briefcase, Building2, ChevronDown, ChevronUp, GraduationCap, MapPin, Search, Star, Wrench } from 'lucide-react-native';
+import { ArrowLeft, BookOpen, Briefcase, Building, ChevronRight, GraduationCap, Plane, Target, Trophy, Wrench } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useLanguage } from '../../context/LanguageContext';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const EDUCATION_PATHWAYS = [
-  {
-    id: 'hs_streams',
-    title: 'Higher Secondary Streams (Class 11–12)',
-    description: 'The foundation for higher education. Choose a stream based on your career interests.',
-    icon: <BookMarked color="#1976d2" size={24} />,
-    details: [
-      '• Science (PCM/PCB): For Engineering, Medical, Architecture, and Pure Sciences.',
-      '• Commerce: For Business, Finance, Accounting (CA/CS/CMA), and Economics.',
-      '• Arts/Humanities: For Civil Services, Law, Design, Journalism, and Social Sciences.',
-      '• Boards: CBSE, CISCE, State Boards, and Open Schooling (NIOS).'
-    ]
-  },
-  {
-    id: 'diploma',
-    title: 'Diploma (Polytechnic) Programs',
-    description: '3-year practical programs right after 10th. Offers lateral entry direct to 2nd year B.Tech/B.E.',
-    icon: <Building2 color="#1976d2" size={24} />,
-    details: [
-      '• Engineering Diplomas: Mechanical, Civil, Computer, Electronics, Electrical.',
-      '• Allied Diplomas: Design, Architecture Assistantship, Hospitality, Pharmacy.',
-      '• Healthcare Diplomas: DMLT, X-Ray Tech, Nursing Assistant.',
-    ]
-  },
-  {
-    id: 'iti',
-    title: 'ITI (Industrial Training Institute)',
-    description: 'Short-term training focusing on practical vocational trades for direct employment.',
-    icon: <Wrench color="#1976d2" size={24} />,
-    details: [
-      '• Engineering Trades: Fitter, Electrician, Welder, Machinist, Draftsman.',
-      '• Non-Engineering Trades: COPA (Computer Operator), Dress Making, Stenography.',
-    ]
-  },
-  {
-    id: 'vocational',
-    title: 'Vocational & Certificate Courses',
-    description: 'Short-term skill-based programs designed to make you industry-ready quickly.',
-    icon: <Briefcase color="#1976d2" size={24} />,
-    details: [
-      '• Popular Fields: Beauty & Wellness, Electronics Repair, Hardware & Networking, Computing.',
-      '• Other Skills: Tailoring, Culinary Arts, Front Office Management, Retail.',
-    ]
-  },
-  {
-    id: 'undergrad',
-    title: 'Undergraduate Degree Programs (After 12th)',
-    description: '3 to 5-year bachelor degree programs for professional and academic careers.',
-    icon: <GraduationCap color="#1976d2" size={24} />,
-    details: [
-      '• Programs: Engineering (B.E/B.Tech), Medicine (MBBS/BDS), Science (B.Sc), Commerce (B.Com), Arts (B.A).',
-      '• Specialized Degrees: Law (LLB), Design (B.Des), Hospitality (BHM), Nursing, Pharmacy.',
-      '• Key Entrance Exams: JEE (Engineering), NEET (Medical), NATA (Architecture), CUET (Central Universities).'
-    ]
-  },
-  {
-    id: 'specialized',
-    title: 'Specialized Fields',
-    description: 'Niche, fast-growing career paths with highly specialized training.',
-    icon: <Star color="#1976d2" size={24} />,
-    details: [
-      '• Paramedical Sciences, Physiotherapy, and Occupational Therapy.',
-      '• Agriculture, Forestry, and Veterinary Sciences.',
-      '• Fashion Design, Animation, VFX, and Multimedia.',
-      '• Forensic Science, Sports Sciences, and Aviation.'
-    ]
-  },
-  {
-    id: 'bridge',
-    title: 'Bridge / Pre-University Paths',
-    description: 'Alternative pathways and foundation programs to transition to university.',
-    icon: <MapPin color="#1976d2" size={24} />,
-    details: [
-      '• Open Schooling (NIOS) for flexible learning.',
-      '• Foundation / Coaching integrated programs for competitive exams.',
-      '• International Curricula (IB, A-Levels).',
-      '• Lateral-Entry Pathways from Diploma to Degree.'
-    ]
-  },
-  {
-    id: 'certification',
-    title: 'Professional / Technical Certifications',
-    description: 'Industry-recognized credentials to upskill or reskill at any stage.',
-    icon: <BookMarked color="#1976d2" size={24} />,
-    details: [
-      '• IT Certifications: Cisco (CCNA), AWS, Microsoft, CompTIA.',
-      '• Business & Finance: Tally, Accounting Software, Digital Marketing.',
-      '• Tech Skills: Programming Bootcamps, UI/UX Design Certifications.',
-    ]
-  },
-  {
-    id: 'alternative',
-    title: 'Other Alternative Education Paths',
-    description: 'Flexible learning, apprenticeships, and government initiatives.',
-    icon: <Building2 color="#1976d2" size={24} />,
-    details: [
-      '• Apprenticeships (Skill India) for earn-while-you-learn opportunities.',
-      '• Open Universities & Distance Learning (e.g., IGNOU).',
-      '• NSDC Skill Programs and Government Upskilling Schemes.',
-      '• Specialized Academies: Sports Academies, Fine Arts Institutes.'
-    ]
-  }
+const QUALIFICATIONS = [
+  { id: '10th', title: 'After 10th', subtitle: 'Start your foundation journey', icon: <BookOpen color="#1976d2" size={28} /> },
+  { id: '12th', title: 'After 12th', subtitle: 'Choose your professional degree', icon: <GraduationCap color="#1976d2" size={28} /> },
+  { id: 'diploma', title: 'After Diploma', subtitle: 'Advance your technical career', icon: <Wrench color="#1976d2" size={28} /> },
+  { id: 'iti', title: 'After ITI', subtitle: 'Level up your vocational skills', icon: <Target color="#1976d2" size={28} /> },
+  { id: 'graduation', title: 'After Graduation', subtitle: 'Master degrees & top jobs', icon: <Trophy color="#1976d2" size={28} /> },
 ];
 
+const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc: string; icon: JSX.Element }[]> = {
+  '10th': [
+    { id: 'hs', title: 'Higher Secondary (11-12)', tags: ['Higher Study'], desc: 'Science, Commerce, Arts streams for higher education.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'dip', title: 'Diploma (Polytechnic)', tags: ['Skill-Based', 'Higher Study'], desc: '3-year engineering & non-engineering practical programs.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'iti', title: 'ITI Courses', tags: ['Private Job', 'Govt Job', 'Skill-Based'], desc: 'Government recognized short-term vocational training.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'voc', title: 'Vocational Courses', tags: ['Private Job', 'Skill-Based'], desc: 'Short-term training for quick employment in various sectors.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'para', title: 'Paramedical', tags: ['Private Job', 'Skill-Based'], desc: 'DMLT, X-Ray Technician, Assistant roles in healthcare.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'bridge', title: 'Open Schooling / Bridge', tags: ['Higher Study'], desc: 'NIOS or foundation courses for competitive exams.', icon: <BookOpen color="#1976d2" size={20} /> }
+  ],
+  '12th': [
+    { id: 'eng', title: 'Engineering & Tech', tags: ['High Salary', 'Private Job', 'Higher Study'], desc: 'B.Tech/B.E in CS, Mechanical, Civil, AI, etc.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'med', title: 'Medical & Health', tags: ['High Salary', 'Private Job', 'Govt Job'], desc: 'MBBS, BDS, Nursing, Pharmacy, Physiotherapy.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'sci', title: 'Science & Research', tags: ['Higher Study', 'Govt Job'], desc: 'B.Sc, Agriculture, Biotechnology, Environmental Science.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'com', title: 'Commerce & Mgmt', tags: ['Private Job', 'High Salary'], desc: 'B.Com, BBA, CA, CS, CMA for banking and business.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'arts', title: 'Arts, Humanities, Law', tags: ['Govt Job', 'Higher Study'], desc: 'B.A., BA LLB, Journalism, Civil Services preparation.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'it', title: 'Computer & IT', tags: ['High Salary', 'Private Job'], desc: 'BCA, Cyber Security, Game Design, Multimedia.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'des', title: 'Design & Creative', tags: ['Private Job', 'Skill-Based'], desc: 'Fashion, Interior, Graphic Design, Fine Arts.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'hosp', title: 'Hospitality & Aviation', tags: ['Private Job'], desc: 'Hotel Management, Travel & Tourism, Cabin Crew.', icon: <Plane color="#1976d2" size={20} /> },
+    { id: 'gov', title: 'Govt & Defense Exams', tags: ['Govt Job'], desc: 'NDA, SSC, Banking, Police and Defense services.', icon: <Trophy color="#1976d2" size={20} /> }
+  ],
+  'diploma': [
+    { id: 'lat', title: 'Lateral Entry B.Tech', tags: ['Higher Study'], desc: 'Direct 2nd year admission to B.E/B.Tech engineering degrees.', icon: <GraduationCap color="#1976d2" size={20} /> },
+    { id: 'amie', title: 'AMIE Equivalency', tags: ['Higher Study'], desc: 'Equivalent to B.Tech for working professionals by IEI.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'bde', title: 'Bachelor Degrees', tags: ['Higher Study'], desc: 'BCA, B.Sc IT, BBA for non-engineering progression.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'gov', title: 'Govt Jobs (JE)', tags: ['Govt Job'], desc: 'SSC JE, Railway Tech, State Electricity Boards.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'priv', title: 'Private Sector', tags: ['Private Job'], desc: 'Site Engineer, Supervisor, CAD Designer, Technician.', icon: <Wrench color="#1976d2" size={20} /> }
+  ],
+  'iti': [
+    { id: 'app', title: 'Apprenticeships', tags: ['Govt Job', 'Private Job', 'Skill-Based'], desc: 'Skill India schemes and industry-based paid training.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'lat', title: 'Diploma (Lateral Entry)', tags: ['Higher Study'], desc: 'Direct 2nd year entry to Polytechnic Diploma.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'adv', title: 'Advanced ITI Certifications', tags: ['Skill-Based'], desc: 'CNC Programming, Automation, Advanced Electrical.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'gov', title: 'Govt Jobs', tags: ['Govt Job'], desc: 'Railways, PSUs, Defense Technical Posts.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'priv', title: 'Private / Self-Employed', tags: ['Private Job'], desc: 'Electrician, Mechanic, Fabricator, Workshop Owner.', icon: <Briefcase color="#1976d2" size={20} /> }
+  ],
+  'graduation': [
+    { id: 'pg', title: 'Postgraduate Degrees', tags: ['Higher Study'], desc: 'M.Tech, MBA, M.Sc, M.Com, M.A. for specializations.', icon: <GraduationCap color="#1976d2" size={20} /> },
+    { id: 'prof', title: 'Professional Courses', tags: ['High Salary', 'Private Job'], desc: 'CA, CS, CMA, PG Diplomas, LLB.', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'gov', title: 'Govt & Comp Exams', tags: ['Govt Job'], desc: 'UPSC Civil Services, State PSC, SSC CGL, Bank PO.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'abroad', title: 'Study Abroad', tags: ['Study Abroad', 'Higher Study'], desc: 'MS, MBA, exams like GRE, GMAT, IELTS, TOEFL.', icon: <Plane color="#1976d2" size={20} /> },
+    { id: 'res', title: 'Research & Academic', tags: ['Higher Study', 'Govt Job'], desc: 'Ph.D., M.Phil, UGC NET for professorship.', icon: <BookOpen color="#1976d2" size={20} /> },
+    { id: 'ent', title: 'Entrepreneurship', tags: ['Private Job'], desc: 'Startups, Freelancing, Family Business Expansion.', icon: <Target color="#1976d2" size={20} /> },
+    { id: 'skill', title: 'Skill Certifications', tags: ['Skill-Based', 'High Salary'], desc: 'Data Science, Cloud Computing, Digital Marketing.', icon: <Wrench color="#1976d2" size={20} /> }
+  ]
+};
+
+const FILTERS = ['All', 'Govt Job', 'Private Job', 'Higher Study', 'High Salary', 'Skill-Based', 'Study Abroad'];
+
 export default function ExploreScreen() {
-  const { category: categoryParam, search: searchParam } = useLocalSearchParams();
-  const [search, setSearch] = useState('');
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const { t } = useLanguage();
+  const { category: categoryParam } = useLocalSearchParams();
+  const [selectedQual, setSelectedQual] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState('All');
 
+  // We check if "category" means the user explicitly clicked "Explore Education Options" from another screen
+  // For context, they will just arrive here. If they want to reset, they hit the back arrow.
   useEffect(() => {
-    if (searchParam) {
-      setSearch(searchParam as string);
-    } else {
-      setSearch('');
-    }
-  }, [searchParam]);
+    // Reset state when tab is focused if needed
+  }, []);
 
-  const filteredItems = EDUCATION_PATHWAYS.filter(item =>
-    item.title.toLowerCase().includes(search.toLowerCase()) ||
-    item.description.toLowerCase().includes(search.toLowerCase())
+  const renderStep1 = () => (
+    <View style={styles.stepContainer}>
+      <Text style={styles.stepTitle}>Select Your Qualification</Text>
+      <Text style={styles.stepSubtitle}>To show you the most relevant educational pathways</Text>
+
+      <View style={styles.qualGrid}>
+        {QUALIFICATIONS.map((qual) => (
+          <TouchableOpacity
+            key={qual.id}
+            style={styles.qualCard}
+            onPress={() => {
+              setSelectedQual(qual.id);
+              setActiveFilter('All');
+            }}
+            activeOpacity={0.8}
+          >
+            <View style={styles.qualIconWrapper}>
+              {qual.icon}
+            </View>
+            <View style={styles.qualTextContainer}>
+              <Text style={styles.qualTitle}>{qual.title}</Text>
+              <Text style={styles.qualSubtitle}>{qual.subtitle}</Text>
+            </View>
+            <ChevronRight color="#ccc" size={20} />
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
   );
 
-  return (
-    <View style={styles.container}>
-      <View style={[styles.header, searchParam && styles.headerCompact]}>
-        <Text style={styles.headerTitle}>Explore Education Options</Text>
-        <Text style={styles.headerSubtitle}>Discover all major pathways after 10th and 12th</Text>
-      </View>
+  const renderStep2 = () => {
+    if (!selectedQual) return null;
+    const currentQual = QUALIFICATIONS.find(q => q.id === selectedQual);
+    const options = PATHWAYS[selectedQual] || [];
 
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Search color="#888" size={20} />
-          <TextInput
-            placeholder="Search pathways, streams, degrees..."
-            placeholderTextColor="#888"
-            style={styles.searchInput}
-            value={search}
-            onChangeText={setSearch}
-          />
+    const filteredOptions = activeFilter === 'All'
+      ? options
+      : options.filter(opt => opt.tags.includes(activeFilter));
+
+    return (
+      <View style={styles.stepContainer}>
+        {/* Step 2 Header */}
+        <View style={styles.backRow}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => setSelectedQual(null)}
+          >
+            <ArrowLeft color="#1976d2" size={22} />
+          </TouchableOpacity>
+          <Text style={styles.selectedQualHeader}>{currentQual?.title} Options</Text>
         </View>
-      </View>
 
-      <View style={styles.listContainer}>
-        <ScrollView
-          style={styles.scrollArea}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          showsVerticalScrollIndicator={false}
-        >
-          {filteredItems.map((item) => {
-            const isExpanded = expandedId === item.id;
-
-            return (
+        {/* Filters */}
+        <View style={styles.filterSection}>
+          <Text style={styles.filterLabel}>What is your goal?</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
+            {FILTERS.map(filter => (
               <TouchableOpacity
-                key={item.id}
-                style={[styles.pathwayCard, isExpanded && styles.pathwayCardExpanded]}
-                onPress={() => setExpandedId(isExpanded ? null : item.id)}
-                activeOpacity={0.7}
+                key={filter}
+                style={[styles.filterChip, activeFilter === filter && styles.filterChipActive]}
+                onPress={() => setActiveFilter(filter)}
               >
-                <View style={styles.cardHeader}>
-                  <View style={styles.iconContainer}>
-                    {item.icon}
-                  </View>
-                  <View style={styles.cardHeaderDetails}>
-                    <Text style={styles.pathwayTitle}>{item.title}</Text>
-                    <Text style={styles.pathwayDesc} numberOfLines={isExpanded ? undefined : 2}>
-                      {item.description}
-                    </Text>
-                  </View>
-                  <View style={styles.expandIcon}>
-                    {isExpanded ? <ChevronUp color="#888" size={20} /> : <ChevronDown color="#888" size={20} />}
+                <Text style={[styles.filterText, activeFilter === filter && styles.filterTextActive]}>
+                  {filter}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Results List */}
+        <ScrollView style={styles.resultsScroll} contentContainerStyle={styles.resultsContent}>
+          {filteredOptions.map(opt => (
+            <TouchableOpacity key={opt.id} style={styles.pathwayCard} activeOpacity={0.7}>
+              <View style={styles.pathwayHeader}>
+                <View style={styles.iconBox}>
+                  {opt.icon}
+                </View>
+                <View style={styles.pathwayInfo}>
+                  <Text style={styles.pathwayName}>{opt.title}</Text>
+                  <Text style={styles.pathwayDesc}>{opt.desc}</Text>
+
+                  <View style={styles.tagsRow}>
+                    {opt.tags.map(tag => (
+                      <View key={tag} style={styles.microTag}>
+                        <Text style={styles.microTagText}>{tag}</Text>
+                      </View>
+                    ))}
                   </View>
                 </View>
+                <ChevronRight color="#1976d2" size={20} style={{ alignSelf: 'center', opacity: 0.5 }} />
+              </View>
+            </TouchableOpacity>
+          ))}
 
-                {isExpanded && (
-                  <View style={styles.cardExpandedContent}>
-                    <View style={styles.divider} />
-                    {item.details.map((detail, index) => (
-                      <Text key={index} style={styles.detailText}>
-                        {detail}
-                      </Text>
-                    ))}
-                    <TouchableOpacity style={styles.learnMoreBtn}>
-                      <Text style={styles.learnMoreText}>Find Associated Courses</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </TouchableOpacity>
-            );
-          })}
-
-          {filteredItems.length === 0 && (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.noResults}>No matching pathways found.</Text>
+          {filteredOptions.length === 0 && (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyStateText}>No options found for this filter.</Text>
             </View>
           )}
         </ScrollView>
       </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Explore Pathways</Text>
+        <Text style={styles.headerSubtitle}>Discover your perfect career route</Text>
+      </View>
+
+      {selectedQual ? renderStep2() : renderStep1()}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafc' },
-  header: { backgroundColor: '#0d47a1', padding: 24, paddingTop: 60, borderBottomLeftRadius: 32, borderBottomRightRadius: 32, marginBottom: 20 },
-  headerCompact: { paddingTop: 40, paddingBottom: 16, marginBottom: 12 },
+  container: { flex: 1, backgroundColor: '#f5f8ff' },
+  header: {
+    backgroundColor: '#0d47a1',
+    padding: 24,
+    paddingTop: 60,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+  },
   headerTitle: { fontSize: 26, fontWeight: 'bold', color: '#ffffff', letterSpacing: -0.5 },
-  headerSubtitle: { fontSize: 14, color: '#e3f2fd', marginTop: 6, opacity: 0.9 },
-  searchContainer: { paddingHorizontal: 24, marginBottom: 16 },
-  searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 16, paddingHorizontal: 16, paddingVertical: 14, borderWidth: 1, borderColor: '#e1efff', elevation: 2, shadowColor: '#0d47a1', shadowOpacity: 0.05, shadowRadius: 8, shadowOffset: { width: 0, height: 4 } },
-  searchInput: { flex: 1, marginLeft: 12, fontSize: 15, color: '#333' },
-  listContainer: { flex: 1, paddingHorizontal: 20 },
-  scrollArea: { flex: 1 },
+  headerSubtitle: { fontSize: 14, color: '#e3f2fd', marginTop: 4, opacity: 0.9 },
+
+  stepContainer: { flex: 1, padding: 20 },
+  stepTitle: { fontSize: 20, fontWeight: 'bold', color: '#0d47a1', marginBottom: 4 },
+  stepSubtitle: { fontSize: 14, color: '#666', marginBottom: 20 },
+
+  qualGrid: { gap: 14 },
+  qualCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e1efff',
+    elevation: 2,
+    shadowColor: '#1976d2',
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+  },
+  qualIconWrapper: {
+    width: 50, height: 50,
+    borderRadius: 14,
+    backgroundColor: '#f0f6ff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  qualTextContainer: { flex: 1 },
+  qualTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  qualSubtitle: { fontSize: 13, color: '#666', marginTop: 4 },
+
+  // Step 2 Styles
+  backRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+  backButton: {
+    width: 40, height: 40,
+    borderRadius: 20,
+    backgroundColor: '#e1efff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  selectedQualHeader: { fontSize: 20, fontWeight: 'bold', color: '#0d47a1' },
+
+  filterSection: { marginBottom: 16 },
+  filterLabel: { fontSize: 14, fontWeight: 'bold', color: '#444', marginBottom: 10 },
+  filterScroll: { gap: 8, paddingBottom: 10 },
+  filterChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d0e3ff',
+    marginRight: 10
+  },
+  filterChipActive: { backgroundColor: '#1976d2', borderColor: '#1976d2' },
+  filterText: { color: '#1976d2', fontWeight: '500', fontSize: 13 },
+  filterTextActive: { color: '#ffffff', fontWeight: 'bold' },
+
+  resultsScroll: { flex: 1 },
+  resultsContent: { paddingBottom: 40 },
   pathwayCard: {
     backgroundColor: '#fff',
     borderRadius: 16,
-    marginBottom: 14,
     padding: 16,
+    marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#eef2f9',
+    borderColor: '#e1efff',
     elevation: 2,
     shadowColor: '#1976d2',
     shadowOpacity: 0.04,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 }
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
   },
-  pathwayCardExpanded: {
-    borderColor: '#bbdefb',
-    backgroundColor: '#ffffff',
-  },
-  cardHeader: { flexDirection: 'row', alignItems: 'flex-start' },
-  iconContainer: { width: 48, height: 48, backgroundColor: '#eef6ff', borderRadius: 14, justifyContent: 'center', alignItems: 'center', marginRight: 14 },
-  cardHeaderDetails: { flex: 1, justifyContent: 'center' },
-  pathwayTitle: { fontSize: 16, fontWeight: 'bold', color: '#222', marginBottom: 6 },
-  pathwayDesc: { fontSize: 13, color: '#666', lineHeight: 18 },
-  expandIcon: { paddingLeft: 8, paddingTop: 4 },
-  cardExpandedContent: { marginTop: 12 },
-  divider: { height: 1, backgroundColor: '#f0f4f8', marginBottom: 16, marginTop: 4 },
-  detailText: { fontSize: 14, color: '#444', marginBottom: 10, lineHeight: 22 },
-  learnMoreBtn: {
-    marginTop: 12,
-    backgroundColor: '#eef6ff',
-    paddingVertical: 12,
+  pathwayHeader: { flexDirection: 'row', alignItems: 'flex-start' },
+  iconBox: {
+    width: 44, height: 44,
     borderRadius: 12,
-    alignItems: 'center'
+    backgroundColor: '#f5f9ff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#e1efff'
   },
-  learnMoreText: { color: '#1976d2', fontWeight: 'bold', fontSize: 14 },
-  emptyContainer: { alignItems: 'center', paddingTop: 40 },
-  noResults: { color: '#888', fontSize: 15 },
+  pathwayInfo: { flex: 1, paddingRight: 8 },
+  pathwayName: { fontSize: 16, fontWeight: 'bold', color: '#222', marginBottom: 4 },
+  pathwayDesc: { fontSize: 13, color: '#666', lineHeight: 18, marginBottom: 10 },
+  tagsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  microTag: { backgroundColor: '#f0f0f0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
+  microTagText: { fontSize: 10, color: '#555', fontWeight: '500' },
+
+  emptyState: { padding: 40, alignItems: 'center' },
+  emptyStateText: { color: '#888', fontStyle: 'italic' }
 });
