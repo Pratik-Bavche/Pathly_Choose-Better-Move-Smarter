@@ -40,11 +40,11 @@ const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc
     { id: 'dip_amie', title: 'AMIE Equivalency', tags: ['Higher Study', 'Govt Job', 'Private Job'], desc: 'Equivalent to B.Tech for working professionals.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   'iti': [
-    { id: 'app', title: 'Apprenticeships', tags: ['Govt Job', 'Private Job', 'Skill-Based'], desc: 'Skill India schemes and industry-based paid training.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'lat', title: 'Diploma (Lateral Entry)', tags: ['Higher Study'], desc: 'Direct 2nd year entry to Polytechnic Diploma.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'adv', title: 'Advanced ITI Certifications', tags: ['Skill-Based'], desc: 'CNC Programming, Automation, Advanced Electrical.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'gov', title: 'Govt Jobs', tags: ['Govt Job'], desc: 'Railways, PSUs, Defense Technical Posts.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'priv', title: 'Private / Self-Employed', tags: ['Private Job'], desc: 'Electrician, Mechanic, Fabricator, Workshop Owner.', icon: <Briefcase color="#1976d2" size={20} /> }
+    { id: 'iti_gov', title: 'Government Jobs', tags: ['Govt Job', 'High Salary'], desc: 'Railway Technician, PSU, State Electricity Boards.', icon: <Building color="#1976d2" size={20} /> },
+    { id: 'iti_priv', title: 'Private Jobs', tags: ['Private Job', 'Skill-Based', 'High Salary', 'Study Abroad'], desc: 'Electrician, Fitter, Welder, HVAC, CNC Operator.', icon: <Wrench color="#1976d2" size={20} /> },
+    { id: 'iti_app', title: 'Apprenticeships', tags: ['Govt Job', 'Private Job', 'Skill-Based'], desc: 'Paid industry training (Railways, PSUs, Private).', icon: <Briefcase color="#1976d2" size={20} /> },
+    { id: 'iti_lat', title: 'Diploma (Lateral Entry)', tags: ['Higher Study', 'High Salary'], desc: 'Direct 2nd-year entry to Polytechnic Diploma.', icon: <GraduationCap color="#1976d2" size={20} /> },
+    { id: 'iti_adv', title: 'Advanced ITI Courses', tags: ['Higher Study', 'Skill-Based', 'Study Abroad', 'High Salary'], desc: 'CNC, PLC, HVAC, Industrial Safety Specializations.', icon: <BookOpen color="#1976d2" size={20} /> }
   ],
   'graduation': [
     { id: 'pg', title: 'Postgraduate Degrees', tags: ['Higher Study'], desc: 'M.Tech, MBA, M.Sc, M.Com, M.A. for specializations.', icon: <GraduationCap color="#1976d2" size={20} /> },

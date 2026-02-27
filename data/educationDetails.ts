@@ -1583,6 +1583,386 @@ export const BRANCH_DETAILS: Record<string, { id: string, title: string, desc: s
         }
     ],
 
+    // After ITI - Apprenticeship
+    'iti_app': [
+        {
+            id: 'app_trade',
+            title: 'Trade Apprenticeship (Industry-Based)',
+            desc: 'Focuses on real industrial training in factories, plants, workshops.',
+            duration: '6 Months - 1 Year',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['N/A'],
+            private: ['Industrial Technician', 'Maintenance Technician', 'Machine Operator', 'Production Assistant'],
+            higher: ['Advanced ITI Courses', 'Diploma']
+        },
+        {
+            id: 'app_rail',
+            title: 'Railway Apprenticeship',
+            desc: 'Conducted by Indian Railways under RRB zones. Workshop training.',
+            duration: '1 Year',
+            eligibility: 'ITI in relevant trade',
+            govt: ['Railway Technician', 'Workshop Fitter', 'Maintenance Staff'],
+            private: ['Private Railway Contractors'],
+            higher: ['Diploma']
+        },
+        {
+            id: 'app_psu',
+            title: 'PSU Apprenticeship',
+            desc: 'Training in public sector units like BHEL, NTPC, ONGC, State Electricity.',
+            duration: '1 Year',
+            eligibility: 'ITI in relevant trade',
+            govt: ['Plant Technician', 'Electrical Maintenance Staff', 'Junior Technical Assistant'],
+            private: ['Private Power Plants'],
+            higher: ['Diploma']
+        },
+        {
+            id: 'app_def',
+            title: 'Defense Apprenticeship',
+            desc: 'Naval Dockyard, Army Workshops, Air Force Maintenance Units.',
+            duration: '1 Year',
+            eligibility: 'ITI in relevant trade',
+            govt: ['Defense Technician', 'Workshop Technical Staff'],
+            private: ['Defense Contractors'],
+            higher: ['Diploma']
+        },
+        {
+            id: 'app_pvt',
+            title: 'Private Company Apprenticeship',
+            desc: 'Automobile Companies, Manufacturing Plants, HVAC Companies.',
+            duration: '6-12 Months',
+            eligibility: 'ITI Certificate',
+            govt: ['N/A'],
+            private: ['Permanent Technician', 'Service Engineer', 'Production Staff'],
+            higher: ['Diploma']
+        },
+        {
+            id: 'app_abroad',
+            title: 'Apprenticeship Abroad (After Experience)',
+            desc: 'Gulf Countries, Middle East, Europe.',
+            duration: 'Varies',
+            eligibility: 'Apprenticeship + 1-2 years experience',
+            govt: ['N/A'],
+            private: ['Skilled Worker', 'Electrician / Welder / Fitter Abroad'],
+            higher: ['Advanced Specializations']
+        }
+    ],
+
+    // After ITI - Diploma (Lateral Entry)
+    'iti_lat': [
+        {
+            id: 'dip_ce',
+            title: 'Diploma in Civil Engineering',
+            desc: 'Focuses on construction, infrastructure, site supervision.',
+            duration: '2 Years (Lateral Entry after ITI)',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['PWD Technician', 'Site Supervisor', 'Junior Engineer'],
+            private: ['Construction Site Supervisor'],
+            higher: ['B.Tech Lateral Entry']
+        },
+        {
+            id: 'dip_me',
+            title: 'Diploma in Mechanical Engineering',
+            desc: 'Focuses on manufacturing, machines, plant operations.',
+            duration: '2 Years (Lateral Entry after ITI)',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['SSC JE', 'RRB JE', 'ISRO Technician'],
+            private: ['Production Supervisor', 'Maintenance Engineer', 'CNC Programmer'],
+            higher: ['B.Tech Lateral Entry']
+        },
+        {
+            id: 'dip_ee',
+            title: 'Diploma in Electrical Engineering',
+            desc: 'Focuses on power systems and electrical installations.',
+            duration: '2 Years (Lateral Entry after ITI)',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['State Electricity Board JE', 'SSC JE'],
+            private: ['Electrical Supervisor', 'Power Plant Technician'],
+            higher: ['B.Tech Lateral Entry']
+        },
+        {
+            id: 'dip_ece',
+            title: 'Diploma in Electronics & Communication',
+            desc: 'Focuses on telecom systems, electronics, embedded systems.',
+            duration: '2 Years (Lateral Entry after ITI)',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['DRDO Technician', 'BSNL TTA'],
+            private: ['Telecom Engineer', 'Network Technician', 'Service Engineer'],
+            higher: ['B.Tech Lateral Entry']
+        },
+        {
+            id: 'dip_cse',
+            title: 'Diploma in Computer / IT',
+            desc: 'Focuses on programming, networking, IT systems.',
+            duration: '2 Years (Lateral Entry after ITI)',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['NIC Technical Assistant', 'SSC Technical Posts'],
+            private: ['Software Developer', 'IT Support Engineer', 'Network Administrator'],
+            higher: ['B.Tech Lateral Entry']
+        },
+        {
+            id: 'dip_auto',
+            title: 'Diploma in Automobile Engineering',
+            desc: 'Focuses on vehicle systems and maintenance.',
+            duration: '2 Years (Lateral Entry after ITI)',
+            eligibility: 'ITI Certificate in relevant trade',
+            govt: ['State Transport Department'],
+            private: ['Automobile Engineer', 'Workshop Supervisor', 'EV Technician'],
+            higher: ['B.Tech Lateral Entry']
+        }
+    ],
+
+    // After ITI - Advanced ITI
+    'iti_adv': [
+        {
+            id: 'adv_cnc',
+            title: 'Advanced CNC Programming',
+            desc: 'Focuses on computer-controlled machining and manufacturing systems.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI Fitter / Machinist / Turner / Mechanical',
+            govt: ['Defense Manufacturing Units'],
+            private: ['CNC Programmer', 'Machine Operator', 'Manufacturing Technician'],
+            higher: ['Diploma in Mechanical', 'B.Tech']
+        },
+        {
+            id: 'adv_auto',
+            title: 'Advanced Electrical & Industrial Automation',
+            desc: 'Focuses on PLC, SCADA, automation systems.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI Electrician / Electronics',
+            govt: ['Smart City Projects'],
+            private: ['Automation Technician', 'PLC Programmer', 'Industrial Electrician'],
+            higher: ['Diploma in Electrical / Electronics']
+        },
+        {
+            id: 'adv_hvac',
+            title: 'Advanced HVAC Technician',
+            desc: 'Focuses on commercial air-conditioning and refrigeration systems.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI Refrigeration & AC',
+            govt: ['Govt Infrastructure Maintenance'],
+            private: ['HVAC Supervisor', 'AC Plant Technician', 'Maintenance Engineer'],
+            higher: ['Diploma in Mechanical']
+        },
+        {
+            id: 'adv_safety',
+            title: 'Industrial Safety / Fire & Safety',
+            desc: 'Focuses on safety management in factories and construction sites.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI (Any Technical Trade)',
+            govt: ['Fire Departments', 'Govt Construction Safety Officer'],
+            private: ['Safety Officer', 'Fire Safety Technician', 'Site Safety Supervisor'],
+            higher: ['B.Sc in Safety Management']
+        },
+        {
+            id: 'adv_net',
+            title: 'Advanced Networking & Hardware',
+            desc: 'Focuses on networking systems, server maintenance, cybersecurity basics.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI COPA / IT / Electronics',
+            govt: ['NIC Network Tech'],
+            private: ['Network Support Engineer', 'IT Technician', 'Hardware Specialist'],
+            higher: ['BCA', 'B.Sc IT']
+        },
+        {
+            id: 'adv_ev',
+            title: 'EV (Electric Vehicle) Technology',
+            desc: 'Focuses on electric vehicle maintenance and battery systems.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI Motor Vehicle / Electrician',
+            govt: ['State Transport Depots'],
+            private: ['EV Technician', 'Battery Maintenance Specialist', 'Automobile Service Engineer'],
+            higher: ['Diploma in Automobile']
+        },
+        {
+            id: 'adv_rob',
+            title: 'Robotics & Mechatronics',
+            desc: 'Focuses on industrial robotics and automated systems.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI Mechanical / Electronics',
+            govt: ['Defense Automation Projects'],
+            private: ['Robotics Technician', 'Automation Operator', 'Manufacturing Robot Programmer'],
+            higher: ['Diploma in Mechatronics']
+        },
+        {
+            id: 'adv_weld',
+            title: 'Advanced Welding (MIG / TIG / Arc)',
+            desc: 'Focuses on specialized welding techniques.',
+            duration: '3 Months - 1 Year',
+            eligibility: 'ITI Welder',
+            govt: ['Railways', 'Defense Fabrication'],
+            private: ['Certified Welder', 'Structural Welder', 'Oil & Gas Welder'],
+            higher: ['Diploma in Mechanical']
+        }
+    ],
+
+    // After ITI - Govt Jobs
+    'iti_gov': [
+        {
+            id: 'gov_rail',
+            title: 'Railway Technician (RRB)',
+            desc: 'Focuses on railway maintenance, electrical systems, mechanical workshops.',
+            duration: 'Direct Job',
+            eligibility: 'ITI in relevant trade',
+            govt: ['Railway Technician', 'Assistant Loco Shed Technician', 'Workshop Staff'],
+            private: ['N/A'],
+            higher: ['Promotions through departmental exams']
+        },
+        {
+            id: 'gov_seb',
+            title: 'State Electricity Board Technician',
+            desc: 'Focuses on electrical distribution and power maintenance.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Electrician / Wireman',
+            govt: ['Line Technician', 'Substation Operator', 'Electrical Technician'],
+            private: ['N/A'],
+            higher: ['Diploma for JE promotion']
+        },
+        {
+            id: 'gov_def',
+            title: 'Defense Technical Posts',
+            desc: 'Indian Army Workshops, Naval Dockyard, Air Force Units.',
+            duration: 'Direct Job',
+            eligibility: 'ITI in relevant trade',
+            govt: ['Technical Staff', 'Workshop Technician', 'Equipment Maintenance Staff'],
+            private: ['N/A'],
+            higher: ['Internal training programs']
+        },
+        {
+            id: 'gov_psu',
+            title: 'PSU Technician Jobs',
+            desc: 'BHEL, NTPC, ONGC, GAIL, State PSUs.',
+            duration: 'Direct Job',
+            eligibility: 'ITI in relevant trade',
+            govt: ['Plant Technician', 'Maintenance Staff', 'Technical Assistant'],
+            private: ['N/A'],
+            higher: ['Diploma for advancement']
+        },
+        {
+            id: 'gov_pwd',
+            title: 'PWD / Municipal Technician',
+            desc: 'Focuses on government infrastructure and maintenance work.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Fitter / Electrician / Plumber',
+            govt: ['Maintenance Technician', 'Junior Technical Assistant'],
+            private: ['N/A'],
+            higher: ['Diploma for promotions']
+        },
+        {
+            id: 'gov_pol',
+            title: 'Police / Paramilitary Technical Staff',
+            desc: 'Focuses on technical maintenance within police departments.',
+            duration: 'Direct Job',
+            eligibility: 'ITI (Relevant trade)',
+            govt: ['Workshop Technician', 'Equipment Maintenance Staff'],
+            private: ['N/A'],
+            higher: ['Promotions based on service length']
+        },
+        {
+            id: 'gov_hosp',
+            title: 'Government Hospital Technical Staff',
+            desc: 'Focuses on maintenance of medical equipment.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Electrician / Electronics',
+            govt: ['Hospital Maintenance Technician', 'Equipment Technician'],
+            private: ['N/A'],
+            higher: ['Diploma in Biomedical Engineering']
+        }
+    ],
+
+    // After ITI - Private Sector
+    'iti_priv': [
+        {
+            id: 'priv_elec',
+            title: 'Electrician (Private Sector)',
+            desc: 'Focuses on electrical wiring, maintenance, and industrial installations.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Electrician / Wireman',
+            govt: ['N/A'],
+            private: ['Industrial Electrician', 'Maintenance Electrician', 'Site Electrical Technician', 'Control Panel Technician'],
+            higher: ['Advanced PLC / Automation courses']
+        },
+        {
+            id: 'priv_fitt',
+            title: 'Fitter (Private Sector)',
+            desc: 'Focuses on machine assembly, industrial fitting, equipment maintenance.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Fitter',
+            govt: ['N/A'],
+            private: ['Machine Fitter', 'Plant Maintenance Technician', 'Assembly Technician'],
+            higher: ['Advanced CNC courses']
+        },
+        {
+            id: 'priv_weld',
+            title: 'Welder (Private Sector)',
+            desc: 'Focuses on structural welding and fabrication.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Welder',
+            govt: ['N/A'],
+            private: ['MIG/TIG Welder', 'Fabrication Technician', 'Structural Welder'],
+            higher: ['Advanced Welding Certifications']
+        },
+        {
+            id: 'priv_mech',
+            title: 'Mechanic (Motor Vehicle)',
+            desc: 'Focuses on servicing cars, bikes, and commercial vehicles.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Mechanic Motor Vehicle',
+            govt: ['N/A'],
+            private: ['Automobile Technician', 'Service Center Executive', 'Garage Supervisor'],
+            higher: ['Advanced EV Technology']
+        },
+        {
+            id: 'priv_rac',
+            title: 'Refrigeration & AC Technician',
+            desc: 'Focuses on installation and maintenance of AC and refrigeration systems.',
+            duration: 'Direct Job',
+            eligibility: 'ITI RAC',
+            govt: ['N/A'],
+            private: ['HVAC Technician', 'AC Service Engineer', 'Cooling Plant Technician'],
+            higher: ['Advanced HVAC courses']
+        },
+        {
+            id: 'priv_copa',
+            title: 'COPA (Private Sector)',
+            desc: 'Focuses on basic programming, office software, and IT support.',
+            duration: 'Direct Job',
+            eligibility: 'ITI COPA',
+            govt: ['N/A'],
+            private: ['Computer Operator', 'IT Support Executive', 'Data Entry Operator', 'Junior Web Developer'],
+            higher: ['BCA or Advanced Networking']
+        },
+        {
+            id: 'priv_mfg',
+            title: 'Manufacturing & Factory Jobs',
+            desc: 'Automobile Plants, Steel Plants, Cement Factories, FMCG Companies.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Relevant Trade',
+            govt: ['N/A'],
+            private: ['Production Technician', 'Machine Operator', 'Shift Technician'],
+            higher: ['Diploma in Engineering']
+        },
+        {
+            id: 'priv_const',
+            title: 'Construction Industry Jobs',
+            desc: 'Infrastructure projects requiring Electricians, Plumbers, Welders, Masons.',
+            duration: 'Direct Job',
+            eligibility: 'ITI Relevant Trade',
+            govt: ['N/A'],
+            private: ['Site Technician', 'Construction Supervisor'],
+            higher: ['Diploma in Civil/Electrical']
+        },
+        {
+            id: 'priv_self',
+            title: 'Self-Employment (Private Business)',
+            desc: 'Start your own contracting business or shop.',
+            duration: 'Self-Employed',
+            eligibility: 'ITI + Business skills',
+            govt: ['N/A'],
+            private: ['Electrical Contracting', 'AC Repair Shop', 'Welding Workshop', 'Automobile Garage', 'Plumbing Services'],
+            higher: ['Business expansion']
+        }
+    ],
+
     // After Graduation - Postgrad
     'pg': [
         {
