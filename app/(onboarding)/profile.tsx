@@ -1,17 +1,32 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const LEVELS = ['10th', '12th', 'Diploma', 'Other'];
 const STREAMS = ['Science', 'Commerce', 'Arts', 'Vocational'];
-const INTERESTS = ['Technology', 'Sports', 'Business', 'Art', 'Healthcare', 'Engineering'];
+const INTERESTS = ['Technology', 'Sports', 'Business', 'Art', 'Healthcare', 'Engineering', 'Design', 'Marketing', 'Science', 'Law'];
 
 export default function ProfileSetup() {
     const router = useRouter();
     const [level, setLevel] = useState('10th');
     const [stream, setStream] = useState('');
     const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+
+    useEffect(() => {
+        loadExistingData();
+    }, []);
+
+    const loadExistingData = async () => {
+        const data = await AsyncStorage.getItem('userData');
+        if (data) {
+            const parsed = JSON.parse(data);
+            if (parsed.educationLevel) setLevel(parsed.educationLevel);
+            if (parsed.stream) setStream(parsed.stream);
+            if (parsed.interests) setSelectedInterests(parsed.interests);
+        }
+    };
 
     const toggleInterest = (interest: string) => {
         setSelectedInterests(prev =>
@@ -21,9 +36,19 @@ export default function ProfileSetup() {
         );
     };
 
+    const handleContinue = async () => {
+        // Save any changes made here back to userData
+        const data = await AsyncStorage.getItem('userData');
+        let userData = data ? JSON.parse(data) : {};
+        userData = { ...userData, educationLevel: level, stream, interests: selectedInterests };
+        await AsyncStorage.setItem('userData', JSON.stringify(userData));
+        router.push('/(onboarding)/quiz');
+    };
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
-            <Text style={styles.header}>Let's get to know you</Text>
+            <Text style={styles.header}>Let's verify your profile</Text>
+            <Text style={styles.subtextHeader}>We've pre-filled this from your registration. Feel free to adjust.</Text>
 
             <View style={styles.section}>
                 <Text style={styles.label}>Completed Education Level</Text>
@@ -40,22 +65,20 @@ export default function ProfileSetup() {
                 </View>
             </View>
 
-            {level === '12th' && (
-                <View style={styles.section}>
-                    <Text style={styles.label}>Which Stream?</Text>
-                    <View style={styles.row}>
-                        {STREAMS.map(s => (
-                            <TouchableOpacity
-                                key={s}
-                                style={[styles.chip, stream === s && styles.chipActive]}
-                                onPress={() => setStream(s)}
-                            >
-                                <Text style={[styles.chipText, stream === s && styles.chipTextActive]}>{s}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+            <View style={styles.section}>
+                <Text style={styles.label}>Which Stream?</Text>
+                <View style={styles.row}>
+                    {STREAMS.map(s => (
+                        <TouchableOpacity
+                            key={s}
+                            style={[styles.chip, stream === s && styles.chipActive]}
+                            onPress={() => setStream(s)}
+                        >
+                            <Text style={[styles.chipText, stream === s && styles.chipTextActive]}>{s}</Text>
+                        </TouchableOpacity>
+                    ))}
                 </View>
-            )}
+            </View>
 
             <View style={styles.section}>
                 <Text style={styles.label}>What are your interests?</Text>
@@ -78,7 +101,7 @@ export default function ProfileSetup() {
 
             <TouchableOpacity
                 style={styles.primaryBtn}
-                onPress={() => router.push('/(onboarding)/quiz')}
+                onPress={handleContinue}
             >
                 <Text style={styles.btnText}>Continue to Assessment</Text>
                 <ChevronRight color="#fff" size={20} />
@@ -89,7 +112,8 @@ export default function ProfileSetup() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#f8faff', padding: 24, paddingTop: 60 },
-    header: { fontSize: 24, fontWeight: 'bold', color: '#0d47a1', marginBottom: 24 },
+    header: { fontSize: 24, fontWeight: 'bold', color: '#0d47a1', marginBottom: 8 },
+    subtextHeader: { fontSize: 14, color: '#666', marginBottom: 24 },
     section: { marginBottom: 32 },
     label: { fontSize: 16, fontWeight: '600', color: '#333', marginBottom: 12 },
     subtext: { fontSize: 12, color: '#666', marginBottom: 12, marginTop: -8 },

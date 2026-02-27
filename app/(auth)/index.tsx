@@ -1,78 +1,115 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { BookOpen } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { BookOpen, Lock, Mail } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
-// import { supabase } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 export default function AuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => setKeyboardVisible(true)
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => setKeyboardVisible(false)
+        );
+
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
+    }, []);
+
     const router = useRouter();
     const { t } = useLanguage();
 
     async function signInWithEmail() {
-        setLoading(true);
-        setTimeout(async () => {
-            setLoading(false);
-            await AsyncStorage.setItem('mockSession', 'true');
-            router.replace('/(onboarding)');
-        }, 800);
-        /*
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-        setLoading(false);
-
-        // If there is an error but it's not real, we will mock navigation for MVP if needed,
-        // but here we wait for real Auth. If Supabase fails due to wrong keys, let's allow "Guest" login.
-        if (error) {
-            Alert.alert('Sign In Failed', error.message + '\n\nContinuing as Guest for MVP.', [
-                { text: 'OK', onPress: () => router.replace('/(onboarding)') }
-            ]);
-        } else {
-            router.replace('/(onboarding)');
+        if (!email || !password) {
+            Alert.alert('Error', 'Please enter both email and password.');
+            return;
         }
-        */
+
+        setLoading(true);
+        try {
+            // Check the public.users table for the matching email and password
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('email', email.toLowerCase())
+                .eq('password', password)
+                .single();
+
+            if (error || !data) {
+                throw new Error('Invalid email or password');
+            }
+
+            // Success: Save user data and session
+            await AsyncStorage.setItem('mockSession', 'true');
+            await AsyncStorage.setItem('userData', JSON.stringify(data));
+
+            // Redirect based on whether they've been seen before
+            const hasOnboarded = await AsyncStorage.getItem('hasOnboarded');
+            if (hasOnboarded === 'true') {
+                router.replace('/(tabs)');
+            } else {
+                router.replace('/(onboarding)');
+            }
+        } catch (error: any) {
+            Alert.alert('Login Failed', error.message);
+        } finally {
+            setLoading(false);
+        }
     }
 
     async function signUpWithEmail() {
-        router.push('/(auth)/signup');
+        router.push('/signup');
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <BookOpen stroke="#1976d2" size={64} style={{ marginBottom: 20 }} />
-                <Text style={styles.title}>{t('welcome_roadmap')}</Text>
-                <Text style={styles.subtitle}>{t('auth_subtitle')}</Text>
+                <BookOpen stroke="#1976d2" size={60} style={{ marginBottom: 12 }} />
+                <Text style={styles.title}>Pathly</Text>
+                <Text style={styles.subtitle}>Your Career, Verified.</Text>
             </View>
 
             <View style={styles.form}>
-                <TextInput
-                    onChangeText={setEmail}
-                    value={email}
-                    placeholder={t('email')}
-                    placeholderTextColor="#888"
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    style={styles.input}
-                />
-                <TextInput
-                    onChangeText={setPassword}
-                    value={password}
-                    secureTextEntry
-                    placeholder={t('password')}
-                    placeholderTextColor="#888"
-                    style={styles.input}
-                    autoCapitalize="none"
-                />
+                <View style={styles.inputContainer}>
+                    <Mail color="#1976d2" size={20} style={styles.inputIcon} />
+                    <TextInput
+                        onChangeText={setEmail}
+                        value={email}
+                        placeholder={t('email')}
+                        placeholderTextColor="#aaa"
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        style={styles.input}
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Lock color="#1976d2" size={20} style={styles.inputIcon} />
+                    <TextInput
+                        onChangeText={setPassword}
+                        value={password}
+                        secureTextEntry
+                        placeholder={t('password')}
+                        placeholderTextColor="#aaa"
+                        style={styles.input}
+                        autoCapitalize="none"
+                    />
+                </View>
 
                 <TouchableOpacity style={styles.button} onPress={signInWithEmail} disabled={loading}>
-                    <Text style={styles.buttonText}>{loading ? 'Loading...' : t('sign_in')}</Text>
+                    <Text style={styles.buttonText}>{loading ? 'Signing In...' : t('sign_in')}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonOutline} onPress={signUpWithEmail} disabled={loading}>
@@ -83,7 +120,7 @@ export default function AuthScreen() {
                     style={styles.guestButton}
                     onPress={() => router.replace('/(onboarding)')}
                 >
-                    <Text style={styles.guestButtonText}>{t('guest')}</Text>
+                    <Text style={styles.guestButtonText}>Try as Guest</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -93,45 +130,53 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8faff',
-        padding: 24,
+        backgroundColor: '#ffffff',
+        padding: 30,
         justifyContent: 'center',
     },
     header: {
         alignItems: 'center',
-        marginBottom: 40,
+        marginBottom: 32,
     },
     title: {
-        fontSize: 28,
+        fontSize: 32,
         fontWeight: 'bold',
         color: '#0d47a1',
-        textAlign: 'center',
     },
     subtitle: {
         fontSize: 16,
         color: '#1976d2',
-        marginTop: 8,
-        textAlign: 'center',
+        marginTop: 4,
     },
     form: {
         width: '100%',
     },
-    input: {
-        backgroundColor: '#fff',
-        borderColor: '#bbdefb',
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: 16,
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f5f9ff',
+        borderRadius: 12,
         marginBottom: 16,
+        paddingHorizontal: 16,
+        borderWidth: 1,
+        borderColor: '#e1efff',
+    },
+    inputIcon: {
+        marginRight: 10,
+    },
+    input: {
+        flex: 1,
+        paddingVertical: 12,
         fontSize: 16,
         color: '#333',
     },
     button: {
         backgroundColor: '#1976d2',
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 12,
         alignItems: 'center',
         marginBottom: 12,
+        elevation: 2,
     },
     buttonText: {
         color: '#fff',
@@ -143,7 +188,7 @@ const styles = StyleSheet.create({
         borderColor: '#1976d2',
         borderWidth: 1,
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 12,
         alignItems: 'center',
     },
     buttonOutlineText: {
@@ -154,12 +199,11 @@ const styles = StyleSheet.create({
     guestButton: {
         marginTop: 16,
         padding: 12,
-        borderRadius: 8,
         alignItems: 'center',
     },
     guestButtonText: {
-        color: '#444',
-        fontSize: 16,
+        color: '#666',
+        fontSize: 15,
         fontWeight: '500',
     }
 });
