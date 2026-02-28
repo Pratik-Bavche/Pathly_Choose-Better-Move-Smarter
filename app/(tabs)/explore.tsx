@@ -2,6 +2,7 @@ import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { ArrowLeft, BookOpen, Briefcase, Building, ChevronDown, ChevronRight, ChevronUp, GraduationCap, Plane, Rocket, Target, Trophy, Wrench } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import StartWorkingTab from '../../components/StartWorkingTab';
 import { BRANCH_DETAILS } from '../../data/educationDetails';
 
 const QUALIFICATIONS = [
@@ -66,11 +67,9 @@ export default function ExploreScreen() {
   const [expandedBranch, setExpandedBranch] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('All');
 
-  // We check if "category" means the user explicitly clicked "Explore Education Options" from another screen
-  // For context, they will just arrive here. If they want to reset, they hit the back arrow.
   useFocusEffect(
     useCallback(() => {
-      // Reset state when tab is focused, preventing retained states 
+      // Reset education explore state when tab gains focus
       setSelectedQual(null);
       setSelectedPathway(null);
       setExpandedBranch(null);
@@ -291,9 +290,10 @@ export default function ExploreScreen() {
           : selectedQual
             ? renderStep2()
             : renderStep1()
+      ) : categoryParam === 'job' ? (
+        <StartWorkingTab />
       ) : (
         <View style={[styles.stepContainer, { justifyContent: 'center', alignItems: 'center' }]}>
-          {categoryParam === 'job' && <Briefcase color="#ccc" size={60} style={{ marginBottom: 20 }} />}
           {categoryParam === 'skill' && <Wrench color="#ccc" size={60} style={{ marginBottom: 20 }} />}
           {categoryParam === 'business' && <Rocket color="#ccc" size={60} style={{ marginBottom: 20 }} />}
 
