@@ -2,6 +2,7 @@ import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { ArrowLeft, BookOpen, Briefcase, Building, ChevronDown, ChevronRight, ChevronUp, GraduationCap, Plane, Rocket, Target, Trophy, Wrench } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import SkillCoursesTab from '../../components/SkillCoursesTab';
 import StartWorkingTab from '../../components/StartWorkingTab';
 import { BRANCH_DETAILS } from '../../data/educationDetails';
 
@@ -292,11 +293,11 @@ export default function ExploreScreen() {
             : renderStep1()
       ) : categoryParam === 'job' ? (
         <StartWorkingTab />
+      ) : categoryParam === 'skill' ? (
+        <SkillCoursesTab />
       ) : (
         <View style={[styles.stepContainer, { justifyContent: 'center', alignItems: 'center' }]}>
-          {categoryParam === 'skill' && <Wrench color="#ccc" size={60} style={{ marginBottom: 20 }} />}
           {categoryParam === 'business' && <Rocket color="#ccc" size={60} style={{ marginBottom: 20 }} />}
-
           <Text style={[styles.stepTitle, { textAlign: 'center', color: '#888' }]}>
             Coming Soon
           </Text>
