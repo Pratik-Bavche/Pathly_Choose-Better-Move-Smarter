@@ -13,6 +13,8 @@ import {
 } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+    Alert,
+    Linking,
     ScrollView,
     StyleSheet,
     Text,
@@ -300,7 +302,13 @@ export default function StartWorkingTab() {
                                         <JobTypeBadge type={job.jobType} />
                                         <TouchableOpacity
                                             style={[styles.nextStepBtn, { backgroundColor: btnColor }]}
-                                            onPress={() => setSelectedJob(job)}
+                                            onPress={() => {
+                                                if (job.nextStep === 'Apply Now') {
+                                                    handleApply(job);
+                                                } else {
+                                                    setSelectedJob(job);
+                                                }
+                                            }}
                                         >
                                             <Text style={styles.nextStepBtnText}>{job.nextStep}</Text>
                                         </TouchableOpacity>
@@ -313,6 +321,21 @@ export default function StartWorkingTab() {
                 </ScrollView>
             </View>
         );
+    };
+
+    // ── Open Official Portal ──────────────────────────────────────
+    const handleApply = async (job: JobCard) => {
+        const url = job.applyUrl;
+        if (!url) {
+            Alert.alert('Link Unavailable', 'No official link is available for this job right now.');
+            return;
+        }
+        const supported = await Linking.canOpenURL(url);
+        if (supported) {
+            await Linking.openURL(url);
+        } else {
+            Alert.alert('Cannot Open Link', `Unable to open: ${url}`);
+        }
     };
 
     // ── Step 3: Job Detail ────────────────────────────────────────
@@ -397,7 +420,11 @@ export default function StartWorkingTab() {
                     </View>
 
                     {/* CTA Button */}
-                    <TouchableOpacity style={[styles.ctaButton, { backgroundColor: btnColor }]}>
+                    <TouchableOpacity
+                        style={[styles.ctaButton, { backgroundColor: btnColor }]}
+                        onPress={() => handleApply(selectedJob)}
+                        activeOpacity={0.85}
+                    >
                         <Text style={styles.ctaButtonText}>{selectedJob.nextStep} →</Text>
                     </TouchableOpacity>
 
