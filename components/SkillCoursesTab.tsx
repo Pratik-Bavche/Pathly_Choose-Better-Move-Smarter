@@ -7,7 +7,6 @@ import {
     CheckCircle,
     ChevronRight,
     Clock,
-    Filter,
     Globe,
     IndianRupee,
     MapPin,
@@ -15,23 +14,18 @@ import {
 } from "lucide-react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-    Alert,
-    Linking,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
 import {
     QUAL_COURSE_MAP,
     SKILL_CATEGORIES,
-    SKILL_FILTERS,
     SkillCategory,
     SkillCourse,
 } from "../data/skillData";
-import { trackEvent } from "../lib/analytics";
-import { hostnameOf, isSafeExternalUrl } from "../lib/url";
 
 // ── Badge Config ─────────────────────────────────────────────
 const BADGE_STYLE: Record<string, { bg: string; text: string }> = {
@@ -94,7 +88,6 @@ export default function SkillCoursesTab() {
     null,
   );
   const [activeFilter, setActiveFilter] = useState("all");
-  const [showFilters, setShowFilters] = useState(false);
   const [userQual, setUserQual] = useState("");
   const [recommendedCatIds, setRecommendedCatIds] = useState<string[]>([]);
 
@@ -127,7 +120,6 @@ export default function SkillCoursesTab() {
       setSelectedCategory(null);
       setSelectedCourse(null);
       setActiveFilter("all");
-      setShowFilters(false);
     }, []),
   );
 
@@ -279,55 +271,11 @@ export default function SkillCoursesTab() {
           >
             {selectedCategory.title}
           </Text>
-          <TouchableOpacity
-            style={[
-              styles.filterToggle,
-              {
-                backgroundColor: showFilters
-                  ? selectedCategory.accentColor
-                  : "#EEE",
-              },
-            ]}
-            onPress={() => setShowFilters((p) => !p)}
-          >
-            <Filter
-              color={showFilters ? "#fff" : selectedCategory.accentColor}
-              size={16}
-            />
-          </TouchableOpacity>
+          {/* filter removed */}
         </View>
 
         {/* Filter chips */}
-        {showFilters && (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filterRow}
-          >
-            {SKILL_FILTERS.map((f) => (
-              <TouchableOpacity
-                key={f.id}
-                style={[
-                  styles.filterChip,
-                  activeFilter === f.id && {
-                    backgroundColor: selectedCategory.accentColor,
-                    borderColor: selectedCategory.accentColor,
-                  },
-                ]}
-                onPress={() => setActiveFilter(f.id)}
-              >
-                <Text
-                  style={[
-                    styles.filterChipText,
-                    activeFilter === f.id && { color: "#fff" },
-                  ]}
-                >
-                  {f.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        )}
+        {/* filters removed */}
 
         {/* Course Cards */}
         <ScrollView
@@ -530,64 +478,7 @@ export default function SkillCoursesTab() {
             ))}
           </View>
 
-          {/* CTA */}
-          <TouchableOpacity
-            style={[styles.ctaButton, { backgroundColor: accent }]}
-            activeOpacity={0.85}
-            onPress={() => {
-              const url = selectedCourse.applyUrl;
-              if (isSafeExternalUrl(url)) {
-                const host = hostnameOf(url);
-                Alert.alert(
-                  "Leaving CareerPath",
-                  `You are about to open ${host}. Continue to external site?`,
-                  [
-                    { text: "Cancel", style: "cancel" },
-                    {
-                      text: "Continue",
-                      onPress: async () => {
-                        try {
-                          trackEvent("external_redirect", {
-                            type: "course",
-                            id: selectedCourse.id,
-                            url,
-                          });
-                        } catch (_) {}
-                        const supported = await Linking.canOpenURL(
-                          url as string,
-                        );
-                        if (supported) await Linking.openURL(url as string);
-                        else
-                          Alert.alert(
-                            "Cannot Open Link",
-                            `Unable to open: ${url}`,
-                          );
-                      },
-                    },
-                  ],
-                );
-              } else {
-                // No external link – keep user in-app
-                if (selectedCourse.isFree) {
-                  Alert.alert(
-                    "Enroll In-App",
-                    "This free course is available through our in-app flow.",
-                  );
-                } else {
-                  Alert.alert(
-                    "Start Learning",
-                    "Course content is available inside the app or via platform signup.",
-                  );
-                }
-              }
-            }}
-          >
-            <Text style={styles.ctaButtonText}>
-              {selectedCourse.isFree
-                ? "🆓 Enroll for Free →"
-                : "🚀 Start Learning →"}
-            </Text>
-          </TouchableOpacity>
+          {/* CTA removed per request */}
 
           <View style={{ height: 60 }} />
         </ScrollView>
@@ -769,7 +660,16 @@ const styles = StyleSheet.create({
   },
 
   // Filter
-  filterRow: { paddingHorizontal: 16, paddingVertical: 10, gap: 8 },
+  filterRow: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    minHeight: 48,
+    alignItems: "center",
+    // place above surrounding content so chips are not clipped
+    zIndex: 10,
+    elevation: 4,
+    backgroundColor: "#fff",
+  },
   filterChip: {
     paddingHorizontal: 12,
     paddingVertical: 7,

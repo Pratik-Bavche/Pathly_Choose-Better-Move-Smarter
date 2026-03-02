@@ -6,7 +6,6 @@ import {
     CheckCircle,
     ChevronRight,
     ExternalLink,
-    Filter,
     MapPin,
     Star,
     Zap,
@@ -23,9 +22,8 @@ import {
 } from "react-native";
 import {
     JOB_CATEGORIES,
-    JOB_FILTERS,
     JobCard,
-    JobCategory,
+    JobCategory
 } from "../data/jobData";
 import { trackEvent } from "../lib/analytics";
 import { hostnameOf, isSafeExternalUrl } from "../lib/url";
@@ -138,7 +136,6 @@ export default function StartWorkingTab() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [userQual, setUserQual] = useState("12th");
   const [userInterests, setUserInterests] = useState<string[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     loadUserProfile();
@@ -161,7 +158,6 @@ export default function StartWorkingTab() {
       setSelectedCategory(null);
       setSelectedJob(null);
       setActiveFilter("all");
-      setShowFilters(false);
     }, []),
   );
 
@@ -264,42 +260,11 @@ export default function StartWorkingTab() {
           <Text style={styles.backTitle} numberOfLines={1}>
             {selectedCategory.title}
           </Text>
-          <TouchableOpacity
-            style={styles.filterToggle}
-            onPress={() => setShowFilters((p) => !p)}
-          >
-            <Filter color="#1565C0" size={18} />
-          </TouchableOpacity>
+          {/* filter toggle removed */}
         </View>
 
         {/* Filter bar */}
-        {showFilters && (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filterRow}
-          >
-            {JOB_FILTERS.map((f) => (
-              <TouchableOpacity
-                key={f.id}
-                style={[
-                  styles.filterChip,
-                  activeFilter === f.id && styles.filterChipActive,
-                ]}
-                onPress={() => setActiveFilter(f.id)}
-              >
-                <Text
-                  style={[
-                    styles.filterChipText,
-                    activeFilter === f.id && styles.filterChipTextActive,
-                  ]}
-                >
-                  {f.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        )}
+        {/* filters removed */}
 
         {/* Job cards */}
         <ScrollView
@@ -666,7 +631,16 @@ const styles = StyleSheet.create({
   },
 
   // Filter Bar
-  filterRow: { paddingHorizontal: 16, paddingVertical: 10, gap: 8 },
+  filterRow: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    minHeight: 48,
+    alignItems: "center",
+    // ensure the filter row sits above other rows and is visible on small screens
+    zIndex: 10,
+    elevation: 4,
+    backgroundColor: "#fff",
+  },
   filterChip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
