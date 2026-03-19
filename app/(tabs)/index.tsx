@@ -48,7 +48,10 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#fff8e1', borderColor: '#fef3c7', marginBottom: 12 }]}>
+        <TouchableOpacity
+          style={[styles.recCard, { backgroundColor: '#fff8e1', borderColor: '#fef3c7', marginBottom: 12 }]}
+          onPress={() => router.push('/scholarships')}
+        >
           <View style={[styles.recIconWrap, { backgroundColor: '#fef3c7' }]}>
             <Trophy color="#f39c12" size={24} />
           </View>
