@@ -1,575 +1,316 @@
-// Auto-generated short summaries for business ideas listed by the user.
+import expandedIdeasJSON from './businessIdeasExpanded.json';
+
 export interface BusinessIdea {
   id: string;
-  title: string;
-  category: string;
-  shortDesc: string;
-  whyProfit: string;
-  investmentRange: string;
-  mode?: string;
-  suitableFor?: string[];
+  name: string;
+  categoryId: string;
+  description: string;
+  setupBudget: string;
+  setupBudgetCategory: 'Very Low' | 'Low' | 'Medium' | 'High';
+  setupBreakdown: string[];
+  monthlyCost: string;
+  expectedProfit: string;
+  breakEvenTime: string;
+  skillsRequired: string;
+  eligibility: string;
+  manpower: string;
+  mode: 'Offline' | 'Online' | 'Hybrid';
+  marketingTips: string;
+  scalability: string;
+  addons?: {
+    example?: string;
+    youtubeLink?: string;
+    starterKit?: string;
+  };
 }
 
-export const BUSINESS_IDEAS: BusinessIdea[] = [
-  {
-    id: "b1",
-    title: "Home Tiffin Service",
-    category: "Home-Based / Food & Retail",
-    shortDesc:
-      "Prepare and deliver healthy daily home-cooked meals to local subscribers.",
-    whyProfit:
-      "High recurring daily demand with predictable subscriptions and low delivery radius.",
-    investmentRange: "₹40,000 – ₹1,00,000",
-    mode: "Offline/Hybrid",
-    suitableFor: ["Women", "Housewives", "Graduates"],
-  },
-  {
-    id: "b2",
-    title: "Freelance Digital Services Agency",
-    category: "Home-Based / Digital",
-    shortDesc:
-      "Offer remote services (design, social, video, web) to clients worldwide.",
-    whyProfit:
-      "Low overhead, high margins and global client access paying in stronger currencies.",
-    investmentRange: "₹20,000 – ₹60,000",
-    mode: "Online",
-    suitableFor: ["Students", "Graduates"],
-  },
-  {
-    id: "b3",
-    title: "Home-Based Tailoring & Boutique",
-    category: "Home-Based / Creative",
-    shortDesc:
-      "Custom stitching, alterations and small-batch ethnic wear from home.",
-    whyProfit: "High margin on custom garments and strong seasonal demand.",
-    investmentRange: "₹40,000 – ₹1,00,000",
-    mode: "Offline",
-    suitableFor: ["Women", "10th Pass"],
-  },
-  {
-    id: "b4",
-    title: "Custom Home Bakery",
-    category: "Home-Based / Food & Retail",
-    shortDesc:
-      "Bake and sell customized cakes, cupcakes and desserts to local customers.",
-    whyProfit:
-      "Premium pricing for bespoke orders with repeat gifting and celebration demand.",
-    investmentRange: "₹50,000 – ₹1,00,000",
-    mode: "Hybrid",
-    suitableFor: ["Women", "Graduates"],
-  },
-  {
-    id: "b5",
-    title: "Niche YouTube Channel",
-    category: "Home-Based / Digital",
-    shortDesc:
-      "Create focused video content on a micro-niche and monetize via ads and sponsorships.",
-    whyProfit:
-      "Passive, scalable revenue once content library and audience grow.",
-    investmentRange: "₹20,000 – ₹1,00,000",
-    mode: "Online",
-    suitableFor: ["Students", "Graduates", "Rural Entrepreneurs"],
-  },
-  {
-    id: "b6",
-    title: "Resin Art & Customized Gifts",
-    category: "Home-Based / Creative",
-    shortDesc:
-      "Make personalized decor, keychains and jewelry with epoxy resin and sell online.",
-    whyProfit:
-      "Handmade premium pricing and low material costs for high perceived value.",
-    investmentRange: "₹30,000 – ₹1,00,000",
-    mode: "Hybrid",
-    suitableFor: ["Women", "Students"],
-  },
-  {
-    id: "b7",
-    title: "Online & Offline Tuition Classes",
-    category: "Home-Based / Education",
-    shortDesc:
-      "Teach academic subjects or exam coaching to local students or online batches.",
-    whyProfit: "Consistent parent-driven spending and high student retention.",
-    investmentRange: "₹10,000 – ₹50,000",
-    mode: "Hybrid",
-    suitableFor: ["Graduates", "Women"],
-  },
-  {
-    id: "b8",
-    title: "Affiliate Marketing Hub",
-    category: "Home-Based / Digital",
-    shortDesc:
-      "Promote products via blog/socials and earn commissions on sales.",
-    whyProfit:
-      "No inventory and potential for high margins with evergreen content.",
-    investmentRange: "₹10,000 – ₹40,000",
-    mode: "Online",
-    suitableFor: ["Students", "Graduates"],
-  },
-  {
-    id: "b9",
-    title: "Virtual Assistant & Data Entry Agency",
-    category: "Home-Based / Digital",
-    shortDesc:
-      "Offer admin, email, scheduling and data entry services remotely to clients.",
-    whyProfit:
-      "Low setup cost and steady international demand for affordable VAs.",
-    investmentRange: "₹20,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["12th Pass", "Women", "Students"],
-  },
-  {
-    id: "b10",
-    title: "Digital Product Selling (Notes, Templates)",
-    category: "Home-Based / Passive Income",
-    shortDesc:
-      "Create and sell downloadable templates, notes and digital resources.",
-    whyProfit:
-      "Once created, product sells repeatedly with minimal marginal cost.",
-    investmentRange: "₹10,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["Students", "Teachers"],
-  },
-
-  // Women-Friendly ideas
-  {
-    id: "b11",
-    title: "Mehndi (Henna) Art Studio",
-    category: "Women-Friendly / Service",
-    shortDesc: "Provide professional Mehndi designs for brides and festivals.",
-    whyProfit: "High seasonal demand during weddings and festivals.",
-    investmentRange: "₹10,000 – ₹30,000",
-    mode: "Offline",
-    suitableFor: ["Women", "10th/12th Pass"],
-  },
-  {
-    id: "b12",
-    title: "Home Beauty Parlour & Salon",
-    category: "Women-Friendly / Service",
-    shortDesc:
-      "Offer threading, waxing, facials and makeup services from home.",
-    whyProfit: "High repeat customers and service margins.",
-    investmentRange: "₹50,000 – ₹1,50,000",
-    mode: "Offline",
-    suitableFor: ["Women"],
-  },
-  {
-    id: "b13",
-    title: "Organic Handmade Soap Manufacturing",
-    category: "Women-Friendly / Manufacturing",
-    shortDesc: "Make and sell natural soap bars and skincare products.",
-    whyProfit:
-      "Growing demand for clean-label personal care with good margins.",
-    investmentRange: "₹20,000 – ₹80,000",
-    mode: "Hybrid",
-    suitableFor: ["Women"],
-  },
-  {
-    id: "b14",
-    title: "Imitation & Handmade Jewelry Business",
-    category: "Women-Friendly / Retail",
-    shortDesc: "Source or craft trendy jewelry and sell via socials.",
-    whyProfit: "High markup and easy shipping across India.",
-    investmentRange: "₹20,000 – ₹80,000",
-    mode: "Online/Hybrid",
-    suitableFor: ["Women", "Students"],
-  },
-  {
-    id: "b15",
-    title: "Online Cooking & Baking Classes",
-    category: "Women-Friendly / Education",
-    shortDesc:
-      "Conduct live or recorded culinary workshops for hobbyists and home bakers.",
-    whyProfit: "Scalable to many students with low incremental cost.",
-    investmentRange: "₹10,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["Women", "Housewives"],
-  },
-  {
-    id: "b16",
-    title: "Child Daycare & Creche Center",
-    category: "Women-Friendly / Care Service",
-    shortDesc: "Provide supervised daycare for toddlers during work hours.",
-    whyProfit: "Recurring monthly fees with strong local demand.",
-    investmentRange: "₹50,000 – ₹1,50,000",
-    mode: "Offline",
-    suitableFor: ["Women"],
-  },
-  {
-    id: "b17",
-    title: "Saree & Ethnic Wear Reselling",
-    category: "Women-Friendly / Retail",
-    shortDesc: "Buy wholesale sarees and resell via WhatsApp/Instagram.",
-    whyProfit: "High apparel markup and repeat festival sales.",
-    investmentRange: "₹20,000 – ₹50,000",
-    mode: "Offline/Hybrid",
-    suitableFor: ["Housewives"],
-  },
-  {
-    id: "b18",
-    title: "Traditional Pickle & Papad Making",
-    category: "Women-Friendly / Food Manufacturing",
-    shortDesc:
-      "Produce regional pickles and papads for retail and kirana stores.",
-    whyProfit: "Low raw costs with strong local demand and gift sales.",
-    investmentRange: "₹10,000 – ₹40,000",
-    mode: "Offline",
-    suitableFor: ["Rural Women", "Housewives"],
-  },
-  {
-    id: "b19",
-    title: "Trousseau Packing & Gift Wrapping Service",
-    category: "Women-Friendly / Creative",
-    shortDesc: "Design and pack wedding trousseaus and festive hampers.",
-    whyProfit:
-      "High value addition for low material cost during wedding season.",
-    investmentRange: "₹10,000 – ₹30,000",
-    mode: "Offline",
-    suitableFor: ["Creative Women"],
-  },
-  {
-    id: "b20",
-    title: "Yoga & Aerobics Instructor (Women Only Batches)",
-    category: "Women-Friendly / Health & Wellness",
-    shortDesc: "Run women-only fitness and yoga classes locally or online.",
-    whyProfit: "Low equipment cost and strong recurring subscriptions.",
-    investmentRange: "₹5,000 – ₹20,000",
-    mode: "Offline/Online",
-    suitableFor: ["Women"],
-  },
-
-  // Rural High-Profit ideas (short summaries)
-  {
-    id: "b21",
-    title: "Commercial Mushroom Farming",
-    category: "Rural High-Profit / Agriculture",
-    shortDesc:
-      "Grow high-value mushrooms (oyster/button) for local and urban markets.",
-    whyProfit: "High per-area yield and strong urban demand.",
-    investmentRange: "₹50,000 – ₹2,00,000",
-    mode: "Offline",
-    suitableFor: ["Rural Youth"],
-  },
-  {
-    id: "b22",
-    title: "Goat Farming (Stall-Fed Model)",
-    category: "Rural High-Profit / Livestock",
-    shortDesc: "Raise goats in a stall-fed system for meat and breeding.",
-    whyProfit: "Quick turnarounds and good local meat prices.",
-    investmentRange: "₹50,000 – ₹2,00,000",
-    mode: "Offline",
-    suitableFor: ["Farmers"],
-  },
-  {
-    id: "b23",
-    title: "Dairy Farm & Milk Collection Center",
-    category: "Rural High-Profit / Dairy",
-    shortDesc:
-      "Operate a small dairy and collect milk from farmers to sell to cooperatives.",
-    whyProfit: "Daily recurring revenue and government support schemes.",
-    investmentRange: "₹1,00,000 – ₹5,00,000",
-    mode: "Offline",
-    suitableFor: ["Rural Entrepreneurs"],
-  },
-  {
-    id: "b24",
-    title: "Agri Equipment & Tractor Rental",
-    category: "Rural High-Profit / Services",
-    shortDesc:
-      "Rent tractors and implements to smallholder farmers by the hour/day.",
-    whyProfit: "High utilization and essential service in farm season.",
-    investmentRange: "₹2,00,000 – ₹10,00,000",
-    mode: "Offline",
-    suitableFor: ["Entrepreneurs", "Tractor Owners"],
-  },
-  {
-    id: "b25",
-    title: "Poultry Farming (Broiler/Layer)",
-    category: "Rural High-Profit / Livestock",
-    shortDesc: "Run broiler or layer units for meat and egg production.",
-    whyProfit:
-      "Steady demand for eggs and chicken with short production cycles.",
-    investmentRange: "₹1,00,000 – ₹5,00,000",
-    mode: "Offline",
-    suitableFor: ["Farmers"],
-  },
-  {
-    id: "b26",
-    title: "Organic Vegetable Farming & Direct Selling",
-    category: "Rural High-Profit / Farming",
-    shortDesc:
-      "Grow organic vegetables and sell direct to consumers or restaurants.",
-    whyProfit: "Premium pricing for organic produce and direct margins.",
-    investmentRange: "₹50,000 – ₹2,00,000",
-    mode: "Offline",
-    suitableFor: ["Farmers"],
-  },
-  {
-    id: "b27",
-    title: "Rural Solar Installation Services",
-    category: "Rural High-Profit / Energy",
-    shortDesc:
-      "Install small solar rooftop and pump systems for farms and houses.",
-    whyProfit: "Government subsidies and growing rural electrification demand.",
-    investmentRange: "₹1,50,000 – ₹5,00,000",
-    mode: "Offline",
-    suitableFor: ["ITI Holders", "Electricians"],
-  },
-  {
-    id: "b28",
-    title: "Fly Ash Brick & Cement Block Manufacturing",
-    category: "Rural High-Profit / Manufacturing",
-    shortDesc:
-      "Produce low-cost bricks and blocks using fly ash for local builders.",
-    whyProfit:
-      "High local construction demand and lower raw cost using waste fly ash.",
-    investmentRange: "₹2,00,000 – ₹8,00,000",
-    mode: "Offline",
-    suitableFor: ["Small Manufacturers"],
-  },
-
-  // Ultra High-Income businesses (short)
-  {
-    id: "b29",
-    title: "Full-Scale Digital Marketing & Ad Agency",
-    category: "Ultra High-Income / Digital",
-    shortDesc:
-      "Provide end-to-end marketing, paid ads and creative services to large clients.",
-    whyProfit: "Large retainers and recurring ad-management fees.",
-    investmentRange: "₹5,00,000 – ₹20,00,000",
-    mode: "Online/Offline",
-    suitableFor: ["Experienced Marketers"],
-  },
-  {
-    id: "b30",
-    title: "Private Label E-Commerce Brand (D2C)",
-    category: "Ultra High-Income / E-Commerce",
-    shortDesc:
-      "Manufacture or source products and sell under your own brand online.",
-    whyProfit: "High margins and brand value if product-market fit is found.",
-    investmentRange: "₹5,00,000 – ₹50,00,000",
-    mode: "Online",
-    suitableFor: ["Entrepreneurs"],
-  },
-  {
-    id: "b31",
-    title: "FMCG / Packaging Manufacturing Unit",
-    category: "Ultra High-Income / Manufacturing",
-    shortDesc:
-      "Produce fast-moving consumer goods or packaging for local brands.",
-    whyProfit: "Large volume sales and B2B contracts.",
-    investmentRange: "₹10,00,000 – ₹1,00,00,000",
-    mode: "Offline",
-    suitableFor: ["Manufacturers"],
-  },
-  {
-    id: "b32",
-    title: "Solar EPC Company (Full Setup)",
-    category: "Ultra High-Income / Energy",
-    shortDesc:
-      "Design, procure and construct large solar projects for commercial clients.",
-    whyProfit:
-      "High-ticket projects and government tenders with long-term margins.",
-    investmentRange: "₹20,00,000 – ₹2,00,00,000",
-    mode: "Offline",
-    suitableFor: ["Engineers", "Contractors"],
-  },
-  {
-    id: "b33",
-    title: "Civil Construction Contracting Firm",
-    category: "Ultra High-Income / Construction",
-    shortDesc: "Bid for and execute building and infrastructure contracts.",
-    whyProfit: "Large project revenues and subcontracting opportunities.",
-    investmentRange: "₹10,00,000 – ₹1,00,00,000",
-    mode: "Offline",
-    suitableFor: ["Contractors"],
-  },
-  {
-    id: "b34",
-    title: "Multi-Outlet Cloud Kitchen Brand",
-    category: "Ultra High-Income / F&B",
-    shortDesc: "Run a multi-brand cloud kitchen network across delivery zones.",
-    whyProfit: "Scale via shared kitchens and heavy delivery demand in cities.",
-    investmentRange: "₹10,00,000 – ₹50,00,000",
-    mode: "Offline/Online",
-    suitableFor: ["F&B Entrepreneurs"],
-  },
-  {
-    id: "b35",
-    title: "Premium Real Estate Brokerage Firm",
-    category: "Ultra High-Income / Real Estate",
-    shortDesc: "Focus on high-value property sales and premium clients.",
-    whyProfit:
-      "High single-transaction commissions and repeat wealthy clients.",
-    investmentRange: "₹5,00,000 – ₹20,00,000",
-    mode: "Offline",
-    suitableFor: ["Experienced Agents"],
-  },
-
-  // Passive Income businesses (short)
-  {
-    id: "b36",
-    title: "Automated YouTube Cash Cow Channel",
-    category: "Passive Income / Digital",
-    shortDesc: "Create voiceover-driven channels that monetize via ads.",
-    whyProfit: "Low upkeep after content library grows; ad revenue scales.",
-    investmentRange: "₹50,000 – ₹3,00,000",
-    mode: "Online",
-    suitableFor: ["Content Entrepreneurs"],
-  },
-  {
-    id: "b37",
-    title: "Niche Blogging & Affiliate Website",
-    category: "Passive Income / Digital",
-    shortDesc: "Run a niche blog monetized with affiliate links and ads.",
-    whyProfit: "Evergreen content yields recurring affiliate payouts.",
-    investmentRange: "₹10,000 – ₹1,00,000",
-    mode: "Online",
-    suitableFor: ["Writers"],
-  },
-  {
-    id: "b38",
-    title: "Automated Online Course Platform",
-    category: "Passive Income / Education",
-    shortDesc: "Host evergreen courses and sell enrollments automatically.",
-    whyProfit: "High gross margins and scalable to many students.",
-    investmentRange: "₹50,000 – ₹5,00,000",
-    mode: "Online",
-    suitableFor: ["Experts", "Trainers"],
-  },
-  {
-    id: "b39",
-    title: "Digital E-book & Resource Selling",
-    category: "Passive Income / Digital",
-    shortDesc: "Write and sell e-books and guides on specialized topics.",
-    whyProfit: "One-time creation with repeated sales and passive revenue.",
-    investmentRange: "₹5,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["Authors"],
-  },
-  {
-    id: "b40",
-    title: "Print-on-Demand E-commerce Store",
-    category: "Passive Income / E-Commerce",
-    shortDesc: "Sell custom-printed merchandise without holding inventory.",
-    whyProfit: "No inventory risk and global reach via POD providers.",
-    investmentRange: "₹10,000 – ₹1,00,000",
-    mode: "Online",
-    suitableFor: ["Designers"],
-  },
-  {
-    id: "b41",
-    title: "Utility Mobile App Development & Ads",
-    category: "Passive Income / Tech",
-    shortDesc:
-      "Build a small utility app and monetize with ads or subscriptions.",
-    whyProfit: "Recurring ad/subscription revenue if app finds users.",
-    investmentRange: "₹50,000 – ₹5,00,000",
-    mode: "Online",
-    suitableFor: ["Developers"],
-  },
-  {
-    id: "b42",
-    title: "Heavy Equipment & Property Rental",
-    category: "Passive Income / Rentals",
-    shortDesc:
-      "Own rental assets (excavators, tractors, property) leased to businesses.",
-    whyProfit: "High ticket rentals with low management overhead after setup.",
-    investmentRange: "₹5,00,000 – ₹50,00,000",
-    mode: "Offline",
-    suitableFor: ["Investors"],
-  },
-  {
-    id: "b43",
-    title: "Bank ATM Franchise Placement",
-    category: "Passive Income / Finance",
-    shortDesc: "Place ATMs at charged locations and earn per-transaction fees.",
-    whyProfit:
-      "Steady passive income from transactions and cash handling fees.",
-    investmentRange: "₹2,00,000 – ₹10,00,000",
-    mode: "Offline",
-    suitableFor: ["Business Owners"],
-  },
-  {
-    id: "b44",
-    title: "Smart Vending Machine Network",
-    category: "Passive Income / Retail",
-    shortDesc:
-      "Deploy vending machines across high-traffic areas and restock periodically.",
-    whyProfit: "Automated sales with minimal staffing.",
-    investmentRange: "₹2,00,000 – ₹10,00,000",
-    mode: "Offline",
-    suitableFor: ["Entrepreneurs"],
-  },
-  {
-    id: "b45",
-    title: "Long-Term Stock Market & Index SIPs",
-    category: "Passive Income / Finance",
-    shortDesc:
-      "Invest systematically in index funds and blue-chip stocks for long-term compounding.",
-    whyProfit: "Proven long-term wealth creation with low ongoing effort.",
-    investmentRange: "Variable",
-    mode: "Online",
-    suitableFor: ["Investors"],
-  },
-
-  // Digital & Online Services (short)
-  {
-    id: "b46",
-    title: "WhatsApp Marketing Agency",
-    category: "Digital / Services",
-    shortDesc:
-      "Build targeted WhatsApp campaigns and broadcast funnels for SMBs.",
-    whyProfit: "Direct ROI-driven channel with high open rates.",
-    investmentRange: "₹20,000 – ₹1,00,000",
-    mode: "Online",
-    suitableFor: ["Marketers"],
-  },
-  {
-    id: "b47",
-    title: "Local Business Website Builder",
-    category: "Digital / Services",
-    shortDesc: "Create affordable websites for local shops and professionals.",
-    whyProfit: "High demand for basic online presence with low delivery cost.",
-    investmentRange: "₹10,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["Developers"],
-  },
-  {
-    id: "b48",
-    title: "Shopify Store Setup Service",
-    category: "Digital / E-Commerce",
-    shortDesc: "Launch and configure Shopify stores for merchants.",
-    whyProfit:
-      "Recurring setup and customization fees plus app-install margins.",
-    investmentRange: "₹10,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["E-commerce Experts"],
-  },
-  {
-    id: "b49",
-    title: "Online Assignment & Project Help Service",
-    category: "Digital / Education",
-    shortDesc: "Help students with assignments, projects and coding tasks.",
-    whyProfit: "High demand and per-assignment billing.",
-    investmentRange: "₹5,000 – ₹30,000",
-    mode: "Online",
-    suitableFor: ["Students", "Graduates"],
-  },
-  {
-    id: "b50",
-    title: "Email Marketing Setup Service",
-    category: "Digital / Marketing",
-    shortDesc:
-      "Onboard clients to email platforms and build automated funnels.",
-    whyProfit: "High ROI channel clients will pay for setup and templates.",
-    investmentRange: "₹10,000 – ₹50,000",
-    mode: "Online",
-    suitableFor: ["Marketers"],
-  },
-
-  // (Many more ideas follow in the same short-summary format.)
-  // To avoid an extremely large file in a single commit, I generated the first 50 short summaries here.
-  // I can append the remaining 200+ entries in subsequent batches immediately if you confirm.
+export const BUSINESS_CATEGORIES = [
+  { id: 'local', title: '🔧 Local Services', desc: 'Repair, tailoring, beauty, tiffin' },
+  { id: 'digital', title: '🧑💻 Digital / Online', desc: 'Freelancing, reselling, YouTube' },
+  { id: 'creative', title: '🧵 Creative / Handmade', desc: 'Resin art, jewelry, crafts, gifts' },
+  { id: 'retail', title: '🛍️ Retail / Shops', desc: 'Stationery, tea stall, mobile acc' },
+  { id: 'agri', title: '🚜 Rural / Agri Businesses', desc: 'Dairy, poultry, mushroom farming' },
+  { id: 'franchise', title: '📦 Franchise / Reseller', desc: 'Mobile recharge, delivery partner' },
+  { id: 'food', title: '🍔 Food & Beverage', desc: 'Cloud kitchens, food trucks, cafes' },
+  { id: 'health', title: '💆 Health & Wellness', desc: 'Yoga, physio, salon, mental health' },
+  { id: 'education', title: '🎓 Education & Training', desc: 'Coaching, bootcamps, tutoring' },
 ];
 
-export default BUSINESS_IDEAS;
+const expandedIdeas: BusinessIdea[] = expandedIdeasJSON.map((item: any) => {
+  let cid = 'local';
+  const rawCategory = (item.category || '').toLowerCase();
+  
+  if (rawCategory.includes('digital') || rawCategory.includes('online')) cid = 'digital';
+  else if (rawCategory.includes('creative') || rawCategory.includes('handmade')) cid = 'creative';
+  else if (rawCategory.includes('retail') || rawCategory.includes('shop')) cid = 'retail';
+  else if (rawCategory.includes('rural') || rawCategory.includes('agri') || rawCategory.includes('agriculture')) cid = 'agri';
+  else if (rawCategory.includes('franchise') || rawCategory.includes('reseller') || rawCategory.includes('dealership')) cid = 'franchise';
+  else if (rawCategory.includes('food') || rawCategory.includes('beverage')) cid = 'food';
+  else if (rawCategory.includes('health') || rawCategory.includes('wellness')) cid = 'health';
+  else if (rawCategory.includes('education') || rawCategory.includes('training')) cid = 'education';
+
+  let resolvedMode: 'Offline' | 'Online' | 'Hybrid' = 'Hybrid';
+  const rawMode = (item.businessMode || '').toLowerCase();
+  if (rawMode.includes('online') || rawMode.includes('home')) resolvedMode = 'Online';
+  if (rawMode.includes('offline')) resolvedMode = 'Offline';
+
+  return {
+    id: `expanded_${item.id}`,
+    name: item.name,
+    categoryId: cid,
+    description: item.description,
+    setupBudget: item.initialInvestment,
+    setupBudgetCategory: item.investmentCategory as 'Very Low' | 'Low' | 'Medium' | 'High',
+    setupBreakdown: item.toolsNeeded ? [`Tools/Equipment needed: ${item.toolsNeeded}`] : [],
+    monthlyCost: item.monthlyExpenses,
+    expectedProfit: item.expectedMonthlyProfit,
+    breakEvenTime: item.breakEvenTime,
+    skillsRequired: item.requiredSkills,
+    eligibility: item.eligibility,
+    manpower: item.manpowerRequired,
+    mode: resolvedMode,
+    marketingTips: item.marketingMethods,
+    scalability: item.growthPotential,
+  };
+});
+
+export const BUSINESS_IDEAS: BusinessIdea[] = [
+  ...expandedIdeas,
+  // Local Services
+  {
+    id: 'tiffin_service',
+    name: 'Home-based Tiffin/Cloud Kitchen',
+    categoryId: 'local',
+    description: 'Providing home-cooked meals to students, bachelors, and working professionals in the area.',
+    setupBudget: '₹5,000 - ₹15,000',
+    setupBudgetCategory: 'Very Low',
+    setupBreakdown: ['Utensils & packaging: ₹3,000', 'Initial groceries: ₹2,000', 'FSSAI Basic Reg: ₹100', 'Gas/Equipment: ₹5,000'],
+    monthlyCost: '₹10,000 - ₹15,000 (Gas, Groceries, Packaging)',
+    expectedProfit: '₹15,000 - ₹30,000 / month',
+    breakEvenTime: '1-2 months',
+    skillsRequired: 'Good cooking skills, basic hygiene, time management.',
+    eligibility: 'No formal qualification. Basic FSSAI registration recommended.',
+    manpower: 'Solo or 1 Helper',
+    mode: 'Hybrid',
+    marketingTips: 'WhatsApp groups of nearby PGs, distributing flyers outside colleges/offices, Justdial listing.',
+    scalability: 'Can scale to a premium cloud kitchen, catering service, or a proper cafe.',
+    addons: {
+      example: 'Start with just 10 fixed customers paying ₹2,500/month to ensure guaranteed income.',
+      starterKit: 'Bulk food delivery containers and thermal bags.',
+    }
+  },
+  {
+    id: 'mobile_laptop_repair',
+    name: 'Mobile & Laptop Repair Service',
+    categoryId: 'local',
+    description: 'Diagnosing and repairing hardware and software issues for smartphones and laptops.',
+    setupBudget: '₹10,000 - ₹25,000',
+    setupBudgetCategory: 'Low',
+    setupBreakdown: ['Repair toolkit & soldering: ₹5,000', 'Spare parts stock: ₹10,000', 'Workspace setup: ₹5,000'],
+    monthlyCost: '₹3,000 - ₹5,000 (Parts, electricity)',
+    expectedProfit: '₹20,000 - ₹50,000 / month',
+    breakEvenTime: '2-3 months',
+    skillsRequired: 'Technical repair skills.',
+    eligibility: 'Short-term certificate course (Diploma/ITI or Private Institute).',
+    manpower: 'Solo',
+    mode: 'Offline',
+    marketingTips: 'Local SEO, tie-ups with mobile accessory shops, distributing flyers locally.',
+    scalability: 'Open a full tech-store, offer second-hand device sales.',
+  },
+  {
+    id: 'tailoring_boutique',
+    name: 'Tailoring & Alteration Boutique',
+    categoryId: 'local',
+    description: 'Stitching clothes, offering alteration services, and custom dress designing.',
+    setupBudget: '₹8,000 - ₹20,000',
+    setupBudgetCategory: 'Very Low',
+    setupBreakdown: ['Sewing machine: ₹5,000-₹10,000', 'Threads, needles, tools: ₹2,000', 'Basic raw materials: ₹3,000'],
+    monthlyCost: '₹2,000 (Electricity, minor supplies)',
+    expectedProfit: '₹15,000 - ₹25,000 / month',
+    breakEvenTime: '1-3 months',
+    skillsRequired: 'Sewing, cutting, measurement, design sense.',
+    eligibility: 'No strict requirement. A tailoring course certificate helps.',
+    manpower: 'Solo initially, later 1-2 helpers',
+    mode: 'Offline',
+    marketingTips: 'Word of mouth, tie up with local cloth merchants, WhatsApp catalog.',
+    scalability: 'Expand into a specialized designer boutique or school uniform mass-production.',
+  },
+  
+  // Digital / Online
+  {
+    id: 'freelance_content',
+    name: 'Freelance Content & Copywriting',
+    categoryId: 'digital',
+    description: 'Writing blogs, social media posts, website content, and sales copy for clients globally.',
+    setupBudget: '₹0 - ₹2,000',
+    setupBudgetCategory: 'Very Low',
+    setupBreakdown: ['Existing Laptop/PC: ₹0', 'Internet Content: ₹500/mo', 'Domain (optional): ₹1000'],
+    monthlyCost: '₹500 - ₹1,000 (Internet)',
+    expectedProfit: '₹15,000 - ₹50,000+ / month',
+    breakEvenTime: 'Immediate',
+    skillsRequired: 'Good English/Regional language writing, basic SEO research.',
+    eligibility: 'Anyone (Students especially 12th/Graduation pass).',
+    manpower: 'Solo',
+    mode: 'Online',
+    marketingTips: 'Fiverr, Upwork, Cold messaging on LinkedIn, joining Facebook writing groups.',
+    scalability: 'Start a Content Marketing Agency and hire other writers.',
+    addons: {
+      youtubeLink: 'Search "Freelance Copywriting for beginners" on YouTube.',
+    }
+  },
+  {
+    id: 'youtube_creator',
+    name: 'YouTube Channel & Vlogging',
+    categoryId: 'digital',
+    description: 'Creating educational, entertainment, or review videos and earning via Ads, Sponsorships, and Affiliates.',
+    setupBudget: '₹2,000 - ₹10,000',
+    setupBudgetCategory: 'Very Low',
+    setupBreakdown: ['Phone/Camera Tripod: ₹1,000', 'Basic Mic (e.g., Boya M1): ₹800', 'Lighting (Ring light): ₹1,000'],
+    monthlyCost: 'Internet costs only initially',
+    expectedProfit: 'Variable (₹0 initially, up to ₹1L+ / month later)',
+    breakEvenTime: '6-12 months',
+    skillsRequired: 'Communication, basic video editing, storytelling, consistency.',
+    eligibility: 'No qualification needed.',
+    manpower: 'Solo',
+    mode: 'Online',
+    marketingTips: 'Consistent posting, engaging thumbnails, YouTube Shorts to gain quick subscribers.',
+    scalability: 'Build out courses, merchandise, and a media company.',
+  },
+
+  // Creative / Handmade
+  {
+    id: 'custom_gifts',
+    name: 'Customized Gifts & Resin Art',
+    categoryId: 'creative',
+    description: 'Creating personalized gifts like resin keychains, frames, customized mugs, and greeting cards.',
+    setupBudget: '₹5,000 - ₹15,000',
+    setupBudgetCategory: 'Low',
+    setupBreakdown: ['Resin kit & molds: ₹3,000', 'Craft supplies & packaging: ₹2,000', 'Sublimation printer (optional): ₹10,000'],
+    monthlyCost: '₹3,000 - ₹6,000 (Restocking raw materials)',
+    expectedProfit: '₹10,000 - ₹30,000 / month',
+    breakEvenTime: '2-3 months',
+    skillsRequired: 'Creativity, basic craft skills, attention to detail.',
+    eligibility: 'Anyone.',
+    manpower: 'Solo',
+    mode: 'Hybrid',
+    marketingTips: 'Instagram Reels showing the making process, WhatsApp Status, college events/stalls.',
+    scalability: 'Set up an e-commerce website, sell pan-India through shipping partners.',
+  },
+  
+  // Retail / Shops
+  {
+    id: 'tea_snacks_stall',
+    name: 'Modern Tea & Snacks Stall',
+    categoryId: 'retail',
+    description: 'A hygienic, aesthetic stall serving varieties of tea, coffee, Maggi, and quick snacks.',
+    setupBudget: '₹20,000 - ₹50,000',
+    setupBudgetCategory: 'Medium',
+    setupBreakdown: ['Stall/Cart setup: ₹15,000', 'Utensils & stove: ₹5,000', 'Initial Stock (Tea, sugar, snacks): ₹5,000', 'License/Permits: ₹2,000'],
+    monthlyCost: '₹10,000 - ₹20,000 (Raw materials, space rent)',
+    expectedProfit: '₹25,000 - ₹60,000 / month',
+    breakEvenTime: '2-4 months',
+    skillsRequired: 'Making good tea/snacks, customer service.',
+    eligibility: 'FSSAI License.',
+    manpower: '1-2 persons',
+    mode: 'Offline',
+    marketingTips: 'Location is marketing! Set up near colleges, IT parks, or busy markets. Maintain high hygiene.',
+    scalability: 'Expand to multiple carts or a proper cafe franchise.',
+  },
+  {
+    id: 'mobile_acc_shop',
+    name: 'Mobile Accessories & Recharge Shop',
+    categoryId: 'retail',
+    description: 'Selling screen guards, covers, earphones, chargers, and providing mobile recharges.',
+    setupBudget: '₹30,000 - ₹60,000',
+    setupBudgetCategory: 'Medium',
+    setupBreakdown: ['Initial Inventory (Covers, glasses, etc): ₹25,000', 'Shop deposit/rent advance: ₹20,000', 'Display boards: ₹5,000'],
+    monthlyCost: '₹10,000 - ₹15,000 (Rent, electricity, restocking)',
+    expectedProfit: '₹20,000 - ₹45,000 / month',
+    breakEvenTime: '3-6 months',
+    skillsRequired: 'Sales skills, ability to apply screen protectors.',
+    eligibility: 'Anyone.',
+    manpower: 'Solo',
+    mode: 'Offline',
+    marketingTips: 'Offer combo deals (Screen guard + Cover), attractive lighting for the shop.',
+    scalability: 'Add second-hand mobile sales and electronic gadgets.',
+  },
+
+  // Rural / Agri
+  {
+    id: 'poultry_farming',
+    name: 'Small-scale Poultry Farming',
+    categoryId: 'agri',
+    description: 'Raising chickens for eggs (layers) or meat (broilers).',
+    setupBudget: '₹50,000 - ₹1,00,000',
+    setupBudgetCategory: 'Medium',
+    setupBreakdown: ['Shed construction (bamboo/cheap materials): ₹20,000', 'Chicks (500 birds): ₹15,000', 'Feed & Medicine: ₹20,000', 'Equipments: ₹5,000'],
+    monthlyCost: '₹10,000 - ₹25,000 (Feed and vaccines)',
+    expectedProfit: '₹20,000 - ₹40,000 / batch (mostly 45 days for broilers)',
+    breakEvenTime: '3-5 months',
+    skillsRequired: 'Knowledge of bird health, temperature management.',
+    eligibility: 'Training from KVK (Krishi Vigyan Kendra) highly recommended.',
+    manpower: '1-2 persons',
+    mode: 'Offline',
+    marketingTips: 'Direct tie-up with local butchers, restaurants/dhabas, and wholesale egg markets.',
+    scalability: 'Expand shed size, start own retail outlet for fresh meat.',
+    addons: {
+      starterKit: 'Brooder, feeders, waterers, and initial vaccine kit.',
+    }
+  },
+  {
+    id: 'mushroom_farming',
+    name: 'Mushroom Cultivation',
+    categoryId: 'agri',
+    description: 'Growing high-demand mushrooms like Oyster or Button mushrooms in customized dark rooms.',
+    setupBudget: '₹15,000 - ₹30,000',
+    setupBudgetCategory: 'Low',
+    setupBreakdown: ['Spawn (seeds): ₹2,000', 'Straw/Substrate: ₹3,000', 'Polythene bags & chemicals: ₹2,000', 'Room temp setup (fans/foggers): ₹10,000'],
+    monthlyCost: '₹5,000 (Recurring spawn & straw)',
+    expectedProfit: '₹15,000 - ₹35,000 / month',
+    breakEvenTime: '2-3 months',
+    skillsRequired: 'Technical knowledge of humidity, temperature, and hygiene maintenance.',
+    eligibility: 'Short training course on Mushroom Cultivation.',
+    manpower: 'Solo or 1 Helper',
+    mode: 'Offline',
+    marketingTips: 'Sell directly to supermarkets, local vegetable vendors, and hotels.',
+    scalability: 'Move to AC rooms for year-round premium button mushroom production.',
+  },
+
+  // Franchise / Reseller
+  {
+    id: 'insurance_posp',
+    name: 'Insurance POSP (Point of Sales Person)',
+    categoryId: 'franchise',
+    description: 'Selling basic insurance products (health, motor, term life) on behalf of companies.',
+    setupBudget: '₹0 - ₹1,000',
+    setupBudgetCategory: 'Very Low',
+    setupBreakdown: ['Registration/Training fee: ₹0-₹500', 'Smartphone/Internet: ₹0'],
+    monthlyCost: '₹500 (Travel/Internet)',
+    expectedProfit: '₹10,000 - ₹50,000+ / month (Commission based)',
+    breakEvenTime: 'Immediate',
+    skillsRequired: 'Networking, explaining terms clearly, relationship building.',
+    eligibility: '10th Pass minimum, IRDAI Basic POSP Certification (usually online and 15 hours).',
+    manpower: 'Solo',
+    mode: 'Hybrid',
+    marketingTips: 'Start with family and friends, organize small free "health awareness" camps.',
+    scalability: 'Build a massive client base, passive renewal income.',
+  },
+  {
+    id: 'common_service_center',
+    name: 'CSC / Jan Seva Kendra',
+    categoryId: 'franchise',
+    description: 'Providing PAN card, Aadhaar prints, bills payment, and govt scheme forms filing services.',
+    setupBudget: '₹30,000 - ₹50,000',
+    setupBudgetCategory: 'Medium',
+    setupBreakdown: ['PC/Laptop: ₹20,000', 'Printer & Scanner: ₹10,000', 'Lamination machine & Setup: ₹5,000', 'CSC ID Registration: ₹1,500'],
+    monthlyCost: '₹3,000 - ₹6,000 (Internet, paper, shop rent if any)',
+    expectedProfit: '₹15,000 - ₹35,000 / month',
+    breakEvenTime: '3-6 months',
+    skillsRequired: 'Basic computer operation, form filling accuracy.',
+    eligibility: '10th Pass, TEC Certification (Telecentre Entrepreneur Course).',
+    manpower: 'Solo',
+    mode: 'Offline',
+    marketingTips: 'Clear signboard, tie-ups with local cyber cafes or stationary spots without these facilities.',
+    scalability: 'Add banking correspondent services, train ticketing (IRCTC), insurance sales.',
+  }
+];

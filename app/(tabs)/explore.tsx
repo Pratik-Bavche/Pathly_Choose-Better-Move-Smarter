@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SkillCoursesTab from '../../components/SkillCoursesTab';
 import StartWorkingTab from '../../components/StartWorkingTab';
+import StartBusinessTab from '../../components/StartBusinessTab';
 import { BRANCH_DETAILS } from '../../data/educationDetails';
 
 const QUALIFICATIONS = [
@@ -295,9 +296,10 @@ export default function ExploreScreen() {
         <StartWorkingTab />
       ) : categoryParam === 'skill' ? (
         <SkillCoursesTab />
+      ) : categoryParam === 'business' ? (
+        <StartBusinessTab />
       ) : (
         <View style={[styles.stepContainer, { justifyContent: 'center', alignItems: 'center' }]}>
-          {categoryParam === 'business' && <Rocket color="#ccc" size={60} style={{ marginBottom: 20 }} />}
           <Text style={[styles.stepTitle, { textAlign: 'center', color: '#888' }]}>
             Coming Soon
           </Text>
