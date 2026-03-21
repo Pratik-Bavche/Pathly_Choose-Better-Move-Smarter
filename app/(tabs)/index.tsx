@@ -1,7 +1,7 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
 import { BUSINESS_IDEAS } from '../../data/businessIdeas';
 import { JOB_CATEGORIES } from '../../data/jobData';
@@ -98,7 +98,7 @@ export default function HomeScreen() {
   ];
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <Text style={styles.greeting}>{t('hello_student')}</Text>
         <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
@@ -143,7 +143,14 @@ export default function HomeScreen() {
           <ChevronRight color="#ccc" size={24} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.recCard, { backgroundColor: '#f8faff', marginBottom: 16 }]}>
+        <TouchableOpacity
+          style={[styles.recCard, { backgroundColor: '#f8faff', marginBottom: 16 }]}
+          onPress={() => Alert.alert(
+            "Coming Soon", 
+            "The Resume Builder is in development. Check out our Skill Courses to build a stronger profile!",
+            [{ text: "Explore Skills", onPress: () => router.push({ pathname: '/(tabs)/explore', params: { category: 'skill' } }) }, { text: "OK" }]
+          )}
+        >
           <View style={[styles.recIconWrap, { backgroundColor: '#e8eaf6' }]}>
             <FileText color="#3f51b5" size={24} />
           </View>
@@ -197,7 +204,8 @@ function RecommendationCard({ title, subtitle, onPress, icon: Icon }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#ffffff', paddingBottom: 110 }, // Increased padding for more gap above tabs
+  container: { flex: 1, backgroundColor: '#ffffff' },
+  scrollContent: { paddingBottom: 20 }, // Minimal padding for a tighter look at the bottom
   header: { backgroundColor: '#0d47a1', paddingHorizontal: 24, paddingTop: 50, paddingBottom: 20, borderBottomLeftRadius: 28, borderBottomRightRadius: 28, marginBottom: 4 },
   greeting: { fontSize: 28, fontWeight: 'bold', color: '#ffffff' },
   subGreeting: { fontSize: 16, color: '#e3f2fd', marginTop: 4 },
@@ -229,8 +237,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fcfcfc',
-    padding: 14, // Slightly increased from 12
+    padding: 14,
     borderRadius: 16,
+    minHeight: 88, // Ensure cards stay balanced even with varying text lines
     borderWidth: 1,
     borderColor: '#eee',
     shadowColor: '#000',
