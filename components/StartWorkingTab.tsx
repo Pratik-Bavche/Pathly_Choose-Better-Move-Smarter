@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import {
     ArrowLeft,
     BookOpen,
@@ -136,6 +136,22 @@ export default function StartWorkingTab() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [userQual, setUserQual] = useState("12th");
   const [userInterests, setUserInterests] = useState<string[]>([]);
+
+  const { search: searchParam } = useLocalSearchParams();
+
+  useEffect(() => {
+    if (searchParam) {
+      const searchStr = String(searchParam).toLowerCase();
+      for (const cat of JOB_CATEGORIES) {
+        const found = cat.jobs.find((j: any) => j.title.toLowerCase() === searchStr);
+        if (found) {
+          setSelectedCategory(cat);
+          setSelectedJob(found);
+          break;
+        }
+      }
+    }
+  }, [searchParam]);
 
   useEffect(() => {
     loadUserProfile();

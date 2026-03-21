@@ -1,6 +1,6 @@
-import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, BookOpen, Briefcase, Building, ChevronDown, ChevronRight, ChevronUp, GraduationCap, Plane, Rocket, Target, Trophy, Wrench } from 'lucide-react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SkillCoursesTab from '../../components/SkillCoursesTab';
 import StartWorkingTab from '../../components/StartWorkingTab';
@@ -63,7 +63,7 @@ const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc
 const FILTERS = ['All', 'Govt Job', 'Private Job', 'Higher Study', 'High Salary', 'Skill-Based', 'Study Abroad', 'Entrepreneurship'];
 
 export default function ExploreScreen() {
-  const { category: categoryParam } = useLocalSearchParams();
+  const { category: categoryParam, search: searchParam } = useLocalSearchParams();
   const [selectedQual, setSelectedQual] = useState<string | null>(null);
   const [selectedPathway, setSelectedPathway] = useState<{ id: string, title: string } | null>(null);
   const [expandedBranch, setExpandedBranch] = useState<string | null>(null);
@@ -78,6 +78,28 @@ export default function ExploreScreen() {
       setActiveFilter('All');
     }, [])
   );
+
+  useEffect(() => {
+    if ((!categoryParam || categoryParam === 'edu') && searchParam) {
+      const searchStr = String(searchParam).toLowerCase();
+      // Find branch in BRANCH_DETAILS
+      for (const [pathId, branches] of Object.entries(BRANCH_DETAILS)) {
+        const foundBranch = (branches as any[]).find(b => b.title.toLowerCase() === searchStr);
+        if (foundBranch) {
+          // Find qual and path
+          for (const [qualId, paths] of Object.entries(PATHWAYS)) {
+            const foundPath = paths.find(p => p.id === pathId);
+            if (foundPath) {
+              setSelectedQual(qualId);
+              setSelectedPathway({ id: foundPath.id, title: foundPath.title });
+              setExpandedBranch(foundBranch.id);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }, [searchParam, categoryParam]);
 
   const renderStep1 = () => (
     <View style={styles.stepContainer}>

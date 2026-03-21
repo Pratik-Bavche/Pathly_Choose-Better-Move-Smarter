@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import {
     ArrowLeft,
     Award,
@@ -90,6 +90,22 @@ export default function SkillCoursesTab() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [userQual, setUserQual] = useState("");
   const [recommendedCatIds, setRecommendedCatIds] = useState<string[]>([]);
+
+  const { search: searchParam } = useLocalSearchParams();
+
+  useEffect(() => {
+    if (searchParam) {
+      const searchStr = String(searchParam).toLowerCase();
+      for (const cat of SKILL_CATEGORIES) {
+        const found = cat.courses.find((c: any) => c.name.toLowerCase() === searchStr);
+        if (found) {
+          setSelectedCategory(cat);
+          setSelectedCourse(found);
+          break;
+        }
+      }
+    }
+  }, [searchParam]);
 
   useEffect(() => {
     loadUserProfile();

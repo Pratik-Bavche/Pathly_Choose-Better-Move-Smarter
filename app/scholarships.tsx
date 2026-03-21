@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
   ArrowLeft,
   BookOpen,
@@ -389,10 +389,12 @@ function FilterSheet({
 // ── Main Screen ───────────────────────────────────────────────────────
 export default function ScholarshipsScreen() {
   const router = useRouter();
-  const [search, setSearch] = useState('');
+  const { search: searchParam } = useLocalSearchParams();
+  const [search, setSearch] = useState(searchParam ? String(searchParam) : '');
   const [filterVisible, setFilterVisible] = useState(false);
   const [filters, setFilters] = useState({ level: 'All', type: 'All', special: 'All' });
   const [selected, setSelected] = useState<Scholarship | null>(null);
+  const [visibleCount, setVisibleCount] = useState(30);
 
   const activeFilterCount = [filters.level, filters.type, filters.special].filter(
     (f) => f !== 'All'
@@ -443,6 +445,14 @@ export default function ScholarshipsScreen() {
       return true;
     });
   }, [search, filters]);
+
+  const visibleScholarships = useMemo(() => {
+    return filtered.slice(0, visibleCount);
+  }, [filtered, visibleCount]);
+
+  const loadMore = () => {
+    setVisibleCount(prev => prev + 50);
+  };
 
   return (
     <View style={styles.container}>
@@ -506,10 +516,21 @@ export default function ScholarshipsScreen() {
             <Text style={styles.emptySubtitle}>Try adjusting your search or filters</Text>
           </View>
         ) : (
-          filtered.map((item) => (
+          visibleScholarships.map((item) => (
             <ScholarshipCard key={item.id} item={item} onPress={() => setSelected(item)} />
           ))
         )}
+
+        {visibleCount < filtered.length && (
+          <TouchableOpacity style={styles.loadMoreBtn} onPress={loadMore}>
+            <Text style={styles.loadMoreText}>Load More (+50)</Text>
+          </TouchableOpacity>
+        )}
+
+        {filtered.length > 0 && visibleCount >= filtered.length && (
+          <Text style={styles.endMessage}>✨ You've reached the end of the list</Text>
+        )}
+
         <View style={{ height: 80 }} />
       </ScrollView>
 
@@ -798,6 +819,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#e0e0e0',
+  },
+  loadMoreBtn: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#1565c0',
+    borderStyle: 'dashed',
+  },
+  loadMoreText: {
+    color: '#1565c0',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  endMessage: {
+    textAlign: 'center',
+    color: '#888',
+    fontSize: 13,
+    marginTop: 10,
+    marginBottom: 20,
+    fontStyle: 'italic',
   },
   resetBtnText: { fontSize: 15, fontWeight: '700', color: '#555' },
   applyFilterBtn: {

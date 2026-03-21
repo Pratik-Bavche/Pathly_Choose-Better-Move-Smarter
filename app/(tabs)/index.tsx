@@ -1,13 +1,94 @@
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
+import { BUSINESS_IDEAS } from '../../data/businessIdeas';
+import { JOB_CATEGORIES } from '../../data/jobData';
+import scholarshipsData from '../../data/scholarships.json';
+import { SKILL_CATEGORIES } from '../../data/skillData';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useLanguage();
   const [selectedPath, setSelectedPath] = useState('edu');
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+
+  const loadRandomRecommendations = useCallback(() => {
+    // Collect all items from different sources
+    const allJobs = JOB_CATEGORIES.flatMap(cat => cat.jobs).map(job => ({
+      id: job.id,
+      type: 'job',
+      title: job.title,
+      subtitle: `${job.jobType} • ${job.eligibility}`,
+      icon: Briefcase,
+      target: job.title
+    }));
+
+    const allSkills = SKILL_CATEGORIES.flatMap(cat => cat.courses).map(course => ({
+      id: course.id,
+      type: 'skill',
+      title: course.name,
+      subtitle: `${course.duration} • ${course.mode}`,
+      icon: Wrench,
+      target: course.name
+    }));
+
+    const allBusiness = BUSINESS_IDEAS.map(idea => ({
+      id: idea.id,
+      type: 'business',
+      title: idea.name,
+      subtitle: `Budget: ${idea.setupBudget} • ${idea.mode}`,
+      icon: Rocket,
+      target: idea.name
+    }));
+
+    const allScholarships = (scholarshipsData as any[]).map(s => ({
+      id: s.id.toString(),
+      type: 'scholarship',
+      title: s.name,
+      subtitle: `${s.amount}`,
+      icon: Trophy,
+      target: s.name
+    }));
+
+    const pool = [allJobs, allSkills, allBusiness, allScholarships];
+    const result: any[] = [];
+    
+    // Pick 2 items from DIFFERENT categories
+    const shuffledPool = [...pool].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < 2; i++) {
+      const cat = shuffledPool[i];
+      const randomItem = cat[Math.floor(Math.random() * cat.length)];
+      result.push(randomItem);
+    }
+    setRecommendations(result);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadRandomRecommendations();
+    }, [loadRandomRecommendations])
+  );
+
+  const handleRecommendationPress = (item: any) => {
+    switch (item.type) {
+      case 'job':
+        router.push({ pathname: '/(tabs)/explore', params: { category: 'job', search: item.target } });
+        break;
+      case 'skill':
+        router.push({ pathname: '/(tabs)/explore', params: { category: 'skill', search: item.target } });
+        break;
+      case 'business':
+        router.push({ pathname: '/(tabs)/explore', params: { category: 'business', search: item.target } });
+        break;
+      case 'scholarship':
+        router.push('/scholarships');
+        break;
+      default:
+        router.push('/(tabs)/explore');
+    }
+  };
 
   const PATHS = [
     { id: 'edu', title: t('further_edu'), icon: BookOpen, desc: t('further_edu_desc'), color: '#e3f2fd', iconColor: '#1e88e5' },
@@ -82,74 +163,17 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {selectedPath === 'edu' && (
-          <>
+        {recommendations.map((item, idx) => (
+          <React.Fragment key={item.id}>
             <RecommendationCard
-              title="B.Sc Computer Science"
-              subtitle="Duration: 3 Years • Avg Salary: ₹4L - ₹8L"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'B.Sc Computer Science' } })}
-              icon={GraduationCap}
+              title={item.title}
+              subtitle={item.subtitle}
+              onPress={() => handleRecommendationPress(item)}
+              icon={item.icon}
             />
-            <View style={{ height: 18 }} />
-            <RecommendationCard
-              title="Diploma in IT"
-              subtitle="Duration: 2 Years • Fast-track career"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Diploma in IT' } })}
-              icon={GraduationCap}
-            />
-          </>
-        )}
-        {selectedPath === 'job' && (
-          <>
-            <RecommendationCard
-              title="Data Entry Operator"
-              subtitle="Private • 12th Pass • ₹15k - ₹25k/mo"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Data Entry Operator' } })}
-              icon={Briefcase}
-            />
-            <View style={{ height: 16 }} />
-            <RecommendationCard
-              title="SSC CHSL (Govt)"
-              subtitle="Govt Exam • 12th Pass • Secure limits"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'SSC CHSL' } })}
-              icon={Briefcase}
-            />
-          </>
-        )}
-        {selectedPath === 'skill' && (
-          <>
-            <RecommendationCard
-              title="Graphic Design Course"
-              subtitle="3 Months • Skill India • High demand"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Graphic Design' } })}
-              icon={Wrench}
-            />
-            <View style={{ height: 16 }} />
-            <RecommendationCard
-              title="Digital Marketing"
-              subtitle="2 Months • Certification • Remote Work"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Digital Marketing' } })}
-              icon={Wrench}
-            />
-          </>
-        )}
-        {selectedPath === 'business' && (
-          <>
-            <RecommendationCard
-              title="Freelance Content Writing"
-              subtitle="0 Investment • High Income Potential"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Content Writing' } })}
-              icon={Rocket}
-            />
-            <View style={{ height: 16 }} />
-            <RecommendationCard
-              title="Dropshipping Basics"
-              subtitle="Low Investment • E-commerce"
-              onPress={() => router.push({ pathname: '/(tabs)/explore', params: { search: 'Dropshipping' } })}
-              icon={Rocket}
-            />
-          </>
-        )}
+            {idx === 0 && <View style={{ height: 16 }} />}
+          </React.Fragment>
+        ))}
 
         <View style={{ height: 50 }} />
       </View>

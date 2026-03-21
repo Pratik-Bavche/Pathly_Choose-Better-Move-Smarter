@@ -1,4 +1,4 @@
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import {
   ArrowLeft,
   Banknote,
@@ -45,6 +45,19 @@ function BudgetBadge({ type }: { type: string }) {
 export default function StartBusinessTab() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [selectedIdea, setSelectedIdea] = useState<BusinessIdea | null>(null);
+
+  const { search: searchParam } = useLocalSearchParams();
+
+  React.useEffect(() => {
+    if (searchParam) {
+      const searchStr = String(searchParam).toLowerCase();
+      const found = BUSINESS_IDEAS.find(i => i.name.toLowerCase() === searchStr);
+      if (found) {
+        setSelectedCategoryId(found.categoryId);
+        setSelectedIdea(found);
+      }
+    }
+  }, [searchParam]);
 
   // Self-reset when explore tab loses focus and comes back
   useFocusEffect(
