@@ -1,7 +1,7 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
 import { BUSINESS_IDEAS } from '../../data/businessIdeas';
 import { JOB_CATEGORIES } from '../../data/jobData';
@@ -98,7 +98,7 @@ export default function HomeScreen() {
   ];
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <Text style={styles.greeting}>{t('hello_student')}</Text>
         <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
@@ -177,7 +177,7 @@ export default function HomeScreen() {
 
         <View style={{ height: 50 }} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -188,8 +188,8 @@ function RecommendationCard({ title, subtitle, onPress, icon: Icon }: any) {
         <Icon color="#1976d2" size={24} />
       </View>
       <View style={styles.recDetails}>
-        <Text style={styles.recTitle}>{title}</Text>
-        <Text style={styles.recSub}>{subtitle}</Text>
+        <Text style={styles.recTitle} numberOfLines={1}>{title}</Text>
+        <Text style={styles.recSub} numberOfLines={2}>{subtitle}</Text>
       </View>
       <ChevronRight color="#ccc" size={24} />
     </TouchableOpacity>
