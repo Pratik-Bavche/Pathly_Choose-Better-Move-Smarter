@@ -145,11 +145,7 @@ export default function HomeScreen() {
 
         <TouchableOpacity
           style={[styles.recCard, { backgroundColor: '#f8faff', marginBottom: 16 }]}
-          onPress={() => Alert.alert(
-            "Coming Soon", 
-            "The Resume Builder is in development. Check out our Skill Courses to build a stronger profile!",
-            [{ text: "Explore Skills", onPress: () => router.push({ pathname: '/(tabs)/explore', params: { category: 'skill' } }) }, { text: "OK" }]
-          )}
+          onPress={() => router.push('/resume')}
         >
           <View style={[styles.recIconWrap, { backgroundColor: '#e8eaf6' }]}>
             <FileText color="#3f51b5" size={24} />
