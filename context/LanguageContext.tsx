@@ -36,7 +36,6 @@ const LANGUAGES = {
 
         // Home Screen
         hello_student: 'Hello, Student! 👋',
-        hello_prefix: 'Hello',
         home_subtitle: "Let's chart your career roadmap",
         explore_section: 'What would you like to explore?',
         further_edu: 'Further Education',
@@ -383,7 +382,6 @@ const LANGUAGES = {
 
         // Home Screen
         hello_student: 'नमस्ते, छात्र! 👋',
-        hello_prefix: 'नमस्ते',
         home_subtitle: 'आइए आपका करियर रोडमैप तैयार करें',
         explore_section: 'आप क्या एक्सप्लोर करना चाहेंगे?',
         further_edu: 'आगे की शिक्षा',
@@ -730,7 +728,6 @@ const LANGUAGES = {
 
         // Home Screen
         hello_student: 'नमस्कार, विद्यार्थी! 👋',
-        hello_prefix: 'नमस्कार',
         home_subtitle: 'चला तुमचा करिअर रोडमॅप तयार करूया',
         explore_section: 'तुम्हाला काय पाहायला आवडेल?',
         further_edu: 'पुढील शिक्षण',

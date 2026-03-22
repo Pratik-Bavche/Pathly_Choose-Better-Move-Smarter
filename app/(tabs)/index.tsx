@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
@@ -14,16 +13,6 @@ export default function HomeScreen() {
   const { t } = useLanguage();
   const [selectedPath, setSelectedPath] = useState('edu');
   const [recommendations, setRecommendations] = useState<any[]>([]);
-  const [userData, setUserData] = useState<any>(null);
-
-  const loadUserData = useCallback(async () => {
-    try {
-      const data = await AsyncStorage.getItem('userData');
-      if (data) {
-        setUserData(JSON.parse(data));
-      }
-    } catch (_) {}
-  }, []);
 
   const loadRandomRecommendations = useCallback(() => {
     // Collect all items from different sources
@@ -78,9 +67,8 @@ export default function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      loadUserData();
       loadRandomRecommendations();
-    }, [loadUserData, loadRandomRecommendations])
+    }, [loadRandomRecommendations])
   );
 
   const handleRecommendationPress = (item: any) => {
@@ -112,9 +100,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>
-          {t('hello_prefix')}, {userData?.full_name?.split(' ')[0] || userData?.name?.split(' ')[0] || t('profile_name').split(' ')[0]}! 👋
-        </Text>
+        <Text style={styles.greeting}>{t('hello_student')}</Text>
         <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
       </View>
 
