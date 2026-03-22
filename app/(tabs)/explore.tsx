@@ -15,7 +15,7 @@ export default function ExploreScreen() {
   const [selectedQual, setSelectedQual] = useState<string | null>(null);
   const [selectedPathway, setSelectedPathway] = useState<{ id: string, title: string } | null>(null);
   const [expandedBranch, setExpandedBranch] = useState<string | null>(null);
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [activeFilter, setActiveFilter] = useState('filter_all');
 
   const QUALIFICATIONS = [
     { id: '10th', title: t('after_label') + t('qual_10th'), subtitle: t('qual_subtitle_10th'), icon: <BookOpen color="#1976d2" size={28} /> },
@@ -71,8 +71,8 @@ export default function ExploreScreen() {
   };
 
   const FILTERS = [
-    t('filter_all'), t('filter_govt'), t('filter_private'), t('filter_higher'), 
-    t('filter_salary'), t('filter_skill'), t('filter_abroad'), t('filter_entry')
+    'filter_all', 'filter_govt', 'filter_private', 'filter_higher', 
+    'filter_salary', 'filter_skill', 'filter_abroad'
   ];
 
   useFocusEffect(
@@ -81,7 +81,7 @@ export default function ExploreScreen() {
       setSelectedQual(null);
       setSelectedPathway(null);
       setExpandedBranch(null);
-      setActiveFilter('All');
+      setActiveFilter('filter_all');
     }, [])
   );
 
@@ -142,9 +142,19 @@ export default function ExploreScreen() {
     const currentQual = QUALIFICATIONS.find(q => q.id === selectedQual);
     const options = PATHWAYS[selectedQual] || [];
 
-    const filteredOptions = activeFilter === t('filter_all')
+    // Tag mapping for filtering
+    const filterKeyToTag: Record<string, string> = {
+      'filter_govt': 'Govt Job',
+      'filter_private': 'Private Job',
+      'filter_higher': 'Higher Study',
+      'filter_salary': 'High Salary',
+      'filter_skill': 'Skill-Based',
+      'filter_abroad': 'Study Abroad'
+    };
+
+    const filteredOptions = activeFilter === 'filter_all'
       ? options
-      : options.filter(opt => opt.tags.includes(activeFilter));
+      : options.filter(opt => opt.tags.includes(filterKeyToTag[activeFilter]));
 
     return (
       <View style={styles.stepContainer}>
@@ -170,7 +180,7 @@ export default function ExploreScreen() {
                 onPress={() => setActiveFilter(filter)}
               >
                 <Text style={[styles.filterText, activeFilter === filter && styles.filterTextActive]}>
-                  {filter}
+                  {t(filter)}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -197,7 +207,9 @@ export default function ExploreScreen() {
                   <View style={styles.tagsRow}>
                     {opt.tags.map(tag => (
                       <View key={tag} style={styles.microTag}>
-                        <Text style={styles.microTagText}>{tag}</Text>
+                        <Text style={styles.microTagText}>
+                          {t('tag_' + tag.toLowerCase().replace(' ', '_').replace('-', '_')) || tag}
+                        </Text>
                       </View>
                     ))}
                   </View>

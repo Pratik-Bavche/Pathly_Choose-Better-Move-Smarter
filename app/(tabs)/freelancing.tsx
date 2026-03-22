@@ -81,7 +81,7 @@ export default function FreelancingScreen() {
 
     const handleCreateOrUpdatePost = async () => {
         if (!role.trim() || !description.trim() || !mobile.trim()) {
-            Alert.alert('Error', 'Please fill mandatory fields (Role, Description, Mobile)');
+            Alert.alert(t('error'), t('fill_mandatory_fields'));
             return;
         }
 
@@ -107,7 +107,7 @@ export default function FreelancingScreen() {
                     }
                     return p;
                 });
-                Alert.alert('Success', t('update_success'));
+                Alert.alert(t('success'), t('update_success'));
             } else {
                 // Create new post
                 const newPost: Post = {
@@ -121,7 +121,7 @@ export default function FreelancingScreen() {
                     linkedin: linkedin.trim()
                 };
                 updatedPosts = [newPost, ...posts];
-                Alert.alert('Success', t('post_success'));
+                Alert.alert(t('success'), t('post_success'));
             }
 
             setPosts(updatedPosts);
@@ -136,7 +136,7 @@ export default function FreelancingScreen() {
             setEditingId(null);
             setActiveTab('posts');
         } catch (e) {
-            Alert.alert('Error', 'Failed to save post');
+            Alert.alert(t('error'), t('failed_save_post'));
         }
     };
 
@@ -147,7 +147,7 @@ export default function FreelancingScreen() {
             [
                 { text: t('cancel'), style: 'cancel' },
                 { 
-                    text: 'Delete', 
+                    text: t('delete_btn'), 
                     style: 'destructive',
                     onPress: async () => {
                         const updatedPosts = posts.filter(p => p.id !== id);

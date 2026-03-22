@@ -38,7 +38,9 @@ function BudgetBadge({ type }: { type: string }) {
   const colors = BUDGET_COLORS[type] ?? { bg: '#F5F5F5', text: '#616161' };
   return (
     <View style={[styles.badge, { backgroundColor: colors.bg }]}>
-      <Text style={[styles.badgeText, { color: colors.text }]}>{type} {t('budget_label_small')}</Text>
+      <Text style={[styles.badgeText, { color: colors.text }]}>
+        {t('budget_' + type.toLowerCase().replace(' ', '_')) || type} {t('budget_label_small')}
+      </Text>
     </View>
   );
 }
@@ -171,7 +173,9 @@ export default function StartBusinessTab() {
                 <View style={styles.ideaTagsRow}>
                   <BudgetBadge type={idea.setupBudgetCategory} />
                   <View style={[styles.badge, { backgroundColor: '#F3E5F5' }]}>
-                      <Text style={[styles.badgeText, { color: '#8E24AA' }]}>{idea.mode}</Text>
+                    <Text style={[styles.badgeText, { color: '#8E24AA' }]}>
+                      {t(idea.mode.toLowerCase() + '_mode') || idea.mode}
+                    </Text>
                   </View>
                 </View>
 
@@ -213,7 +217,9 @@ export default function StartBusinessTab() {
               <View style={styles.detailBadgesRow}>
                 <BudgetBadge type={selectedIdea.setupBudgetCategory} />
                 <View style={[styles.badge, { backgroundColor: '#F3E5F5' }]}>
-                    <Text style={[styles.badgeText, { color: '#8E24AA' }]}>{selectedIdea.mode}</Text>
+                    <Text style={[styles.badgeText, { color: '#8E24AA' }]}>
+                      {t(selectedIdea.mode.toLowerCase() + '_mode') || selectedIdea.mode}
+                    </Text>
                 </View>
               </View>
             </View>
@@ -298,13 +304,13 @@ export default function StartBusinessTab() {
                  
                  {selectedIdea.addons.example && (
                      <View style={styles.addonBlock}>
-                         <Text style={styles.addonLabel}>💡 Example / Success Tip:</Text>
+                         <Text style={styles.addonLabel}>💡 {t('example_success_tip')}</Text>
                          <Text style={styles.detailValue}>{selectedIdea.addons.example}</Text>
                      </View>
                  )}
                  {selectedIdea.addons.starterKit && (
                      <View style={styles.addonBlock}>
-                         <Text style={styles.addonLabel}>🛠️ Starter Kit Recommendation:</Text>
+                         <Text style={styles.addonLabel}>🛠️ {t('starter_kit_rec')}</Text>
                          <Text style={styles.detailValue}>{selectedIdea.addons.starterKit}</Text>
                      </View>
                  )}

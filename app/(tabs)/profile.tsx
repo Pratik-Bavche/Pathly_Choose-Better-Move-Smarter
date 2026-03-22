@@ -65,7 +65,7 @@ export default function ProfileScreen() {
 
     const saveProfileChanges = async () => {
         if (!userData?.id) {
-            Alert.alert('Error', 'Unable to find user session.');
+            Alert.alert(t('error'), t('unable_find_session'));
             return;
         }
 
@@ -89,9 +89,9 @@ export default function ProfileScreen() {
             setUserData(data);
             await AsyncStorage.setItem('userData', JSON.stringify(data));
             setEditModalVisible(false);
-            Alert.alert('Success', t('profile_update_success'));
+            Alert.alert(t('success'), t('profile_update_success'));
         } catch (error: any) {
-            Alert.alert('Update Failed', error.message || 'Something went wrong while updating.');
+            Alert.alert(t('update_failed'), error.message || t('something_went_wrong'));
         } finally {
             setIsSaving(false);
         }

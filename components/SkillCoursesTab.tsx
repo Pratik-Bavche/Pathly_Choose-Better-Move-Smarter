@@ -48,10 +48,12 @@ const BADGE_STYLE: Record<string, { bg: string; text: string }> = {
 };
 
 function CourseBadge({ label }: { label: string }) {
+  const { t } = useLanguage();
   const style = BADGE_STYLE[label] ?? { bg: "#757575", text: "#fff" };
+  const localizedLabel = t(label.toLowerCase().replace(/ /g, '_').replace(/-/g, '_')) || label;
   return (
     <View style={[styles.badge, { backgroundColor: style.bg }]}>
-      <Text style={[styles.badgeText, { color: style.text }]}>{label}</Text>
+      <Text style={[styles.badgeText, { color: style.text }]}>{localizedLabel}</Text>
     </View>
   );
 }
@@ -63,10 +65,12 @@ const MODE_COLORS: Record<string, { bg: string; text: string }> = {
   Blended: { bg: "#EDE7F6", text: "#5E35B1" },
 };
 function ModeChip({ mode }: { mode: string }) {
+  const { t } = useLanguage();
   const c = MODE_COLORS[mode] ?? { bg: "#eee", text: "#333" };
+  const localizedMode = t(mode.toLowerCase() + '_mode') || mode;
   return (
     <View style={[styles.modeChip, { backgroundColor: c.bg }]}>
-      <Text style={[styles.modeText, { color: c.text }]}>{mode}</Text>
+      <Text style={[styles.modeText, { color: c.text }]}>{localizedMode}</Text>
     </View>
   );
 }
@@ -176,7 +180,7 @@ export default function SkillCoursesTab() {
           <Zap color="#F57F17" size={16} style={{ marginRight: 8 }} />
           <View style={{ flex: 1 }}>
             <Text style={styles.suggestTitle}>
-              {t('recommended_for')}{QUAL_LABELS[userQual] || userQual}
+              {t('recommended_for')}{t('qual_' + userQual) || userQual}
             </Text>
             <Text style={styles.suggestDesc} numberOfLines={2}>
               {SKILL_CATEGORIES.filter((c) => recommendedCatIds.includes(c.id))
@@ -208,7 +212,7 @@ export default function SkillCoursesTab() {
             >
               {isRecommended && (
                 <View style={styles.recommendedBanner}>
-                  <Text style={styles.recommendedBannerText}>✦ For You</Text>
+                  <Text style={styles.recommendedBannerText}>{t('for_you_badge')}</Text>
                 </View>
               )}
               <View
@@ -240,18 +244,18 @@ export default function SkillCoursesTab() {
       <View style={styles.comparisonCard}>
         <View style={styles.comparisonCol}>
           <Text style={styles.compFree}>🆓 {t('free_govt_training')}</Text>
-          <Text style={styles.compPoint}>• NSDC / PMKVY / DDU-GKY</Text>
-          <Text style={styles.compPoint}>• Placement Support</Text>
-          <Text style={styles.compPoint}>• Certificate on Completion</Text>
-          <Text style={styles.compPoint}>• Rural-Friendly Centres</Text>
+          <Text style={styles.compPoint}>• {t('nsdc_pmkvy_desc')}</Text>
+          <Text style={styles.compPoint}>• {t('placement_support')}</Text>
+          <Text style={styles.compPoint}>• {t('cert_on_completion')}</Text>
+          <Text style={styles.compPoint}>• {t('rural_friendly_centres')}</Text>
         </View>
         <View style={styles.compDivider} />
         <View style={styles.comparisonCol}>
           <Text style={styles.compPaid}>💳 {t('paid_private_training')}</Text>
-          <Text style={styles.compPoint}>• Industry-recognized certs</Text>
-          <Text style={styles.compPoint}>• Live projects & mentors</Text>
-          <Text style={styles.compPoint}>• Higher job ROI</Text>
-          <Text style={styles.compPoint}>• Global platforms</Text>
+          <Text style={styles.compPoint}>• {t('industry_recognized_certs')}</Text>
+          <Text style={styles.compPoint}>• {t('live_projects_mentors')}</Text>
+          <Text style={styles.compPoint}>• {t('higher_job_roi')}</Text>
+          <Text style={styles.compPoint}>• {t('global_platforms')}</Text>
         </View>
       </View>
 
@@ -320,7 +324,7 @@ export default function SkillCoursesTab() {
                   <Text style={styles.courseTitle}>{course.name}</Text>
                   {course.isFree && (
                     <View style={styles.freeTag}>
-                      <Text style={styles.freeTagText}>FREE</Text>
+                      <Text style={styles.freeTagText}>{t('free_tag')}</Text>
                     </View>
                   )}
                 </View>
@@ -422,7 +426,7 @@ export default function SkillCoursesTab() {
                     { alignSelf: "flex-start", marginLeft: 10 },
                   ]}
                 >
-                  <Text style={styles.freeTagText}>FREE</Text>
+                  <Text style={styles.freeTagText}>{t('free_tag')}</Text>
                 </View>
               )}
             </View>

@@ -361,7 +361,7 @@ export default function StartWorkingTab() {
                         }
                       }}
                     >
-                      <Text style={styles.nextStepBtnText}>{job.nextStep}</Text>
+                      <Text style={styles.nextStepBtnText}>{t(job.nextStep.toLowerCase().replace(' ', '_')) || job.nextStep}</Text>
                     </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
@@ -379,20 +379,20 @@ export default function StartWorkingTab() {
     const url = job.applyUrl;
     if (!isSafeExternalUrl(url)) {
       Alert.alert(
-        "Link Unavailable",
-        "No official link is available or the link appears invalid.",
+        t('link_unavailable'),
+        t('link_unavailable_desc'),
       );
       return;
     }
 
     const host = hostnameOf(url);
     Alert.alert(
-      `Leaving CareerPath`,
-      `You are about to open ${host}. Continue to external site?`,
+      t('leaving_careerpath'),
+      t('leaving_careerpath_desc').replace('external site', host),
       [
-        { text: "Cancel", style: "cancel" },
+        { text: t('cancel'), style: "cancel" },
         {
-          text: "Continue",
+          text: t('continue'),
           onPress: async () => {
             try {
               trackEvent("external_redirect", { type: "job", id: job.id, url });
@@ -402,7 +402,7 @@ export default function StartWorkingTab() {
             if (supported) {
               await Linking.openURL(url as string);
             } else {
-              Alert.alert("Cannot Open Link", `Unable to open: ${url}`);
+              Alert.alert(t('cannot_open_link'), t('unable_to_open') + `: ${url}`);
             }
           },
         },
@@ -473,7 +473,7 @@ export default function StartWorkingTab() {
             <View style={[styles.salaryHeroBox, { borderColor: "#e8f5e9" }]}>
               <Text style={styles.salaryHeroLabel}>{t('monthly_salary_label')}</Text>
               <Text style={styles.salaryHeroValue}>
-                {selectedJob.salaryLabel}
+                {selectedJob.salaryLabel}{t('monthly_salary_suffix')}
               </Text>
             </View>
           </View>
