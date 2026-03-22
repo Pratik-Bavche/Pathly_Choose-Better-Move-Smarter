@@ -1,6 +1,6 @@
-import { Bot, Plus, Send, User, Briefcase, Calendar, MapPin, Search, ChevronRight, Layout, Globe, Star, MessageSquare } from 'lucide-react-native';
+import { Bot, Plus, Send, User, Briefcase, Globe, Phone, Linkedin, MessageSquare, Trash2, Pencil } from 'lucide-react-native';
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, FlatList } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, FlatList, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -11,6 +11,8 @@ interface Post {
     description: string;
     timestamp: number;
     skills: string[];
+    mobile: string;
+    linkedin: string;
 }
 
 export default function FreelancingScreen() {
@@ -22,10 +24,25 @@ export default function FreelancingScreen() {
     const [role, setRole] = useState('');
     const [description, setDescription] = useState('');
     const [skills, setSkills] = useState('');
+    const [mobile, setMobile] = useState('');
+    const [linkedin, setLinkedin] = useState('');
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [currentUser, setCurrentUser] = useState<string | null>(null);
 
     useEffect(() => {
         loadPosts();
+        loadCurrentUser();
     }, []);
+
+    const loadCurrentUser = async () => {
+        try {
+            const userDataStr = await AsyncStorage.getItem('userData');
+            if (userDataStr) {
+                const userData = JSON.parse(userDataStr);
+                setCurrentUser(userData.full_name || userData.name || 'Anonymous User');
+            }
+        } catch (e) {}
+    };
 
     const loadPosts = async () => {
         try {
@@ -41,7 +58,9 @@ export default function FreelancingScreen() {
                         role: 'React Native Developer',
                         description: 'Looking for mobile app projects. 2 years of experience in Expo and Firebase.',
                         timestamp: Date.now() - 3600000,
-                        skills: ['React Native', 'Expo', 'TypeScript']
+                        skills: ['React Native', 'Expo', 'TypeScript'],
+                        mobile: '9876543210',
+                        linkedin: 'https://linkedin.com/in/pratikb'
                     },
                     {
                         id: '2',
@@ -49,7 +68,9 @@ export default function FreelancingScreen() {
                         role: 'UI/UX Designer',
                         description: 'Specialized in Figma and intuitive dashboard designs.',
                         timestamp: Date.now() - 86400000,
-                        skills: ['Figma', 'UI Design', 'Canva']
+                        skills: ['Figma', 'UI Design', 'Canva'],
+                        mobile: '9123456789',
+                        linkedin: 'https://linkedin.com/in/snehals'
                     }
                 ];
                 setPosts(initial);
@@ -58,26 +79,51 @@ export default function FreelancingScreen() {
         } catch (e) {}
     };
 
-    const handleCreatePost = async () => {
-        if (!role.trim() || !description.trim()) {
-            Alert.alert('Error', 'Please fill all mandatory fields');
+    const handleCreateOrUpdatePost = async () => {
+        if (!role.trim() || !description.trim() || !mobile.trim()) {
+            Alert.alert('Error', 'Please fill mandatory fields (Role, Description, Mobile)');
             return;
         }
 
         try {
             const userDataStr = await AsyncStorage.getItem('userData');
             const userData = userDataStr ? JSON.parse(userDataStr) : {};
+            const authorName = userData.full_name || userData.name || 'Anonymous User';
             
-            const newPost: Post = {
-                id: Date.now().toString(),
-                userName: userData.full_name || userData.name || 'Anonymous User',
-                role: role.trim(),
-                description: description.trim(),
-                timestamp: Date.now(),
-                skills: skills.split(',').map(s => s.trim()).filter(s => s !== '')
-            };
+            let updatedPosts;
+            if (editingId) {
+                // Update existing post
+                updatedPosts = posts.map(p => {
+                    if (p.id === editingId) {
+                        return {
+                            ...p,
+                            role: role.trim(),
+                            description: description.trim(),
+                            skills: skills.split(',').map(s => s.trim()).filter(s => s !== ''),
+                            mobile: mobile.trim(),
+                            linkedin: linkedin.trim(),
+                            timestamp: Date.now() // Optional: update timestamp on edit
+                        };
+                    }
+                    return p;
+                });
+                Alert.alert('Success', 'Post updated successfully!');
+            } else {
+                // Create new post
+                const newPost: Post = {
+                    id: Date.now().toString(),
+                    userName: authorName,
+                    role: role.trim(),
+                    description: description.trim(),
+                    timestamp: Date.now(),
+                    skills: skills.split(',').map(s => s.trim()).filter(s => s !== ''),
+                    mobile: mobile.trim(),
+                    linkedin: linkedin.trim()
+                };
+                updatedPosts = [newPost, ...posts];
+                Alert.alert('Success', 'Your post has been published!');
+            }
 
-            const updatedPosts = [newPost, ...posts];
             setPosts(updatedPosts);
             await AsyncStorage.setItem('freelance_posts', JSON.stringify(updatedPosts));
 
@@ -85,11 +131,42 @@ export default function FreelancingScreen() {
             setRole('');
             setDescription('');
             setSkills('');
+            setMobile('');
+            setLinkedin('');
+            setEditingId(null);
             setActiveTab('posts');
-            Alert.alert('Success', 'Your post has been published!');
         } catch (e) {
             Alert.alert('Error', 'Failed to save post');
         }
+    };
+
+    const handleDeletePost = (id: string) => {
+        Alert.alert(
+            'Delete Post',
+            'Are you sure you want to delete this post?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                { 
+                    text: 'Delete', 
+                    style: 'destructive',
+                    onPress: async () => {
+                        const updatedPosts = posts.filter(p => p.id !== id);
+                        setPosts(updatedPosts);
+                        await AsyncStorage.setItem('freelance_posts', JSON.stringify(updatedPosts));
+                    }
+                }
+            ]
+        );
+    };
+
+    const startEditing = (post: Post) => {
+        setRole(post.role);
+        setDescription(post.description);
+        setSkills(post.skills.join(', '));
+        setMobile(post.mobile);
+        setLinkedin(post.linkedin);
+        setEditingId(post.id);
+        setActiveTab('create');
     };
 
     const renderPostItem = ({ item }: { item: Post }) => (
@@ -101,6 +178,23 @@ export default function FreelancingScreen() {
                 <View style={styles.headerInfo}>
                     <Text style={styles.userName}>{item.userName}</Text>
                     <Text style={styles.roleText}>{item.role}</Text>
+                </View>
+                <View style={styles.headerActions}>
+                    {item.userName === currentUser && (
+                        <>
+                            <TouchableOpacity onPress={() => startEditing(item)} style={styles.actionIcon}>
+                                <Pencil color="#666" size={18} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleDeletePost(item.id)} style={styles.actionIcon}>
+                                <Trash2 color="#e53935" size={18} />
+                            </TouchableOpacity>
+                        </>
+                    )}
+                    {item.linkedin ? (
+                        <TouchableOpacity onPress={() => Linking.openURL(item.linkedin)} style={styles.actionIcon}>
+                            <Linkedin color="#0077B5" size={22} />
+                        </TouchableOpacity>
+                    ) : null}
                 </View>
             </View>
             
@@ -116,9 +210,12 @@ export default function FreelancingScreen() {
             
             <View style={styles.postFooter}>
                 <Text style={styles.timeText}>{new Date(item.timestamp).toLocaleDateString()}</Text>
-                <TouchableOpacity style={styles.contactBtn}>
-                    <MessageSquare color="#1976d2" size={16} />
-                    <Text style={styles.contactBtnText}>Message</Text>
+                <TouchableOpacity 
+                    style={styles.contactBtn}
+                    onPress={() => Linking.openURL(`tel:${item.mobile}`)}
+                >
+                    <Phone color="#1976d2" size={16} />
+                    <Text style={styles.contactBtnText}>Call Now</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -141,10 +238,22 @@ export default function FreelancingScreen() {
                 </TouchableOpacity>
                 <TouchableOpacity 
                     style={[styles.tab, activeTab === 'create' && styles.activeTab]} 
-                    onPress={() => setActiveTab('create')}
+                    onPress={() => {
+                        setActiveTab('create');
+                        if (!editingId) {
+                            // Reset if not editing
+                            setRole('');
+                            setDescription('');
+                            setSkills('');
+                            setMobile('');
+                            setLinkedin('');
+                        }
+                    }}
                 >
                     <Plus size={18} color={activeTab === 'create' ? '#0d47a1' : '#666'} />
-                    <Text style={[styles.tabText, activeTab === 'create' && styles.activeTabText]}>Create Post</Text>
+                    <Text style={[styles.tabText, activeTab === 'create' && styles.activeTabText]}>
+                        {editingId ? 'Edit Post' : 'Create Post'}
+                    </Text>
                 </TouchableOpacity>
             </View>
 
@@ -195,10 +304,45 @@ export default function FreelancingScreen() {
                             onChangeText={setSkills}
                         />
                     </View>
+
+                    <View style={styles.formGroup}>
+                        <Text style={styles.label}>Mobile Number *</Text>
+                        <TextInput 
+                            style={styles.input}
+                            placeholder="e.g. 9876543210"
+                            keyboardType="phone-pad"
+                            value={mobile}
+                            onChangeText={setMobile}
+                        />
+                    </View>
+
+                    <View style={styles.formGroup}>
+                        <Text style={styles.label}>LinkedIn Profile URL</Text>
+                        <TextInput 
+                            style={styles.input}
+                            placeholder="https://linkedin.com/in/yourname"
+                            keyboardType="url"
+                            autoCapitalize="none"
+                            value={linkedin}
+                            onChangeText={setLinkedin}
+                        />
+                    </View>
                     
-                    <TouchableOpacity style={styles.submitBtn} onPress={handleCreatePost}>
-                        <Text style={styles.submitBtnText}>Publish Post</Text>
+                    <TouchableOpacity style={styles.submitBtn} onPress={handleCreateOrUpdatePost}>
+                        <Text style={styles.submitBtnText}>{editingId ? 'Update Post' : 'Publish Post'}</Text>
                     </TouchableOpacity>
+                    
+                    {editingId && (
+                        <TouchableOpacity 
+                            style={[styles.submitBtn, { backgroundColor: '#f5f5f5', marginTop: 12 }]} 
+                            onPress={() => {
+                                setEditingId(null);
+                                setActiveTab('posts');
+                            }}
+                        >
+                            <Text style={[styles.submitBtnText, { color: '#666' }]}>Cancel Editing</Text>
+                        </TouchableOpacity>
+                    )}
                     
                     <View style={{ height: 40 }} />
                 </ScrollView>
@@ -224,6 +368,8 @@ const styles = StyleSheet.create({
     headerInfo: { flex: 1 },
     userName: { fontSize: 16, fontWeight: 'bold', color: '#333' },
     roleText: { fontSize: 13, color: '#1976d2', fontWeight: '600', marginTop: 2 },
+    headerActions: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    actionIcon: { padding: 4 },
     postDesc: { fontSize: 15, color: '#555', lineHeight: 22, marginBottom: 16 },
     skillsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
     skillTag: { backgroundColor: '#f0f4f8', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
