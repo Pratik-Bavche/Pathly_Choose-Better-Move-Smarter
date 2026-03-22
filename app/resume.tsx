@@ -1,8 +1,11 @@
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Briefcase, Download, Edit3, Eye, FileText, GraduationCap, Mail, MapPin, Phone, Plus, User, Trash2 } from 'lucide-react-native';
+import { ArrowLeft, Briefcase, Download, Edit3, Eye, FileText, GraduationCap, Mail, MapPin, Phone, Plus, User, Trash2, Layout } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Share } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Share, Image } from 'react-native';
+import { generateResumeHtml } from '../lib/resumeGenerators';
 
 interface ResumeData {
   name: string;
@@ -15,18 +18,32 @@ interface ResumeData {
   skills: string[];
 }
 
+export const TEMPLATES = [
+  { id: 'modern', name: 'Modern Blue', color: '#0d47a1' },
+  { id: 'minimal', name: 'Minimalist', color: '#333' },
+  { id: 'creative', name: 'Creative Sidebar', color: '#6a1b9a' },
+  { id: 'corporate', name: 'Corporate', color: '#263238' },
+  { id: 'elegant', name: 'Elegant Serif', color: '#b71c1c' },
+  { id: 'sleek', name: 'Sleek Dark', color: '#1a1a1a' },
+  { id: 'vibrant', name: 'Vibrant Pulse', color: '#00c853' },
+  { id: 'professional', name: 'Classic Pro', color: '#1565c0' },
+  { id: 'executive', name: 'Executive Gold', color: '#ff8f00' },
+  { id: 'tech', name: 'Tech Startup', color: '#00bcd4' },
+];
+
 export default function ResumeScreen() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
+  const [activeTab, setActiveTab] = useState<'edit' | 'preview' | 'templates'>('edit');
+  const [selectedTemplate, setSelectedTemplate] = useState('modern');
   const [resume, setResume] = useState<ResumeData>({
     name: '',
     email: '',
     phone: '',
     location: '',
-    summary: 'Highly motivated student looking for opportunities to grow...',
-    education: [],
-    experience: [],
-    skills: []
+    summary: 'Highly motivated professional with experience in building efficient solutions...',
+    education: [{ school: '', degree: '', year: '' }],
+    experience: [{ company: '', role: '', duration: '', desc: '' }],
+    skills: ['JavaScript', 'React Native']
   });
 
   useEffect(() => {
@@ -43,28 +60,57 @@ export default function ResumeScreen() {
           name: parsed.full_name || parsed.name || '',
           email: parsed.email || '',
           location: parsed.location || '',
-          skills: parsed.interests || [],
-          education: parsed.education_level ? [{ school: 'My High School', degree: parsed.education_level, year: '2024' }] : []
+          skills: parsed.interests && parsed.interests.length > 0 ? parsed.interests : prev.skills,
+          education: parsed.education_level ? [{ school: 'Enter Institute', degree: parsed.education_level, year: '2024' }] : prev.education
         }));
       }
     } catch (e) {}
   };
 
-  const handleShare = async () => {
+  const handleDownload = async () => {
      try {
-       await Share.share({
-         message: `Resume of ${resume.name}\n\nEducation: ${resume.education.map(e => e.degree).join(', ')}\nSkills: ${resume.skills.join(', ')}`,
-         title: `${resume.name} Resume`
-       });
-     } catch (e) {}
+       const html = generateResumeHtml(resume, selectedTemplate);
+       const { uri } = await Print.printToFileAsync({ html });
+       await Sharing.shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+     } catch (e) {
+       Alert.alert('Error', 'Failed to generate PDF. Please try again.');
+     }
   };
 
   const addEducation = () => {
     setResume({ ...resume, education: [...resume.education, { school: '', degree: '', year: '' }] });
   };
 
+  const removeEducation = (index: number) => {
+    const list = [...resume.education];
+    list.splice(index, 1);
+    setResume({ ...resume, education: list });
+  };
+
   const addExperience = () => {
     setResume({ ...resume, experience: [...resume.experience, { company: '', role: '', duration: '', desc: '' }] });
+  };
+
+  const removeExperience = (index: number) => {
+    const list = [...resume.experience];
+    list.splice(index, 1);
+    setResume({ ...resume, experience: list });
+  };
+
+  const addSkill = () => {
+    setResume({ ...resume, skills: [...resume.skills, ''] });
+  };
+
+  const removeSkill = (index: number) => {
+    const list = [...resume.skills];
+    list.splice(index, 1);
+    setResume({ ...resume, skills: list });
+  };
+
+  const updateSkill = (val: string, index: number) => {
+    const list = [...resume.skills];
+    list[index] = val;
+    setResume({ ...resume, skills: list });
   };
 
   const renderEdit = () => (
@@ -82,6 +128,7 @@ export default function ResumeScreen() {
           style={styles.input} 
           placeholder="Email Address" 
           keyboardType="email-address"
+          autoCapitalize="none"
           value={resume.email} 
           onChangeText={(val) => setResume({...resume, email: val})} 
         />
@@ -100,28 +147,55 @@ export default function ResumeScreen() {
         />
         <TextInput 
           style={[styles.input, { height: 80, textAlignVertical: 'top' }]} 
-          placeholder="Career Summary" 
+          placeholder="Professional Summary" 
           multiline
           value={resume.summary} 
           onChangeText={(val) => setResume({...resume, summary: val})} 
         />
       </View>
 
+      {/* Skills */}
+      <View style={styles.formSection}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}><Edit3 size={18} color="#0d47a1" /> Skills</Text>
+          <TouchableOpacity onPress={addSkill} style={styles.circleAddBtn}><Plus size={18} color="#fff" /></TouchableOpacity>
+        </View>
+        <View style={styles.skillsGrid}>
+          {resume.skills.map((skill, index) => (
+            <View key={index} style={styles.skillInputWrapper}>
+              <TextInput 
+                style={[styles.input, { marginBottom: 0, flex: 1, paddingVertical: 8 }]} 
+                placeholder="Skill name" 
+                value={skill} 
+                onChangeText={(val) => updateSkill(val, index)} 
+              />
+              <TouchableOpacity onPress={() => removeSkill(index)} style={styles.removeBtnInline}>
+                <Trash2 size={16} color="#ff1744" />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      </View>
+
       {/* Education */}
       <View style={styles.formSection}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}><GraduationCap size={18} color="#0d47a1" /> Education</Text>
-          <TouchableOpacity onPress={addEducation}><Plus size={20} color="#0d47a1" /></TouchableOpacity>
+          <TouchableOpacity onPress={addEducation} style={styles.circleAddBtn}><Plus size={18} color="#fff" /></TouchableOpacity>
         </View>
         {resume.education.map((edu, i) => (
           <View key={i} style={styles.itemCard}>
-            <TextInput style={styles.input} placeholder="School/College" value={edu.school} onChangeText={(v) => {
+            <View style={styles.itemHeader}>
+              <Text style={styles.itemCount}>Education #{i + 1}</Text>
+              <TouchableOpacity onPress={() => removeEducation(i)}><Trash2 size={18} color="#ff1744" /></TouchableOpacity>
+            </View>
+            <TextInput style={styles.input} placeholder="School/College Name" value={edu.school} onChangeText={(v) => {
               const next = [...resume.education]; next[i].school = v; setResume({...resume, education: next});
             }} />
-            <TextInput style={styles.input} placeholder="Degree/Course" value={edu.degree} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder="Degree/Course (e.g. B.Tech Computer Science)" value={edu.degree} onChangeText={(v) => {
               const next = [...resume.education]; next[i].degree = v; setResume({...resume, education: next});
             }} />
-            <TextInput style={styles.input} placeholder="Year" value={edu.year} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder="Year (e.g. 2020 - 2024)" value={edu.year} onChangeText={(v) => {
               const next = [...resume.education]; next[i].year = v; setResume({...resume, education: next});
             }} />
           </View>
@@ -132,32 +206,86 @@ export default function ResumeScreen() {
       <View style={styles.formSection}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}><Briefcase size={18} color="#0d47a1" /> Experience / Projects</Text>
-          <TouchableOpacity onPress={addExperience}><Plus size={20} color="#0d47a1" /></TouchableOpacity>
+          <TouchableOpacity onPress={addExperience} style={styles.circleAddBtn}><Plus size={18} color="#fff" /></TouchableOpacity>
         </View>
         {resume.experience.map((exp, i) => (
           <View key={i} style={styles.itemCard}>
+            <View style={styles.itemHeader}>
+              <Text style={styles.itemCount}>Item #{i + 1}</Text>
+              <TouchableOpacity onPress={() => removeExperience(i)}><Trash2 size={18} color="#ff1744" /></TouchableOpacity>
+            </View>
             <TextInput style={styles.input} placeholder="Company/Project Name" value={exp.company} onChangeText={(v) => {
                const next = [...resume.experience]; next[i].company = v; setResume({...resume, experience: next});
             }} />
-            <TextInput style={styles.input} placeholder="Role" value={exp.role} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder="Role (e.g. Software Engineer Intern)" value={exp.role} onChangeText={(v) => {
                const next = [...resume.experience]; next[i].role = v; setResume({...resume, experience: next});
             }} />
-            <TextInput style={styles.input} placeholder="Duration" value={exp.duration} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder="Duration (e.g. June 2023 - Present)" value={exp.duration} onChangeText={(v) => {
                const next = [...resume.experience]; next[i].duration = v; setResume({...resume, experience: next});
             }} />
+            <TextInput 
+              style={[styles.input, { height: 60, textAlignVertical: 'top' }]} 
+              placeholder="Description (Optional)" 
+              multiline
+              value={exp.desc} 
+              onChangeText={(v) => {
+                const next = [...resume.experience]; next[i].desc = v; setResume({...resume, experience: next});
+              }} 
+            />
           </View>
         ))}
       </View>
 
+      <View style={{ height: 120 }} />
+    </ScrollView>
+  );
+
+  const renderTemplates = () => (
+    <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+      <View style={styles.templatesGrid}>
+        {TEMPLATES.map((tpl) => (
+          <TouchableOpacity 
+            key={tpl.id} 
+            style={[
+              styles.templateCard, 
+              selectedTemplate === tpl.id && { borderColor: tpl.color, borderWidth: 2, backgroundColor: tpl.color + '05' }
+            ]}
+            onPress={() => {
+              setSelectedTemplate(tpl.id);
+              setActiveTab('preview');
+            }}
+          >
+            <View style={[styles.templateHeaderLine, { backgroundColor: tpl.color }]} />
+            <Text style={[styles.templateName, selectedTemplate === tpl.id && { color: tpl.color }]}>{tpl.name}</Text>
+            <View style={styles.templatePreviewMock}>
+              <View style={[styles.mockLine, { width: '80%' }]} />
+              <View style={[styles.mockLine, { width: '40%' }]} />
+              <View style={[styles.mockSection, { marginTop: 10 }]}>
+                <View style={[styles.mockLine, { width: '100%', height: 4 }]} />
+                <View style={[styles.mockLine, { width: '100%', height: 4 }]} />
+              </View>
+            </View>
+            {selectedTemplate === tpl.id && (
+              <View style={[styles.selectedBadge, { backgroundColor: tpl.color }]}>
+                <Text style={styles.badgeText}>Selected</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
       <View style={{ height: 100 }} />
     </ScrollView>
   );
 
   const renderPreview = () => (
     <ScrollView style={styles.previewContainer} showsVerticalScrollIndicator={false}>
+      <View style={styles.previewControls}>
+        <Text style={styles.previewInfo}>Previewing: {TEMPLATES.find(t => t.id === selectedTemplate)?.name}</Text>
+      </View>
+      
       <View style={styles.a4Page}>
-        {/* Banner */}
-        <View style={styles.previewHeaderBorder} />
+        {/* Simplified React Native Preview - The actual PDF will have full template styling */}
+        <View style={[styles.previewHeaderBorder, { backgroundColor: TEMPLATES.find(t => t.id === selectedTemplate)?.color || '#0d47a1' }]} />
         <Text style={styles.prevName}>{resume.name || 'Your Name'}</Text>
         <View style={styles.prevContactRow}>
           {resume.email ? <Text style={styles.prevContact}><Mail size={12} color="#666" /> {resume.email}</Text> : null}
@@ -167,14 +295,12 @@ export default function ResumeScreen() {
 
         <View style={styles.divider} />
 
-        {/* Summary */}
-        <Text style={styles.prevSectionTitle}>PROFESSIONAL SUMMARY</Text>
+        <Text style={[styles.prevSectionTitle, { color: TEMPLATES.find(t => t.id === selectedTemplate)?.color || '#0d47a1' }]}>PROFESSIONAL SUMMARY</Text>
         <Text style={styles.prevText}>{resume.summary}</Text>
 
-        {/* Exp */}
         {resume.experience.length > 0 && (
           <>
-            <Text style={[styles.prevSectionTitle, {marginTop: 20}]}>EXPERIENCE</Text>
+            <Text style={[styles.prevSectionTitle, {marginTop: 20, color: TEMPLATES.find(t => t.id === selectedTemplate)?.color || '#0d47a1'}]}>EXPERIENCE / PROJECTS</Text>
             {resume.experience.map((exp, i) => (
               <View key={i} style={styles.prevExpItem}>
                 <View style={styles.prevRow}>
@@ -187,8 +313,7 @@ export default function ResumeScreen() {
           </>
         )}
 
-        {/* Edu */}
-        <Text style={[styles.prevSectionTitle, {marginTop: 20}]}>EDUCATION</Text>
+        <Text style={[styles.prevSectionTitle, {marginTop: 20, color: TEMPLATES.find(t => t.id === selectedTemplate)?.color || '#0d47a1'}]}>EDUCATION</Text>
         {resume.education.map((edu, i) => (
           <View key={i} style={styles.prevExpItem}>
             <View style={styles.prevRow}>
@@ -199,19 +324,35 @@ export default function ResumeScreen() {
           </View>
         ))}
 
-        {/* Skills */}
-        <Text style={[styles.prevSectionTitle, {marginTop: 20}]}>SKILLS</Text>
+        <Text style={[styles.prevSectionTitle, {marginTop: 20, color: TEMPLATES.find(t => t.id === selectedTemplate)?.color || '#0d47a1'}]}>SKILLS</Text>
         <View style={styles.prevSkillsRow}>
           {resume.skills.map((sk, i) => (
-            <View key={i} style={styles.prevSkillChip}>
-              <Text style={styles.prevSkillText}>{sk}</Text>
-            </View>
+            sk ? (
+              <View key={i} style={styles.prevSkillChip}>
+                <Text style={styles.prevSkillText}>{sk}</Text>
+              </View>
+            ) : null
           ))}
         </View>
       </View>
-      <View style={{ height: 100 }} />
+      
+      <TouchableOpacity style={styles.downloadFloatingBtn} onPress={handleDownload}>
+         <Download color="#fff" size={24} />
+         <Text style={styles.downloadBtnText}>Generate PDF</Text>
+      </TouchableOpacity>
+      
+      <View style={{ height: 120 }} />
     </ScrollView>
   );
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'edit': return renderEdit();
+      case 'preview': return renderPreview();
+      case 'templates': return renderTemplates();
+      default: return renderEdit();
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -220,9 +361,7 @@ export default function ResumeScreen() {
           <ArrowLeft color="#fff" size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Resume Builder</Text>
-        <TouchableOpacity onPress={handleShare}>
-          <Download color="#fff" size={24} />
-        </TouchableOpacity>
+        <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.tabBar}>
@@ -231,7 +370,14 @@ export default function ResumeScreen() {
           onPress={() => setActiveTab('edit')}
         >
           <Edit3 size={18} color={activeTab === 'edit' ? '#0d47a1' : '#666'} />
-          <Text style={[styles.tabText, activeTab === 'edit' && styles.activeTabText]}>Edit Details</Text>
+          <Text style={[styles.tabText, activeTab === 'edit' && styles.activeTabText]}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.tab, activeTab === 'templates' && styles.activeTab]} 
+          onPress={() => setActiveTab('templates')}
+        >
+          <Layout size={18} color={activeTab === 'templates' ? '#0d47a1' : '#666'} />
+          <Text style={[styles.tabText, activeTab === 'templates' && styles.activeTabText]}>Templates</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.tab, activeTab === 'preview' && styles.activeTab]} 
@@ -242,11 +388,11 @@ export default function ResumeScreen() {
         </TouchableOpacity>
       </View>
 
-      {activeTab === 'edit' ? renderEdit() : renderPreview()}
+      {renderContent()}
 
       {activeTab === 'edit' && (
-         <TouchableOpacity style={styles.primaryBtn} onPress={() => setActiveTab('preview')}>
-            <Text style={styles.primaryBtnText}>Preview Resume</Text>
+         <TouchableOpacity style={styles.primaryBtn} onPress={() => setActiveTab('templates')}>
+            <Text style={styles.primaryBtnText}>Choose Template & Preview</Text>
          </TouchableOpacity>
       )}
     </View>
@@ -266,29 +412,48 @@ const styles = StyleSheet.create({
   },
   backBtn: { width: 40, height: 40, justifyContent: 'center' },
   headerTitle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
-  tabBar: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, margin: 16, padding: 4, elevation: 2 },
-  tab: { flex: 1, paddingVertical: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, borderRadius: 10 },
+  tabBar: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, margin: 16, marginTop: 10, padding: 4, elevation: 2 },
+  tab: { flex: 1, paddingVertical: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, borderRadius: 10 },
   activeTab: { backgroundColor: '#e3f2fd' },
-  tabText: { fontSize: 14, color: '#666', fontWeight: '500' },
+  tabText: { fontSize: 13, color: '#666', fontWeight: '500' },
   activeTabText: { color: '#0d47a1', fontWeight: 'bold' },
   scroll: { paddingHorizontal: 16 },
   formSection: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 16, elevation: 1 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#0d47a1', marginBottom: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  input: { backgroundColor: '#f8faff', borderWidth: 1, borderColor: '#e1efff', borderRadius: 10, padding: 12, marginBottom: 10, fontSize: 15 },
-  itemCard: { padding: 12, backgroundColor: '#fefefe', borderRadius: 10, borderLeftWidth: 3, borderLeftColor: '#0d47a1', marginBottom: 10 },
+  sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#0d47a1', flexDirection: 'row', alignItems: 'center', gap: 8 },
+  circleAddBtn: { backgroundColor: '#0d47a1', width: 28, height: 28, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
+  input: { backgroundColor: '#f8faff', borderWidth: 1, borderColor: '#e1efff', borderRadius: 10, padding: 12, marginBottom: 10, fontSize: 15, color: '#333' },
+  itemCard: { padding: 12, backgroundColor: '#fefefe', borderRadius: 12, borderLeftWidth: 4, borderLeftColor: '#0d47a1', marginBottom: 16, borderWidth: 1, borderColor: '#eee' },
+  itemHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  itemCount: { fontSize: 12, fontWeight: '600', color: '#666', textTransform: 'uppercase' },
+  skillsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  skillInputWrapper: { width: '47%', flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: '#f8faff', borderRadius: 10, borderWidth: 1, borderColor: '#e1efff', paddingRight: 8 },
+  removeBtnInline: { padding: 4 },
   primaryBtn: { 
     position: 'absolute', bottom: 30, left: 20, right: 20, 
-    backgroundColor: '#0d47a1', padding: 16, borderRadius: 14, 
+    backgroundColor: '#0d47a1', padding: 16, borderRadius: 16, 
     alignItems: 'center', elevation: 4 
   },
   primaryBtnText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
 
+  // Templates Styles
+  templatesGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingVertical: 10 },
+  templateCard: { width: '48%', backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 16, elevation: 2, borderWidth: 1, borderColor: '#eee', height: 180 },
+  templateHeaderLine: { height: 4, width: '40%', borderRadius: 2, marginBottom: 12 },
+  templateName: { fontSize: 14, fontWeight: 'bold', color: '#444', marginBottom: 8 },
+  templatePreviewMock: { flex: 1, backgroundColor: '#f9f9f9', borderRadius: 6, padding: 8 },
+  mockLine: { height: 3, backgroundColor: '#e0e0e0', marginBottom: 4, borderRadius: 2 },
+  mockSection: { borderTopWidth: 1, borderTopColor: '#eee', paddingTop: 6 },
+  selectedBadge: { position: 'absolute', top: -5, right: -5, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10, elevation: 2 },
+  badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
+
   // Preview Styles
   previewContainer: { flex: 1, padding: 16 },
+  previewControls: { marginBottom: 12, paddingHorizontal: 4 },
+  previewInfo: { fontSize: 14, color: '#666', fontWeight: '500' },
   a4Page: { 
     backgroundColor: '#fff', 
-    minHeight: 500, 
+    minHeight: 600, 
     padding: 24, 
     borderRadius: 8, 
     elevation: 3, 
@@ -296,19 +461,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1, 
     shadowRadius: 10 
   },
-  previewHeaderBorder: { height: 6, backgroundColor: '#0d47a1', width: 60, marginBottom: 16 },
+  previewHeaderBorder: { height: 6, width: 60, marginBottom: 16 },
   prevName: { fontSize: 26, fontWeight: 'bold', color: '#333', marginBottom: 4 },
   prevContactRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 16 },
   prevContact: { fontSize: 11, color: '#666', flexDirection: 'row', alignItems: 'center', gap: 4 },
   divider: { height: 1, backgroundColor: '#eee', marginVertical: 14 },
-  prevSectionTitle: { fontSize: 13, fontWeight: '800', color: '#0d47a1', letterSpacing: 1.2, marginBottom: 10 },
+  prevSectionTitle: { fontSize: 13, fontWeight: '800', letterSpacing: 1.2, marginBottom: 10 },
   prevText: { fontSize: 12, color: '#444', lineHeight: 18 },
   prevTextSmall: { fontSize: 11, color: '#666', lineHeight: 16, marginTop: 4 },
-  prevExpItem: { marginBottom: 12 },
+  prevExpItem: { marginBottom: 16 },
   prevRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   prevBold: { fontSize: 12, fontWeight: 'bold', color: '#333' },
   prevDate: { fontSize: 11, color: '#888' },
   prevSkillsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   prevSkillChip: { backgroundColor: '#f0f4f8', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14 },
-  prevSkillText: { fontSize: 11, color: '#333', fontWeight: '500' }
+  prevSkillText: { fontSize: 11, color: '#333', fontWeight: '500' },
+  downloadFloatingBtn: { 
+    backgroundColor: '#0d47a1', 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    gap: 10, 
+    padding: 16, 
+    borderRadius: 16, 
+    marginTop: 20,
+    elevation: 4
+  },
+  downloadBtnText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
 });
+
