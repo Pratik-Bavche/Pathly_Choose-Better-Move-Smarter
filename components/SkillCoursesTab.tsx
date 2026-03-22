@@ -95,6 +95,7 @@ export default function SkillCoursesTab() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [userQual, setUserQual] = useState("");
   const [recommendedCatIds, setRecommendedCatIds] = useState<string[]>([]);
+  const [visibleCount, setVisibleCount] = useState(20);
   const { t } = useLanguage();
 
   const { search: searchParam } = useLocalSearchParams();
@@ -106,6 +107,7 @@ export default function SkillCoursesTab() {
         const found = cat.courses.find((c: any) => c.name.toLowerCase() === searchStr);
         if (found) {
           setSelectedCategory(cat);
+          setVisibleCount(20);
           setSelectedCourse(found);
           break;
         }
@@ -137,11 +139,17 @@ export default function SkillCoursesTab() {
     } catch (_) {}
   };
 
+  // Reset pagination on category or filter change
+  useEffect(() => {
+    setVisibleCount(20);
+  }, [selectedCategory, activeFilter]);
+
   useFocusEffect(
     useCallback(() => {
       setSelectedCategory(null);
       setSelectedCourse(null);
       setActiveFilter("all");
+      setVisibleCount(20);
     }, []),
   );
 
@@ -208,6 +216,7 @@ export default function SkillCoursesTab() {
               onPress={() => {
                 setSelectedCategory(cat);
                 setActiveFilter("all");
+                setVisibleCount(20);
               }}
             >
               {isRecommended && (
@@ -312,64 +321,78 @@ export default function SkillCoursesTab() {
               </Text>
             </View>
           ) : (
-            filteredCourses.map((course) => (
-              <TouchableOpacity
-                key={course.id}
-                style={styles.courseCard}
-                activeOpacity={0.85}
-                onPress={() => setSelectedCourse(course)}
-              >
-                {/* Title + Free tag */}
-                <View style={styles.courseTitleRow}>
-                  <Text style={styles.courseTitle}>{course.name}</Text>
-                  {course.isFree && (
-                    <View style={styles.freeTag}>
-                      <Text style={styles.freeTagText}>{t('free_tag')}</Text>
+            <>
+              {filteredCourses.slice(0, visibleCount).map((course) => (
+                <TouchableOpacity
+                  key={course.id}
+                  style={styles.courseCard}
+                  activeOpacity={0.85}
+                  onPress={() => setSelectedCourse(course)}
+                >
+                  {/* Title + Free tag */}
+                  <View style={styles.courseTitleRow}>
+                    <Text style={styles.courseTitle}>{course.name}</Text>
+                    {course.isFree && (
+                      <View style={styles.freeTag}>
+                        <Text style={styles.freeTagText}>{t('free_tag')}</Text>
+                      </View>
+                    )}
+                  </View>
+
+                  {/* Meta row */}
+                  <View style={styles.metaRow}>
+                    <View style={styles.metaItem}>
+                      <Clock color="#888" size={12} />
+                      <Text style={styles.metaText}>{course.duration}</Text>
                     </View>
-                  )}
-                </View>
-
-                {/* Meta row */}
-                <View style={styles.metaRow}>
-                  <View style={styles.metaItem}>
-                    <Clock color="#888" size={12} />
-                    <Text style={styles.metaText}>{course.duration}</Text>
+                    <View style={styles.metaItem}>
+                      <BookOpen color="#888" size={12} />
+                      <Text style={styles.metaText} numberOfLines={1}>
+                        {course.eligibility}
+                      </Text>
+                    </View>
+                    <ModeChip mode={course.mode} />
                   </View>
-                  <View style={styles.metaItem}>
-                    <BookOpen color="#888" size={12} />
-                    <Text style={styles.metaText} numberOfLines={1}>
-                      {course.eligibility}
+
+                  {/* Salary */}
+                  <Text style={styles.courseSalary}>{course.salaryLabel}</Text>
+
+                  {/* Badges */}
+                  <View style={styles.badgesRow}>
+                    {course.badges.slice(0, 3).map((b) => (
+                      <CourseBadge key={b} label={b} />
+                    ))}
+                  </View>
+
+                  {/* Bottom row */}
+                  <View style={styles.courseCardBottom}>
+                    <Text style={styles.certText} numberOfLines={1}>
+                      🏅 {course.certAuthority}
                     </Text>
+                    <View
+                      style={[
+                        styles.viewBtn,
+                        { backgroundColor: selectedCategory.accentColor },
+                      ]}
+                    >
+                      <Text style={styles.viewBtnText}>{t('view_details')}</Text>
+                    </View>
                   </View>
-                  <ModeChip mode={course.mode} />
-                </View>
+                </TouchableOpacity>
+              ))}
 
-                {/* Salary */}
-                <Text style={styles.courseSalary}>{course.salaryLabel}</Text>
-
-                {/* Badges */}
-                <View style={styles.badgesRow}>
-                  {course.badges.slice(0, 3).map((b) => (
-                    <CourseBadge key={b} label={b} />
-                  ))}
-                </View>
-
-                {/* Bottom row */}
-                <View style={styles.courseCardBottom}>
-                  <Text style={styles.certText} numberOfLines={1}>
-                    🏅 {course.certAuthority}
+              {visibleCount < filteredCourses.length && (
+                <TouchableOpacity
+                  style={[styles.loadMoreBtn, { borderColor: selectedCategory.accentColor }]}
+                  onPress={() => setVisibleCount(prev => prev + 30)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[styles.loadMoreText, { color: selectedCategory.accentColor }]}>
+                    {t('load_more')} ({filteredCourses.length - visibleCount} {t('remaining_suffix') || 'more'})
                   </Text>
-                  <View
-                    style={[
-                      styles.viewBtn,
-                      { backgroundColor: selectedCategory.accentColor },
-                    ]}
-                  >
-                    <Text style={styles.viewBtnText}>{t('view_details')}</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))
+                </TouchableOpacity>
+              )}
+            </>
           )}
           <View style={{ height: 60 }} />
         </ScrollView>
@@ -847,4 +870,17 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   ctaButtonText: { fontSize: 16, fontWeight: "bold", color: "#fff" },
+  loadMoreBtn: {
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    marginVertical: 12,
+    backgroundColor: '#fff',
+  },
+  loadMoreText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 });

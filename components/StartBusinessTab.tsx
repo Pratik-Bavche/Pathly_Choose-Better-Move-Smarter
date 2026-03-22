@@ -50,6 +50,7 @@ export default function StartBusinessTab() {
   const { t } = useLanguage();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [selectedIdea, setSelectedIdea] = useState<BusinessIdea | null>(null);
+  const [visibleCount, setVisibleCount] = useState(20);
 
   const { search: searchParam } = useLocalSearchParams();
 
@@ -69,8 +70,14 @@ export default function StartBusinessTab() {
     useCallback(() => {
       setSelectedCategoryId(null);
       setSelectedIdea(null);
+      setVisibleCount(20);
     }, [])
   );
+
+  // Reset pagination when category changes
+  React.useEffect(() => {
+    setVisibleCount(20);
+  }, [selectedCategoryId]);
 
   const selectedCategory = BUSINESS_CATEGORIES.find(c => c.id === selectedCategoryId) || null;
   const categoryIdeas = BUSINESS_IDEAS.filter(idea => idea.categoryId === selectedCategoryId);
@@ -155,7 +162,7 @@ export default function StartBusinessTab() {
               <Text style={styles.emptyText}>{t('no_ideas_found')}</Text>
             </View>
           ) : (
-            categoryIdeas.map(idea => (
+            categoryIdeas.slice(0, visibleCount).map(idea => (
               <TouchableOpacity
                 key={idea.id}
                 style={styles.ideaCard}
@@ -190,6 +197,18 @@ export default function StartBusinessTab() {
                 </View>
               </TouchableOpacity>
             ))
+          )}
+
+          {visibleCount < categoryIdeas.length && (
+            <TouchableOpacity
+              style={[styles.loadMoreBtn, { borderColor: '#1565C0' }]}
+              onPress={() => setVisibleCount(prev => prev + 30)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.loadMoreText}>
+                {t('load_more')} ({categoryIdeas.length - visibleCount} {t('remaining_suffix')})
+              </Text>
+            </TouchableOpacity>
           )}
           <View style={{ height: 60 }} />
         </ScrollView>
@@ -434,5 +453,21 @@ const styles = StyleSheet.create({
   addonBlock: { marginBottom: 12 },
   addonLabel: { fontSize: 14, fontWeight: 'bold', color: '#333', marginBottom: 4 },
   youtubeBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#FFCDD2', marginTop: 8 },
-  youtubeText: { fontSize: 13, color: '#D32F2F', fontWeight: 'bold', flex: 1 }
+  youtubeText: { fontSize: 13, color: '#D32F2F', fontWeight: 'bold', flex: 1 },
+
+  // Pagination
+  loadMoreBtn: {
+    paddingVertical: 14,
+    marginVertical: 12,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderRadius: 12,
+    alignItems: 'center',
+    backgroundColor: '#F0F7FF',
+  },
+  loadMoreText: {
+    color: '#1565C0',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
 });

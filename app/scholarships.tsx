@@ -400,7 +400,7 @@ export default function ScholarshipsScreen() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [filters, setFilters] = useState({ level: 'All', type: 'All', special: 'All' });
   const [selected, setSelected] = useState<Scholarship | null>(null);
-  const [visibleCount, setVisibleCount] = useState(30);
+  const [visibleCount, setVisibleCount] = useState(20);
 
   const LEVEL_FILTERS = [t('filter_all'), '9th', '10th', '11th', '12th', 'ITI', 'Diploma', 'UG', 'PG', 'PhD'];
   const TYPE_FILTERS = [t('filter_all'), 'Central Govt', 'State Govt', 'Private/Corporate', 'PSU', 'International'];
@@ -460,8 +460,12 @@ export default function ScholarshipsScreen() {
     return filtered.slice(0, visibleCount);
   }, [filtered, visibleCount]);
 
+  React.useEffect(() => {
+    setVisibleCount(20);
+  }, [search, filters]);
+
   const loadMore = () => {
-    setVisibleCount(prev => prev + 50);
+    setVisibleCount(prev => prev + 30);
   };
 
   return (
@@ -532,8 +536,14 @@ export default function ScholarshipsScreen() {
         )}
 
         {visibleCount < filtered.length && (
-          <TouchableOpacity style={styles.loadMoreBtn} onPress={loadMore}>
-            <Text style={styles.loadMoreText}>{t('load_more')} (+50)</Text>
+          <TouchableOpacity 
+            style={styles.loadMoreBtn} 
+            onPress={loadMore}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.loadMoreText}>
+              {t('load_more')} ({filtered.length - visibleCount} {t('remaining_suffix')})
+            </Text>
           </TouchableOpacity>
         )}
 
@@ -728,7 +738,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoChipText: { fontSize: 12, color: '#444' },
-
   sectionBox: {
     backgroundColor: '#fff',
     borderRadius: 16,

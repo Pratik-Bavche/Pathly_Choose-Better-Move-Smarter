@@ -137,6 +137,7 @@ export default function StartWorkingTab() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [userQual, setUserQual] = useState("12th");
   const [userInterests, setUserInterests] = useState<string[]>([]);
+  const [visibleCount, setVisibleCount] = useState(20);
 
   const { search: searchParam } = useLocalSearchParams();
   const { t } = useLanguage();
@@ -176,8 +177,14 @@ export default function StartWorkingTab() {
       setSelectedCategory(null);
       setSelectedJob(null);
       setActiveFilter("all");
+      setVisibleCount(20);
     }, []),
   );
+
+  // Reset pagination on category or filter change
+  useEffect(() => {
+    setVisibleCount(20);
+  }, [selectedCategory, activeFilter]);
 
   // ── Filtered Jobs ──────────────────────────────────────────────
   const filteredJobs = selectedCategory
@@ -291,7 +298,7 @@ export default function StartWorkingTab() {
               <Text style={styles.emptyText}>{t('no_jobs_match')}</Text>
             </View>
           ) : (
-            filteredJobs.map((job) => {
+            filteredJobs.slice(0, visibleCount).map((job) => {
               const score = computeMatchScore(job, userQual, userInterests);
               const matchColor = getMatchColor(score);
               const btnColor = NEXT_COLORS[job.nextStep] ?? "#1565C0";
@@ -367,6 +374,18 @@ export default function StartWorkingTab() {
                 </TouchableOpacity>
               );
             })
+          )}
+
+          {visibleCount < filteredJobs.length && (
+            <TouchableOpacity
+              style={[styles.loadMoreBtn, { borderColor: '#1565C0' }]}
+              onPress={() => setVisibleCount(prev => prev + 30)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.loadMoreText}>
+                {t('load_more')} ({filteredJobs.length - visibleCount} {t('remaining_suffix')})
+              </Text>
+            </TouchableOpacity>
           )}
           <View style={{ height: 60 }} />
         </ScrollView>
@@ -803,8 +822,34 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: "center",
   },
-  salaryHeroLabel: { fontSize: 12, color: "#666", marginBottom: 4 },
-  salaryHeroValue: { fontSize: 22, fontWeight: "bold", color: "#2E7D32" },
+  salaryHeroLabel: {
+    fontSize: 12,
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  salaryHeroValue: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#2E7D32",
+    textAlign: "center",
+  },
+
+  // Pagination
+  loadMoreBtn: {
+    paddingVertical: 14,
+    marginVertical: 12,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderRadius: 12,
+    alignItems: 'center',
+    backgroundColor: '#F0F7FF',
+  },
+  loadMoreText: {
+    color: '#1565C0',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
 
   detailSection: {
     backgroundColor: "#fff",
