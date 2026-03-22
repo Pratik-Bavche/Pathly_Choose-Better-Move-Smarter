@@ -20,6 +20,7 @@ import {
   View,
 } from 'react-native';
 import scholarshipsData from '../data/scholarships.json';
+import { useLanguage } from '../context/LanguageContext';
 
 // ── Types ────────────────────────────────────────────────────────────
 interface Scholarship {
@@ -53,11 +54,6 @@ interface Scholarship {
 
 const ALL_SCHOLARSHIPS: Scholarship[] = scholarshipsData as Scholarship[];
 
-// ── Filter Options ────────────────────────────────────────────────────
-const LEVEL_FILTERS = ['All', '9th', '10th', '11th', '12th', 'ITI', 'Diploma', 'UG', 'PG', 'PhD'];
-const TYPE_FILTERS = ['All', 'Central Govt', 'State Govt', 'Private/Corporate', 'PSU', 'International'];
-const SPECIAL_FILTERS = ['All', 'Girls Only', 'Minority', 'Disabled (PWD)', 'SC/ST', 'OBC', 'EBC/General'];
-
 const TYPE_COLOR: Record<string, { bg: string; text: string }> = {
   'Central Government': { bg: '#e3f2fd', text: '#1565C0' },
   'Maharashtra State Government': { bg: '#e8f5e9', text: '#2E7D32' },
@@ -87,6 +83,7 @@ function ScholarshipDetailModal({
   scholarship: Scholarship;
   onClose: () => void;
 }) {
+  const { t } = useLanguage();
   const typeColor = getTypeColor(scholarship.type);
 
   return (
@@ -109,7 +106,7 @@ function ScholarshipDetailModal({
               <Text style={[styles.typeBadgeText, { color: typeColor.text }]}>{scholarship.type}</Text>
             </View>
             <View style={styles.amountBox}>
-              <Text style={styles.amountLabel}>💰 Amount / Benefit</Text>
+              <Text style={styles.amountLabel}>💰 {t('benefit_label')}</Text>
               <Text style={styles.amountValue}>{scholarship.amount}</Text>
             </View>
           </View>
@@ -125,17 +122,17 @@ function ScholarshipDetailModal({
           </View>
 
           {/* Eligibility */}
-          <SectionBox title="✅ Eligibility Criteria">
-            <DetailRow label="Qualification" value={scholarship.eligibility.qualification} />
-            <DetailRow label="Min. Percentage" value={scholarship.eligibility.minPercentage} />
-            <DetailRow label="Family Income Limit" value={scholarship.eligibility.familyIncomeLimit} />
-            <DetailRow label="Category" value={scholarship.eligibility.category} />
-            <DetailRow label="Gender" value={scholarship.eligibility.gender} />
-            <DetailRow label="State Conditions" value={scholarship.eligibility.stateConditions} />
+          <SectionBox title={`✅ ${t('eligibility_criteria')}`}>
+            <DetailRow label={t('qual_label_small')} value={scholarship.eligibility.qualification} />
+            <DetailRow label={t('min_percentage_label')} value={scholarship.eligibility.minPercentage} />
+            <DetailRow label={t('family_income_label')} value={scholarship.eligibility.familyIncomeLimit} />
+            <DetailRow label={t('category_label_small')} value={scholarship.eligibility.category} />
+            <DetailRow label={t('gender_label_small')} value={scholarship.eligibility.gender} />
+            <DetailRow label={t('state_conditions_label')} value={scholarship.eligibility.stateConditions} />
           </SectionBox>
 
           {/* Documents */}
-          <SectionBox title="📁 Required Documents">
+          <SectionBox title={`📁 ${t('req_docs')}`}>
             {scholarship.documents.map((doc, i) => (
               <View key={i} style={styles.bulletRow}>
                 <Text style={styles.bullet}>•</Text>
@@ -145,7 +142,7 @@ function ScholarshipDetailModal({
           </SectionBox>
 
           {/* Application Process */}
-          <SectionBox title="📋 How to Apply (Step-by-Step)">
+          <SectionBox title={`📋 ${t('how_to_apply')}`}>
             {scholarship.applicationProcess.map((step, i) => (
               <View key={i} style={styles.stepRow}>
                 <View style={styles.stepNum}>
@@ -157,7 +154,7 @@ function ScholarshipDetailModal({
           </SectionBox>
 
           {/* Renewal */}
-          <SectionBox title="🔄 Renewal Conditions">
+          <SectionBox title={`🔄 ${t('renewal_cond')}`}>
             <Text style={styles.plainText}>{scholarship.renewalConditions}</Text>
           </SectionBox>
 
@@ -176,7 +173,7 @@ function ScholarshipDetailModal({
             onPress={() => Linking.openURL(scholarship.applyLink)}
           >
             <ExternalLink color="#fff" size={18} />
-            <Text style={styles.applyBtnText}>Apply Now / Open Portal</Text>
+            <Text style={styles.applyBtnText}>{t('apply_portal_btn')}</Text>
           </TouchableOpacity>
 
           <View style={{ height: 40 }} />
@@ -222,6 +219,7 @@ function ScholarshipCard({
   item: Scholarship;
   onPress: () => void;
 }) {
+  const { t } = useLanguage();
   const typeColor = getTypeColor(item.type);
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
@@ -271,7 +269,7 @@ function ScholarshipCard({
       <View style={styles.cardFooter}>
         <Text style={styles.cardPortal}>🔗 {item.portal.split('/')[0].trim()}</Text>
         <View style={styles.cardViewBtn}>
-          <Text style={styles.cardViewBtnText}>Details</Text>
+          <Text style={styles.cardViewBtnText}>{t('view_details')}</Text>
           <ChevronRight color="#1565c0" size={14} />
         </View>
       </View>
@@ -285,12 +283,19 @@ function FilterSheet({
   onClose,
   filters,
   setFilters,
+  LEVEL_FILTERS,
+  TYPE_FILTERS,
+  SPECIAL_FILTERS
 }: {
   visible: boolean;
   onClose: () => void;
   filters: { level: string; type: string; special: string };
   setFilters: (f: { level: string; type: string; special: string }) => void;
+  LEVEL_FILTERS: string[];
+  TYPE_FILTERS: string[];
+  SPECIAL_FILTERS: string[];
 }) {
+  const { t } = useLanguage();
   const [local, setLocal] = useState(filters);
 
   function Pill({
@@ -319,14 +324,14 @@ function FilterSheet({
       <View style={styles.filterOverlay}>
         <View style={styles.filterSheet}>
           <View style={styles.filterSheetHeader}>
-            <Text style={styles.filterSheetTitle}>Filter Scholarships</Text>
+            <Text style={styles.filterSheetTitle}>{t('filter_title')}</Text>
             <TouchableOpacity onPress={onClose}>
               <X color="#333" size={22} />
             </TouchableOpacity>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.filterGroupLabel}>Education Level</Text>
+            <Text style={styles.filterGroupLabel}>{t('edu_level_label')}</Text>
             <View style={styles.pillRow}>
               {LEVEL_FILTERS.map((l) => (
                 <Pill
@@ -338,7 +343,7 @@ function FilterSheet({
               ))}
             </View>
 
-            <Text style={styles.filterGroupLabel}>Scholarship Type</Text>
+            <Text style={styles.filterGroupLabel}>{t('scholarship_type_label')}</Text>
             <View style={styles.pillRow}>
               {TYPE_FILTERS.map((t) => (
                 <Pill
@@ -350,7 +355,7 @@ function FilterSheet({
               ))}
             </View>
 
-            <Text style={styles.filterGroupLabel}>Special Category</Text>
+            <Text style={styles.filterGroupLabel}>{t('special_cat_label')}</Text>
             <View style={styles.pillRow}>
               {SPECIAL_FILTERS.map((s) => (
                 <Pill
@@ -368,7 +373,7 @@ function FilterSheet({
               style={styles.resetBtn}
               onPress={() => setLocal({ level: 'All', type: 'All', special: 'All' })}
             >
-              <Text style={styles.resetBtnText}>Reset</Text>
+              <Text style={styles.resetBtnText}>{t('reset_btn')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.applyFilterBtn}
@@ -377,7 +382,7 @@ function FilterSheet({
                 onClose();
               }}
             >
-              <Text style={styles.applyFilterBtnText}>Apply Filters</Text>
+              <Text style={styles.applyFilterBtnText}>{t('apply_filters_btn')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -389,6 +394,7 @@ function FilterSheet({
 // ── Main Screen ───────────────────────────────────────────────────────
 export default function ScholarshipsScreen() {
   const router = useRouter();
+  const { t } = useLanguage();
   const { search: searchParam } = useLocalSearchParams();
   const [search, setSearch] = useState(searchParam ? String(searchParam) : '');
   const [filterVisible, setFilterVisible] = useState(false);
@@ -396,8 +402,12 @@ export default function ScholarshipsScreen() {
   const [selected, setSelected] = useState<Scholarship | null>(null);
   const [visibleCount, setVisibleCount] = useState(30);
 
+  const LEVEL_FILTERS = [t('filter_all'), '9th', '10th', '11th', '12th', 'ITI', 'Diploma', 'UG', 'PG', 'PhD'];
+  const TYPE_FILTERS = [t('filter_all'), 'Central Govt', 'State Govt', 'Private/Corporate', 'PSU', 'International'];
+  const SPECIAL_FILTERS = [t('filter_all'), 'Girls Only', 'Minority', 'Disabled (PWD)', 'SC/ST', 'OBC', 'EBC/General'];
+
   const activeFilterCount = [filters.level, filters.type, filters.special].filter(
-    (f) => f !== 'All'
+    (f) => f !== 'All' && f !== t('filter_all')
   ).length;
 
   const filtered = useMemo(() => {
@@ -421,7 +431,7 @@ export default function ScholarshipsScreen() {
       }
 
       // Type filter
-      if (filters.type !== 'All') {
+      if (filters.type !== 'All' && filters.type !== t('filter_all')) {
         const typeMap: Record<string, string> = {
           'Central Govt': 'central government',
           'State Govt': 'state government',
@@ -462,8 +472,8 @@ export default function ScholarshipsScreen() {
           <ArrowLeft color="#fff" size={22} />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <Text style={styles.headerTitle}>🎓 Scholarships</Text>
-          <Text style={styles.headerSub}>{ALL_SCHOLARSHIPS.length} scholarships available</Text>
+          <Text style={styles.headerTitle}>🎓 {t('scholarships_header')}</Text>
+          <Text style={styles.headerSub}>{ALL_SCHOLARSHIPS.length}{t('available_count')}</Text>
         </View>
       </View>
 
@@ -473,7 +483,7 @@ export default function ScholarshipsScreen() {
           <Search color="#999" size={18} />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search scholarships, tags, type..."
+            placeholder={t('search_scholarships_ph')}
             placeholderTextColor="#bbb"
             value={search}
             onChangeText={setSearch}
@@ -497,12 +507,12 @@ export default function ScholarshipsScreen() {
       {/* Result Count */}
       <View style={styles.resultRow}>
         <BookOpen color="#777" size={14} />
-        <Text style={styles.resultCount}>{filtered.length} scholarships found</Text>
+        <Text style={styles.resultCount}>{filtered.length}{t('found_count')}</Text>
         {activeFilterCount > 0 && (
           <TouchableOpacity
             onPress={() => setFilters({ level: 'All', type: 'All', special: 'All' })}
           >
-            <Text style={styles.clearFilters}>Clear Filters</Text>
+            <Text style={styles.clearFilters}>{t('clear_filters')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -512,8 +522,8 @@ export default function ScholarshipsScreen() {
         {filtered.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyEmoji}>🔍</Text>
-            <Text style={styles.emptyTitle}>No scholarships found</Text>
-            <Text style={styles.emptySubtitle}>Try adjusting your search or filters</Text>
+            <Text style={styles.emptyTitle}>{t('no_scholarships_found')}</Text>
+            <Text style={styles.emptySubtitle}>{t('try_adjust_filters')}</Text>
           </View>
         ) : (
           visibleScholarships.map((item) => (
@@ -523,12 +533,12 @@ export default function ScholarshipsScreen() {
 
         {visibleCount < filtered.length && (
           <TouchableOpacity style={styles.loadMoreBtn} onPress={loadMore}>
-            <Text style={styles.loadMoreText}>Load More (+50)</Text>
+            <Text style={styles.loadMoreText}>{t('load_more')} (+50)</Text>
           </TouchableOpacity>
         )}
 
         {filtered.length > 0 && visibleCount >= filtered.length && (
-          <Text style={styles.endMessage}>✨ You've reached the end of the list</Text>
+          <Text style={styles.endMessage}>✨ {t('end_list')}</Text>
         )}
 
         <View style={{ height: 80 }} />
@@ -545,6 +555,9 @@ export default function ScholarshipsScreen() {
         onClose={() => setFilterVisible(false)}
         filters={filters}
         setFilters={setFilters}
+        LEVEL_FILTERS={LEVEL_FILTERS}
+        TYPE_FILTERS={TYPE_FILTERS}
+        SPECIAL_FILTERS={SPECIAL_FILTERS}
       />
     </View>
   );

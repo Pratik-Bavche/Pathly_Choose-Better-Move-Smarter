@@ -23,6 +23,7 @@ import {
   View
 } from 'react-native';
 import { BUSINESS_CATEGORIES, BUSINESS_IDEAS, BusinessIdea } from '../data/businessIdeas';
+import { useLanguage } from '../context/LanguageContext';
 
 // ── Budget Badge Badge ───────────────────────────────────────────────
 const BUDGET_COLORS: Record<string, { bg: string; text: string }> = {
@@ -33,16 +34,18 @@ const BUDGET_COLORS: Record<string, { bg: string; text: string }> = {
 };
 
 function BudgetBadge({ type }: { type: string }) {
+  const { t } = useLanguage();
   const colors = BUDGET_COLORS[type] ?? { bg: '#F5F5F5', text: '#616161' };
   return (
     <View style={[styles.badge, { backgroundColor: colors.bg }]}>
-      <Text style={[styles.badgeText, { color: colors.text }]}>{type} Budget</Text>
+      <Text style={[styles.badgeText, { color: colors.text }]}>{type} {t('budget_label_small')}</Text>
     </View>
   );
 }
 
 // ── Main Component ───────────────────────────────────────────────
 export default function StartBusinessTab() {
+  const { t } = useLanguage();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [selectedIdea, setSelectedIdea] = useState<BusinessIdea | null>(null);
 
@@ -73,8 +76,8 @@ export default function StartBusinessTab() {
   // ── Step 1: Category Grid ─────────────────────────────────────
   const renderCategoryGrid = () => (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.catScrollContent}>
-      <Text style={styles.stepTitle}>Explore Business Categories</Text>
-      <Text style={styles.stepSubtitle}>Find the perfect business idea for your skills & budget</Text>
+      <Text style={styles.stepTitle}>{t('explore_business_categories')}</Text>
+      <Text style={styles.stepSubtitle}>{t('find_perfect_business_desc')}</Text>
 
       <View style={styles.catGrid}>
         {BUSINESS_CATEGORIES.map((cat, index) => {
@@ -106,7 +109,7 @@ export default function StartBusinessTab() {
               <Text style={styles.catDesc} numberOfLines={2}>{cat.desc}</Text>
               <View style={styles.catFooter}>
                 <Text style={[styles.catCount, { color: colorObj.iconColor }]}>
-                  {BUSINESS_IDEAS.filter(i => i.categoryId === cat.id).length} Ideas
+                  {BUSINESS_IDEAS.filter(i => i.categoryId === cat.id).length}{t('business_ideas_count_suffix')}
                 </Text>
                 <ChevronRight color={colorObj.iconColor} size={16} />
               </View>
@@ -119,9 +122,9 @@ export default function StartBusinessTab() {
       <View style={styles.infoCard}>
         <Lightbulb color="#F57F17" size={20} style={{ marginRight: 12, marginTop: 2 }} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.infoCardTitle}>Why start a business?</Text>
+          <Text style={styles.infoCardTitle}>{t('why_start_business')}</Text>
           <Text style={styles.infoCardDesc}>
-            Starting a small business offers financial independence, flexibility, and unlimited growth potential. Find ideas that require minimal initial investment.
+            {t('starting_small_business_desc')}
           </Text>
         </View>
       </View>
@@ -147,7 +150,7 @@ export default function StartBusinessTab() {
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.listContent}>
           {categoryIdeas.length === 0 ? (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyText}>No ideas found for this category yet.</Text>
+              <Text style={styles.emptyText}>{t('no_ideas_found')}</Text>
             </View>
           ) : (
             categoryIdeas.map(idea => (
@@ -173,12 +176,12 @@ export default function StartBusinessTab() {
                 </View>
 
                 <View style={styles.ideaCardBottom}>
-                  <Text style={styles.profitLabel}>Avg. Profit: <Text style={{ color: '#2E7D32', fontWeight: 'bold' }}>{idea.expectedProfit}</Text></Text>
+                  <Text style={styles.profitLabel}>{t('avg_profit_label')}<Text style={{ color: '#2E7D32', fontWeight: 'bold' }}>{idea.expectedProfit}</Text></Text>
                   <TouchableOpacity
                     style={styles.viewDetailsBtn}
                     onPress={() => setSelectedIdea(idea)}
                   >
-                    <Text style={styles.viewDetailsBtnText}>View Details</Text>
+                    <Text style={styles.viewDetailsBtnText}>{t('view_details')}</Text>
                   </TouchableOpacity>
                 </View>
               </TouchableOpacity>
@@ -218,12 +221,12 @@ export default function StartBusinessTab() {
             
             <View style={styles.financeBox}>
                 <View style={styles.financeItem}>
-                    <Text style={styles.financeLabel}>Expected Profit</Text>
+                    <Text style={styles.financeLabel}>{t('expected_profit_label')}</Text>
                     <Text style={styles.financeValueGreen}>{selectedIdea.expectedProfit}</Text>
                 </View>
                 <View style={styles.financeDivider} />
                 <View style={styles.financeItem}>
-                    <Text style={styles.financeLabel}>Time to Break Even</Text>
+                    <Text style={styles.financeLabel}>{t('time_to_break_even')}</Text>
                     <Text style={styles.financeValue}>{selectedIdea.breakEvenTime}</Text>
                 </View>
             </View>
@@ -231,9 +234,9 @@ export default function StartBusinessTab() {
 
           {/* Investment & Costs */}
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}><Banknote color="#1565C0" size={18} style={{marginRight: 8}}/> Financial Breakdown</Text>
+            <Text style={styles.detailSectionTitle}><Banknote color="#1565C0" size={18} style={{marginRight: 8}}/> {t('financial_breakdown')}</Text>
             
-            <Text style={styles.subHeading}>Initial Setup Budget: {selectedIdea.setupBudget}</Text>
+            <Text style={styles.subHeading}>{t('initial_setup_budget')}{selectedIdea.setupBudget}</Text>
             {selectedIdea.setupBreakdown.map((item, idx) => (
                 <View key={idx} style={styles.bulletRow}>
                     <View style={styles.bulletDot} />
@@ -241,7 +244,7 @@ export default function StartBusinessTab() {
                 </View>
             ))}
 
-            <Text style={[styles.subHeading, { marginTop: 12 }]}>Monthly Operating Cost:</Text>
+            <Text style={[styles.subHeading, { marginTop: 12 }]}>{t('monthly_operating_cost')}</Text>
             <View style={styles.bulletRow}>
                 <View style={styles.bulletDot} />
                 <Text style={styles.detailValue}>{selectedIdea.monthlyCost}</Text>
@@ -250,12 +253,12 @@ export default function StartBusinessTab() {
 
           {/* Requirements & Eligibility */}
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}><ShieldCheck color="#2E7D32" size={18} style={{marginRight: 8}}/> Requirements & Eligibility</Text>
+            <Text style={styles.detailSectionTitle}><ShieldCheck color="#2E7D32" size={18} style={{marginRight: 8}}/> {t('req_eligibility_label')}</Text>
             
             <View style={styles.detailRow}>
               <Settings color="#666" size={16} />
               <View style={{ flex: 1, marginLeft: 10 }}>
-                  <Text style={styles.reqLabel}>Required Skills:</Text>
+                  <Text style={styles.reqLabel}>{t('required_skills_label')}</Text>
                   <Text style={styles.detailValue}>{selectedIdea.skillsRequired}</Text>
               </View>
             </View>
@@ -263,7 +266,7 @@ export default function StartBusinessTab() {
             <View style={[styles.detailRow, { marginTop: 12 }]}>
               <CheckCircle color="#666" size={16} />
               <View style={{ flex: 1, marginLeft: 10 }}>
-                  <Text style={styles.reqLabel}>Eligibility / Licensing:</Text>
+                  <Text style={styles.reqLabel}>{t('eligibility_detail_label')}</Text>
                   <Text style={styles.detailValue}>{selectedIdea.eligibility}</Text>
               </View>
             </View>
@@ -271,7 +274,7 @@ export default function StartBusinessTab() {
             <View style={[styles.detailRow, { marginTop: 12 }]}>
               <Users color="#666" size={16} />
               <View style={{ flex: 1, marginLeft: 10 }}>
-                  <Text style={styles.reqLabel}>Manpower Needs:</Text>
+                  <Text style={styles.reqLabel}>{t('manpower_needs_label')}</Text>
                   <Text style={styles.detailValue}>{selectedIdea.manpower}</Text>
               </View>
             </View>
@@ -279,19 +282,19 @@ export default function StartBusinessTab() {
           
           {/* Marketing & Growth */}
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}><TrendingUp color="#E65100" size={18} style={{marginRight: 8}}/> Marketing & Scalability</Text>
+            <Text style={styles.detailSectionTitle}><TrendingUp color="#E65100" size={18} style={{marginRight: 8}}/> {t('marketing_scalability_label')}</Text>
             
-            <Text style={styles.subHeading}>Marketing Tips:</Text>
+            <Text style={styles.subHeading}>{t('marketing_tips_label')}</Text>
             <Text style={styles.detailValue}>{selectedIdea.marketingTips}</Text>
             
-            <Text style={[styles.subHeading, { marginTop: 12 }]}>Scalability Potential:</Text>
+            <Text style={[styles.subHeading, { marginTop: 12 }]}>{t('scalability_potential_label')}</Text>
             <Text style={styles.detailValue}>{selectedIdea.scalability}</Text>
           </View>
 
           {/* Optional Addons */}
           {selectedIdea.addons && (
               <View style={[styles.detailSection, { backgroundColor: '#F8F9FA' }]}>
-                 <Text style={styles.detailSectionTitle}><Rocket color="#8E24AA" size={18} style={{marginRight: 8}}/> Bonus Tips & Resources</Text>
+                 <Text style={styles.detailSectionTitle}><Rocket color="#8E24AA" size={18} style={{marginRight: 8}}/> {t('bonus_tips_resources')}</Text>
                  
                  {selectedIdea.addons.example && (
                      <View style={styles.addonBlock}>

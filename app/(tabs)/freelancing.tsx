@@ -107,7 +107,7 @@ export default function FreelancingScreen() {
                     }
                     return p;
                 });
-                Alert.alert('Success', 'Post updated successfully!');
+                Alert.alert('Success', t('update_success'));
             } else {
                 // Create new post
                 const newPost: Post = {
@@ -121,7 +121,7 @@ export default function FreelancingScreen() {
                     linkedin: linkedin.trim()
                 };
                 updatedPosts = [newPost, ...posts];
-                Alert.alert('Success', 'Your post has been published!');
+                Alert.alert('Success', t('post_success'));
             }
 
             setPosts(updatedPosts);
@@ -142,10 +142,10 @@ export default function FreelancingScreen() {
 
     const handleDeletePost = (id: string) => {
         Alert.alert(
-            'Delete Post',
-            'Are you sure you want to delete this post?',
+            t('delete_post_title'),
+            t('delete_post_confirm'),
             [
-                { text: 'Cancel', style: 'cancel' },
+                { text: t('cancel'), style: 'cancel' },
                 { 
                     text: 'Delete', 
                     style: 'destructive',
@@ -215,7 +215,7 @@ export default function FreelancingScreen() {
                     onPress={() => Linking.openURL(`tel:${item.mobile}`)}
                 >
                     <Phone color="#1976d2" size={16} />
-                    <Text style={styles.contactBtnText}>Call Now</Text>
+                    <Text style={styles.contactBtnText}>{t('call_now')}</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -224,8 +224,8 @@ export default function FreelancingScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Freelancing Hub</Text>
-                <Text style={styles.headerSub}>Find projects or showcase your skills</Text>
+                <Text style={styles.headerTitle}>{t('freelance_hub')}</Text>
+                <Text style={styles.headerSub}>{t('freelance_sub')}</Text>
             </View>
 
             <View style={styles.tabBar}>
@@ -234,7 +234,7 @@ export default function FreelancingScreen() {
                     onPress={() => setActiveTab('posts')}
                 >
                     <Globe size={18} color={activeTab === 'posts' ? '#0d47a1' : '#666'} />
-                    <Text style={[styles.tabText, activeTab === 'posts' && styles.activeTabText]}>Browse Posts</Text>
+                    <Text style={[styles.tabText, activeTab === 'posts' && styles.activeTabText]}>{t('browse_posts')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     style={[styles.tab, activeTab === 'create' && styles.activeTab]} 
@@ -252,7 +252,7 @@ export default function FreelancingScreen() {
                 >
                     <Plus size={18} color={activeTab === 'create' ? '#0d47a1' : '#666'} />
                     <Text style={[styles.tabText, activeTab === 'create' && styles.activeTabText]}>
-                        {editingId ? 'Edit Post' : 'Create Post'}
+                        {editingId ? t('edit_post_tab') : t('create_post_tab')}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -267,27 +267,27 @@ export default function FreelancingScreen() {
                     ListEmptyComponent={
                         <View style={styles.emptyState}>
                             <Briefcase color="#ccc" size={48} />
-                            <Text style={styles.emptyText}>No posts yet. Be the first to post!</Text>
+                            <Text style={styles.emptyText}>{t('no_posts')}</Text>
                         </View>
                     }
                 />
             ) : (
                 <ScrollView style={styles.formArea} showsVerticalScrollIndicator={false}>
                     <View style={styles.formGroup}>
-                        <Text style={styles.label}>What is your professional role?</Text>
+                        <Text style={styles.label}>{t('role_label')}</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder="e.g. Graphic Designer, Freelance Writer"
+                            placeholder={t('role_placeholder')}
                             value={role}
                             onChangeText={setRole}
                         />
                     </View>
                     
                     <View style={styles.formGroup}>
-                        <Text style={styles.label}>Tell us about your services & experience</Text>
+                        <Text style={styles.label}>{t('desc_label')}</Text>
                         <TextInput 
                             style={[styles.input, styles.textArea]}
-                            placeholder="Describe what you can do for clients..."
+                            placeholder={t('desc_placeholder')}
                             multiline
                             numberOfLines={4}
                             value={description}
@@ -296,20 +296,20 @@ export default function FreelancingScreen() {
                     </View>
                     
                     <View style={styles.formGroup}>
-                        <Text style={styles.label}>Skills (Comma separated)</Text>
+                        <Text style={styles.label}>{t('skills_label')}</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder="e.g. Logo Design, Photoshop, Copywriting"
+                            placeholder={t('skills_placeholder')}
                             value={skills}
                             onChangeText={setSkills}
                         />
                     </View>
 
                     <View style={styles.formGroup}>
-                        <Text style={styles.label}>Mobile Number *</Text>
+                        <Text style={styles.label}>{t('mobile_label')}</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder="e.g. 9876543210"
+                            placeholder={t('mobile_placeholder')}
                             keyboardType="phone-pad"
                             value={mobile}
                             onChangeText={setMobile}
@@ -317,10 +317,10 @@ export default function FreelancingScreen() {
                     </View>
 
                     <View style={styles.formGroup}>
-                        <Text style={styles.label}>LinkedIn Profile URL</Text>
+                        <Text style={styles.label}>{t('linkedin_label')}</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder="https://linkedin.com/in/yourname"
+                            placeholder={t('linkedin_placeholder')}
                             keyboardType="url"
                             autoCapitalize="none"
                             value={linkedin}
@@ -329,7 +329,7 @@ export default function FreelancingScreen() {
                     </View>
                     
                     <TouchableOpacity style={styles.submitBtn} onPress={handleCreateOrUpdatePost}>
-                        <Text style={styles.submitBtnText}>{editingId ? 'Update Post' : 'Publish Post'}</Text>
+                        <Text style={styles.submitBtnText}>{editingId ? t('update_post') : t('publish_post')}</Text>
                     </TouchableOpacity>
                     
                     {editingId && (
@@ -340,7 +340,7 @@ export default function FreelancingScreen() {
                                 setActiveTab('posts');
                             }}
                         >
-                            <Text style={[styles.submitBtnText, { color: '#666' }]}>Cancel Editing</Text>
+                            <Text style={[styles.submitBtnText, { color: '#666' }]}>{t('cancel_edit')}</Text>
                         </TouchableOpacity>
                     )}
                     

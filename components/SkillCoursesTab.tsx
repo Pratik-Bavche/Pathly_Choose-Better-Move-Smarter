@@ -26,6 +26,7 @@ import {
     SkillCategory,
     SkillCourse,
 } from "../data/skillData";
+import { useLanguage } from "../context/LanguageContext";
 
 // ── Badge Config ─────────────────────────────────────────────
 const BADGE_STYLE: Record<string, { bg: string; text: string }> = {
@@ -90,6 +91,7 @@ export default function SkillCoursesTab() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [userQual, setUserQual] = useState("");
   const [recommendedCatIds, setRecommendedCatIds] = useState<string[]>([]);
+  const { t } = useLanguage();
 
   const { search: searchParam } = useLocalSearchParams();
 
@@ -163,9 +165,9 @@ export default function SkillCoursesTab() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.catScrollContent}
     >
-      <Text style={styles.stepTitle}>Choose a Skill Area</Text>
+      <Text style={styles.stepTitle}>{t('choose_skill_area')}</Text>
       <Text style={styles.stepSubtitle}>
-        Short-term courses • Certifications • Job-ready skills
+        {t('short_term_courses_desc')}
       </Text>
 
       {/* Personalised suggestion */}
@@ -174,7 +176,7 @@ export default function SkillCoursesTab() {
           <Zap color="#F57F17" size={16} style={{ marginRight: 8 }} />
           <View style={{ flex: 1 }}>
             <Text style={styles.suggestTitle}>
-              Recommended for {QUAL_LABELS[userQual]}
+              {t('recommended_for')}{QUAL_LABELS[userQual] || userQual}
             </Text>
             <Text style={styles.suggestDesc} numberOfLines={2}>
               {SKILL_CATEGORIES.filter((c) => recommendedCatIds.includes(c.id))
@@ -225,7 +227,7 @@ export default function SkillCoursesTab() {
               </Text>
               <View style={styles.catFooter}>
                 <Text style={[styles.catCount, { color: cat.accentColor }]}>
-                  {cat.courses.length} Courses
+                  {cat.courses.length}{t('courses_count_suffix')}
                 </Text>
                 <ChevronRight color={cat.accentColor} size={16} />
               </View>
@@ -237,7 +239,7 @@ export default function SkillCoursesTab() {
       {/* Govt vs Paid note */}
       <View style={styles.comparisonCard}>
         <View style={styles.comparisonCol}>
-          <Text style={styles.compFree}>🆓 Free Govt Training</Text>
+          <Text style={styles.compFree}>🆓 {t('free_govt_training')}</Text>
           <Text style={styles.compPoint}>• NSDC / PMKVY / DDU-GKY</Text>
           <Text style={styles.compPoint}>• Placement Support</Text>
           <Text style={styles.compPoint}>• Certificate on Completion</Text>
@@ -245,7 +247,7 @@ export default function SkillCoursesTab() {
         </View>
         <View style={styles.compDivider} />
         <View style={styles.comparisonCol}>
-          <Text style={styles.compPaid}>💳 Paid Private Training</Text>
+          <Text style={styles.compPaid}>💳 {t('paid_private_training')}</Text>
           <Text style={styles.compPoint}>• Industry-recognized certs</Text>
           <Text style={styles.compPoint}>• Live projects & mentors</Text>
           <Text style={styles.compPoint}>• Higher job ROI</Text>
@@ -302,7 +304,7 @@ export default function SkillCoursesTab() {
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>🔍</Text>
               <Text style={styles.emptyText}>
-                No courses match this filter.
+                {t('no_courses_match')}
               </Text>
             </View>
           ) : (
@@ -359,7 +361,7 @@ export default function SkillCoursesTab() {
                       { backgroundColor: selectedCategory.accentColor },
                     ]}
                   >
-                    <Text style={styles.viewBtnText}>View</Text>
+                    <Text style={styles.viewBtnText}>{t('view_details')}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -441,32 +443,32 @@ export default function SkillCoursesTab() {
 
           {/* Details */}
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}>📋 Course Info</Text>
+            <Text style={styles.detailSectionTitle}>📋 {t('course_info_label')}</Text>
             <Row
               icon={<Clock color={accent} size={14} />}
-              label="Duration"
+              label={t('duration_label_small')}
               value={selectedCourse.duration}
             />
             <Row
               icon={<BookOpen color={accent} size={14} />}
-              label="Eligibility"
+              label={t('eligibility_detail_label')}
               value={selectedCourse.eligibility}
             />
             <Row
               icon={<Award color={accent} size={14} />}
-              label="Authority"
+              label={t('authority_label')}
               value={selectedCourse.certAuthority}
             />
             <Row
               icon={<Globe color={accent} size={14} />}
-              label="Mode"
+              label={t('mode_label')}
               value={selectedCourse.mode}
             />
           </View>
 
           <View style={styles.detailSection}>
             <Text style={styles.detailSectionTitle}>
-              🖥 Top Platforms / Institutes
+              🖥 {t('top_platforms_label')}
             </Text>
             {selectedCourse.platforms.map((p) => (
               <View key={p} style={styles.listRow}>
@@ -481,7 +483,7 @@ export default function SkillCoursesTab() {
           </View>
 
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}>💼 Job Roles</Text>
+            <Text style={styles.detailSectionTitle}>💼 {t('job_roles_label')}</Text>
             {selectedCourse.jobRoles.map((r) => (
               <View key={r} style={styles.listRow}>
                 <MapPin

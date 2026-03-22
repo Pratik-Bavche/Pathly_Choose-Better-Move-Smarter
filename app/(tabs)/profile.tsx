@@ -89,7 +89,7 @@ export default function ProfileScreen() {
             setUserData(data);
             await AsyncStorage.setItem('userData', JSON.stringify(data));
             setEditModalVisible(false);
-            Alert.alert('Success', 'Profile updated successfully.');
+            Alert.alert('Success', t('profile_update_success'));
         } catch (error: any) {
             Alert.alert('Update Failed', error.message || 'Something went wrong while updating.');
         } finally {
@@ -116,33 +116,33 @@ export default function ProfileScreen() {
                 </View>
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Overview</Text>
+                    <Text style={styles.sectionTitle}>{t('profile_overview')}</Text>
 
                     <View style={styles.infoCard}>
                         <View style={styles.infoRow}>
                             <Mail color="#666" size={20} />
-                            <Text style={styles.infoText}>{userData?.email || 'Not set'}</Text>
+                            <Text style={styles.infoText}>{userData?.email || t('not_set')}</Text>
                         </View>
                         <View style={styles.infoRow}>
                             <MapPin color="#666" size={20} />
-                            <Text style={styles.infoText}>{userData?.location || 'Not set'}</Text>
+                            <Text style={styles.infoText}>{userData?.location || t('not_set')}</Text>
                         </View>
                         <View style={styles.infoRow}>
                             <GraduationCap color="#666" size={20} />
-                            <Text style={styles.infoText}>{userData?.marks ? `Marks: ${userData.marks}` : 'Marks not specified'}</Text>
+                            <Text style={styles.infoText}>{userData?.marks ? `${t('marks_label')}${userData.marks}` : t('marks_not_set')}</Text>
                         </View>
                     </View>
 
-                    <Text style={[styles.sectionTitle, { marginTop: 24 }]}>Interests</Text>
+                    <Text style={[styles.sectionTitle, { marginTop: 24 }]}>{t('profile_interests')}</Text>
                     <View style={styles.interestsRow}>
                         {userData?.interests?.map((interest: string) => (
                             <View key={interest} style={styles.interestTag}>
                                 <Text style={styles.interestTagText}>{interest}</Text>
                             </View>
-                        )) || <Text style={styles.noDataText}>No interests selected</Text>}
+                        )) || <Text style={styles.noDataText}>{t('no_interests')}</Text>}
                     </View>
 
-                    <Text style={[styles.sectionTitle, { marginTop: 32 }]}>Settings</Text>
+                    <Text style={[styles.sectionTitle, { marginTop: 32 }]}>{t('profile_settings')}</Text>
 
                     <TouchableOpacity style={styles.listItem} onPress={() => setEditModalVisible(true)}>
                         <Edit2 color="#1976d2" size={22} style={styles.listIcon} />
@@ -214,51 +214,51 @@ export default function ProfileScreen() {
                 <View style={styles.modalOverlayFullScreen}>
                     <View style={styles.editModalContent}>
                         <View style={styles.editHeaderRow}>
-                            <Text style={styles.modalTitle}>Edit Profile</Text>
+                            <Text style={styles.modalTitle}>{t('edit_profile_title')}</Text>
                             <TouchableOpacity onPress={() => setEditModalVisible(false)}>
                                 <X color="#666" size={24} />
                             </TouchableOpacity>
                         </View>
 
                         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={styles.editForm}>
-                            <Text style={styles.editLabel}>Full Name</Text>
+                            <Text style={styles.editLabel}>{t('full_name_label')}</Text>
                             <TextInput
                                 style={styles.editInput}
                                 value={editName}
                                 onChangeText={setEditName}
-                                placeholder="Full Name"
+                                placeholder={t('full_name_label')}
                             />
 
-                            <Text style={styles.editLabel}>Location</Text>
+                            <Text style={styles.editLabel}>{t('location_label')}</Text>
                             <TextInput
                                 style={styles.editInput}
                                 value={editLocation}
                                 onChangeText={setEditLocation}
-                                placeholder="City, State"
+                                placeholder={t('location_label')}
                             />
 
-                            <Text style={styles.editLabel}>Qualification</Text>
+                            <Text style={styles.editLabel}>{t('qual_label')}</Text>
                             <TextInput
                                 style={styles.editInput}
                                 value={editLevel}
                                 onChangeText={setEditLevel}
-                                placeholder="e.g. 12th, Diploma"
+                                placeholder={t('qual_label')}
                             />
 
-                            <Text style={styles.editLabel}>Stream</Text>
+                            <Text style={styles.editLabel}>{t('stream_label')}</Text>
                             <TextInput
                                 style={styles.editInput}
                                 value={editStream}
                                 onChangeText={setEditStream}
-                                placeholder="e.g. Science"
+                                placeholder={t('stream_label')}
                             />
 
-                            <Text style={styles.editLabel}>Marks / CGPA</Text>
+                            <Text style={styles.editLabel}>{t('marks_cgpa_label')}</Text>
                             <TextInput
                                 style={styles.editInput}
                                 value={editMarks}
                                 onChangeText={setEditMarks}
-                                placeholder="e.g. 85%"
+                                placeholder={t('marks_cgpa_label')}
                             />
 
                             <TouchableOpacity
@@ -267,7 +267,7 @@ export default function ProfileScreen() {
                                 disabled={isSaving}
                             >
                                 <Save color="#fff" size={20} style={{ marginRight: 8 }} />
-                                <Text style={styles.saveBtnText}>{isSaving ? 'Saving...' : 'Save Changes'}</Text>
+                                <Text style={styles.saveBtnText}>{isSaving ? t('saving') : t('save_changes')}</Text>
                             </TouchableOpacity>
                         </ScrollView>
                     </View>

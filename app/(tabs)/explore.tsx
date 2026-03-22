@@ -6,68 +6,74 @@ import SkillCoursesTab from '../../components/SkillCoursesTab';
 import StartWorkingTab from '../../components/StartWorkingTab';
 import StartBusinessTab from '../../components/StartBusinessTab';
 import { BRANCH_DETAILS } from '../../data/educationDetails';
+import { useLanguage } from '../../context/LanguageContext';
 
-const QUALIFICATIONS = [
-  { id: '10th', title: 'After 10th', subtitle: 'Start your foundation journey', icon: <BookOpen color="#1976d2" size={28} /> },
-  { id: '12th', title: 'After 12th', subtitle: 'Choose your professional degree', icon: <GraduationCap color="#1976d2" size={28} /> },
-  { id: 'diploma', title: 'After Diploma', subtitle: 'Advance your technical career', icon: <Wrench color="#1976d2" size={28} /> },
-  { id: 'iti', title: 'After ITI', subtitle: 'Level up your vocational skills', icon: <Target color="#1976d2" size={28} /> },
-  { id: 'graduation', title: 'After Graduation', subtitle: 'Master degrees & top jobs', icon: <Trophy color="#1976d2" size={28} /> },
-];
-
-const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc: string; icon: React.ReactNode }[]> = {
-  '10th': [
-    { id: 'dip', title: 'Diploma (Polytechnic)', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: '3-year engineering & non-engineering practical programs.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'iti', title: 'ITI Courses', tags: ['Govt Job', 'Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Government recognized short-term vocational training.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'para', title: 'Paramedical', tags: ['Govt Job', 'Private Job', 'High Salary', 'Skill-Based', 'Study Abroad'], desc: 'DMLT, X-Ray Technician, Assistant roles in healthcare.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'hs', title: 'Higher Secondary (11-12)', tags: ['Govt Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'Science, Commerce, Arts streams for higher education.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'voc', title: 'Vocational Courses', tags: ['Private Job', 'Skill-Based'], desc: 'Short-term training for quick employment in various sectors.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'bridge', title: 'Open Schooling / Bridge', tags: ['Govt Job', 'Higher Study'], desc: 'NIOS or foundation courses for competitive exams.', icon: <BookOpen color="#1976d2" size={20} /> }
-  ],
-  '12th': [
-    { id: 'it', title: 'Computer & IT', tags: ['Govt Job', 'Private Job', 'High Salary', 'Study Abroad', 'Skill-Based'], desc: 'BCA, Cyber Security, Data Science, Cloud, Multimedia.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'med', title: 'Medical & Healthcare', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'MBBS, BDS, Nursing, Pharmacy, Physiotherapy.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'eng', title: 'Engineering & Tech', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'B.Tech/B.E in CS, Mechanical, Civil, AI, etc.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'com', title: 'Commerce & Mgmt', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study'], desc: 'B.Com, BBA, CA, CS, CMA for banking and business.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'des', title: 'Design & Creative', tags: ['Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Fashion, Interior, Graphic Design, B.Arch, Animation.', icon: <Target color="#1976d2" size={20} /> },
-    { id: 'arts', title: 'Arts, Humanities, Law', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study'], desc: 'B.A., BA LLB, Journalism, Civil Services prep.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'hosp', title: 'Hospitality & Aviation', tags: ['Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Hotel Management, Travel & Tourism, Culinary Arts.', icon: <Plane color="#1976d2" size={20} /> },
-    { id: 'gov', title: 'Govt & Defense Exams', tags: ['Govt Job', 'High Salary'], desc: 'NDA, SSC, Banking, Police and Defense services.', icon: <Trophy color="#1976d2" size={20} /> },
-    { id: 'sci', title: 'Pure Science & Research', tags: ['Govt Job', 'Private Job', 'Higher Study'], desc: 'B.Sc in Physics, Chem, Bio, Agriculture, Biotech.', icon: <BookOpen color="#1976d2" size={20} /> }
-  ],
-  'diploma': [
-    { id: 'dip_gov', title: 'Government Jobs (JE)', tags: ['Govt Job', 'High Salary'], desc: 'SSC JE, RRB JE, PSU Technical Posts, State Electricity.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'dip_priv', title: 'Private Sector', tags: ['Private Job', 'Skill-Based', 'High Salary', 'Study Abroad'], desc: 'Core Engineering, IT, Manufacturing, Abroad Jobs.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'dip_lat', title: 'B.Tech (Lateral Entry)', tags: ['Higher Study', 'High Salary', 'Study Abroad'], desc: 'Direct 2nd-year B.Tech admission for higher growth.', icon: <GraduationCap color="#1976d2" size={20} /> },
-    { id: 'dip_bde', title: 'Bachelor Degrees', tags: ['Higher Study', 'Private Job', 'High Salary'], desc: 'BCA, B.Sc IT, BBA for IT/Management progression.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'dip_amie', title: 'AMIE Equivalency', tags: ['Higher Study', 'Govt Job', 'Private Job'], desc: 'Equivalent to B.Tech for working professionals.', icon: <BookOpen color="#1976d2" size={20} /> }
-  ],
-  'iti': [
-    { id: 'iti_gov', title: 'Government Jobs', tags: ['Govt Job', 'High Salary'], desc: 'Railway Technician, PSU, State Electricity Boards.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'iti_priv', title: 'Private Jobs', tags: ['Private Job', 'Skill-Based', 'High Salary', 'Study Abroad'], desc: 'Electrician, Fitter, Welder, HVAC, CNC Operator.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'iti_app', title: 'Apprenticeships', tags: ['Govt Job', 'Private Job', 'Skill-Based'], desc: 'Paid industry training (Railways, PSUs, Private).', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'iti_lat', title: 'Diploma (Lateral Entry)', tags: ['Higher Study', 'High Salary'], desc: 'Direct 2nd-year entry to Polytechnic Diploma.', icon: <GraduationCap color="#1976d2" size={20} /> },
-    { id: 'iti_adv', title: 'Advanced ITI Courses', tags: ['Higher Study', 'Skill-Based', 'Study Abroad', 'High Salary'], desc: 'CNC, PLC, HVAC, Industrial Safety Specializations.', icon: <BookOpen color="#1976d2" size={20} /> }
-  ],
-  'graduation': [
-    { id: 'grad_gov', title: 'Government Exams', tags: ['Govt Job', 'High Salary', 'Higher Study'], desc: 'UPSC, SSC CGL, Banking, State PSC.', icon: <Building color="#1976d2" size={20} /> },
-    { id: 'grad_pg', title: 'Postgraduate Degrees', tags: ['Private Job', 'Higher Study', 'High Salary'], desc: 'MBA, M.Tech, MCA, MD/MS, MA, M.Sc.', icon: <GraduationCap color="#1976d2" size={20} /> },
-    { id: 'grad_prof', title: 'Professional Courses', tags: ['Private Job', 'High Salary'], desc: 'CA, CS, CMA, Data Certifications.', icon: <Briefcase color="#1976d2" size={20} /> },
-    { id: 'grad_skill', title: 'Skill Certifications', tags: ['Skill-Based', 'Private Job', 'High Salary'], desc: 'Data Science, Cyber Security, Cloud Computing.', icon: <Wrench color="#1976d2" size={20} /> },
-    { id: 'grad_abroad', title: 'Study Abroad', tags: ['Study Abroad', 'Higher Study', 'High Salary'], desc: 'MS, MBA, Healthcare Programs Abroad.', icon: <Plane color="#1976d2" size={20} /> },
-    { id: 'grad_res', title: 'Research & Academic', tags: ['Higher Study', 'Govt Job', 'Study Abroad'], desc: 'Ph.D., M.Tech (Research), Academic roles.', icon: <BookOpen color="#1976d2" size={20} /> },
-    { id: 'grad_ent', title: 'Entrepreneurship', tags: ['Entrepreneurship', 'Private Job', 'High Salary'], desc: 'Tech Startup, Consulting, Digital Agency.', icon: <Target color="#1976d2" size={20} /> }
-  ]
-};
-
-const FILTERS = ['All', 'Govt Job', 'Private Job', 'Higher Study', 'High Salary', 'Skill-Based', 'Study Abroad', 'Entrepreneurship'];
 
 export default function ExploreScreen() {
   const { category: categoryParam, search: searchParam } = useLocalSearchParams();
+  const { t } = useLanguage();
   const [selectedQual, setSelectedQual] = useState<string | null>(null);
   const [selectedPathway, setSelectedPathway] = useState<{ id: string, title: string } | null>(null);
   const [expandedBranch, setExpandedBranch] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('All');
+
+  const QUALIFICATIONS = [
+    { id: '10th', title: t('after_label') + t('qual_10th'), subtitle: t('qual_subtitle_10th'), icon: <BookOpen color="#1976d2" size={28} /> },
+    { id: '12th', title: t('after_label') + t('qual_12th'), subtitle: t('qual_subtitle_12th'), icon: <GraduationCap color="#1976d2" size={28} /> },
+    { id: 'diploma', title: t('after_label') + t('qual_diploma'), subtitle: t('qual_subtitle_diploma'), icon: <Wrench color="#1976d2" size={28} /> },
+    { id: 'iti', title: t('after_label') + t('qual_iti'), subtitle: t('qual_subtitle_iti'), icon: <Target color="#1976d2" size={28} /> },
+    { id: 'graduation', title: t('after_label') + t('qual_grad'), subtitle: t('qual_subtitle_grad'), icon: <Trophy color="#1976d2" size={28} /> },
+  ];
+
+  const PATHWAYS: Record<string, { id: string; title: string; tags: string[]; desc: string; icon: React.ReactNode }[]> = {
+    '10th': [
+      { id: 'dip', title: 'Diploma (Polytechnic)', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: '3-year engineering & non-engineering practical programs.', icon: <Building color="#1976d2" size={20} /> },
+      { id: 'iti', title: 'ITI Courses', tags: ['Govt Job', 'Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Government recognized short-term vocational training.', icon: <Wrench color="#1976d2" size={20} /> },
+      { id: 'para', title: 'Paramedical', tags: ['Govt Job', 'Private Job', 'High Salary', 'Skill-Based', 'Study Abroad'], desc: 'DMLT, X-Ray Technician, Assistant roles in healthcare.', icon: <Target color="#1976d2" size={20} /> },
+      { id: 'hs', title: 'Higher Secondary (11-12)', tags: ['Govt Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'Science, Commerce, Arts streams for higher education.', icon: <BookOpen color="#1976d2" size={20} /> },
+      { id: 'voc', title: 'Vocational Courses', tags: ['Private Job', 'Skill-Based'], desc: 'Short-term training for quick employment in various sectors.', icon: <Briefcase color="#1976d2" size={20} /> },
+      { id: 'bridge', title: 'Open Schooling / Bridge', tags: ['Govt Job', 'Higher Study'], desc: 'NIOS or foundation courses for competitive exams.', icon: <BookOpen color="#1976d2" size={20} /> }
+    ],
+    '12th': [
+      { id: 'it', title: 'Computer & IT', tags: ['Govt Job', 'Private Job', 'High Salary', 'Study Abroad', 'Skill-Based'], desc: 'BCA, Cyber Security, Data Science, Cloud, Multimedia.', icon: <Building color="#1976d2" size={20} /> },
+      { id: 'med', title: 'Medical & Healthcare', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'MBBS, BDS, Nursing, Pharmacy, Physiotherapy.', icon: <Target color="#1976d2" size={20} /> },
+      { id: 'eng', title: 'Engineering & Tech', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study', 'Study Abroad'], desc: 'B.Tech/B.E in CS, Mechanical, Civil, AI, etc.', icon: <Wrench color="#1976d2" size={20} /> },
+      { id: 'com', title: 'Commerce & Mgmt', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study'], desc: 'B.Com, BBA, CA, CS, CMA for banking and business.', icon: <Briefcase color="#1976d2" size={20} /> },
+      { id: 'des', title: 'Design & Creative', tags: ['Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Fashion, Interior, Graphic Design, B.Arch, Animation.', icon: <Target color="#1976d2" size={20} /> },
+      { id: 'arts', title: 'Arts, Humanities, Law', tags: ['Govt Job', 'Private Job', 'High Salary', 'Higher Study'], desc: 'B.A., BA LLB, Journalism, Civil Services prep.', icon: <BookOpen color="#1976d2" size={20} /> },
+      { id: 'hosp', title: 'Hospitality & Aviation', tags: ['Private Job', 'Skill-Based', 'Study Abroad'], desc: 'Hotel Management, Travel & Tourism, Culinary Arts.', icon: <Plane color="#1976d2" size={20} /> },
+      { id: 'gov', title: 'Govt & Defense Exams', tags: ['Govt Job', 'High Salary'], desc: 'NDA, SSC, Banking, Police and Defense services.', icon: <Trophy color="#1976d2" size={20} /> },
+      { id: 'sci', title: 'Pure Science & Research', tags: ['Govt Job', 'Private Job', 'Higher Study'], desc: 'B.Sc in Physics, Chem, Bio, Agriculture, Biotech.', icon: <BookOpen color="#1976d2" size={20} /> }
+    ],
+    'diploma': [
+      { id: 'dip_gov', title: 'Government Jobs (JE)', tags: ['Govt Job', 'High Salary'], desc: 'SSC JE, RRB JE, PSU Technical Posts, State Electricity.', icon: <Building color="#1976d2" size={20} /> },
+      { id: 'dip_priv', title: 'Private Sector', tags: ['Private Job', 'Skill-Based', 'High Salary', 'Study Abroad'], desc: 'Core Engineering, IT, Manufacturing, Abroad Jobs.', icon: <Wrench color="#1976d2" size={20} /> },
+      { id: 'dip_lat', title: 'B.Tech (Lateral Entry)', tags: ['Higher Study', 'High Salary', 'Study Abroad'], desc: 'Direct 2nd-year B.Tech admission for higher growth.', icon: <GraduationCap color="#1976d2" size={20} /> },
+      { id: 'dip_bde', title: 'Bachelor Degrees', tags: ['Higher Study', 'Private Job', 'High Salary'], desc: 'BCA, B.Sc IT, BBA for IT/Management progression.', icon: <Briefcase color="#1976d2" size={20} /> },
+      { id: 'dip_amie', title: 'AMIE Equivalency', tags: ['Higher Study', 'Govt Job', 'Private Job'], desc: 'Equivalent to B.Tech for working professionals.', icon: <BookOpen color="#1976d2" size={20} /> }
+    ],
+    'iti': [
+      { id: 'iti_gov', title: 'Government Jobs', tags: ['Govt Job', 'High Salary'], desc: 'Railway Technician, PSU, State Electricity Boards.', icon: <Building color="#1976d2" size={20} /> },
+      { id: 'iti_priv', title: 'Private Jobs', tags: ['Private Job', 'Skill-Based', 'High Salary', 'Study Abroad'], desc: 'Electrician, Fitter, Welder, HVAC, CNC Operator.', icon: <Wrench color="#1976d2" size={20} /> },
+      { id: 'iti_app', title: 'Apprenticeships', tags: ['Govt Job', 'Private Job', 'Skill-Based'], desc: 'Paid industry training (Railways, PSUs, Private).', icon: <Briefcase color="#1976d2" size={20} /> },
+      { id: 'iti_lat', title: 'Diploma (Lateral Entry)', tags: ['Higher Study', 'High Salary'], desc: 'Direct 2nd-year entry to Polytechnic Diploma.', icon: <GraduationCap color="#1976d2" size={20} /> },
+      { id: 'iti_adv', title: 'Advanced ITI Courses', tags: ['Higher Study', 'Skill-Based', 'Study Abroad', 'High Salary'], desc: 'CNC, PLC, HVAC, Industrial Safety Specializations.', icon: <BookOpen color="#1976d2" size={20} /> }
+    ],
+    'graduation': [
+      { id: 'grad_gov', title: 'Government Exams', tags: ['Govt Job', 'High Salary', 'Higher Study'], desc: 'UPSC, SSC CGL, Banking, State PSC.', icon: <Building color="#1976d2" size={20} /> },
+      { id: 'grad_pg', title: 'Postgraduate Degrees', tags: ['Private Job', 'Higher Study', 'High Salary'], desc: 'MBA, M.Tech, MCA, MD/MS, MA, M.Sc.', icon: <GraduationCap color="#1976d2" size={20} /> },
+      { id: 'grad_prof', title: 'Professional Courses', tags: ['Private Job', 'High Salary'], desc: 'CA, CS, CMA, Data Certifications.', icon: <Briefcase color="#1976d2" size={20} /> },
+      { id: 'grad_skill', title: 'Skill Certifications', tags: ['Skill-Based', 'Private Job', 'High Salary'], desc: 'Data Science, Cyber Security, Cloud Computing.', icon: <Wrench color="#1976d2" size={20} /> },
+      { id: 'grad_abroad', title: 'Study Abroad', tags: ['Study Abroad', 'Higher Study', 'High Salary'], desc: 'MS, MBA, Healthcare Programs Abroad.', icon: <Plane color="#1976d2" size={20} /> },
+      { id: 'grad_res', title: 'Research & Academic', tags: ['Higher Study', 'Govt Job', 'Study Abroad'], desc: 'Ph.D., M.Tech (Research), Academic roles.', icon: <BookOpen color="#1976d2" size={20} /> },
+      { id: 'grad_ent', title: 'Entrepreneurship', tags: ['Entrepreneurship', 'Private Job', 'High Salary'], desc: 'Tech Startup, Consulting, Digital Agency.', icon: <Target color="#1976d2" size={20} /> }
+    ]
+  };
+
+  const FILTERS = [
+    t('filter_all'), t('filter_govt'), t('filter_private'), t('filter_higher'), 
+    t('filter_salary'), t('filter_skill'), t('filter_abroad'), t('filter_entry')
+  ];
 
   useFocusEffect(
     useCallback(() => {
@@ -103,8 +109,8 @@ export default function ExploreScreen() {
 
   const renderStep1 = () => (
     <View style={styles.stepContainer}>
-      <Text style={styles.stepTitle}>Select Your Qualification</Text>
-      <Text style={styles.stepSubtitle}>To show you the most relevant educational pathways</Text>
+      <Text style={styles.stepTitle}>{t('select_qual')}</Text>
+      <Text style={styles.stepSubtitle}>{t('select_qual_desc')}</Text>
 
       <View style={styles.qualGrid}>
         {QUALIFICATIONS.map((qual) => (
@@ -136,7 +142,7 @@ export default function ExploreScreen() {
     const currentQual = QUALIFICATIONS.find(q => q.id === selectedQual);
     const options = PATHWAYS[selectedQual] || [];
 
-    const filteredOptions = activeFilter === 'All'
+    const filteredOptions = activeFilter === t('filter_all')
       ? options
       : options.filter(opt => opt.tags.includes(activeFilter));
 
@@ -150,12 +156,12 @@ export default function ExploreScreen() {
           >
             <ArrowLeft color="#1976d2" size={22} />
           </TouchableOpacity>
-          <Text style={styles.selectedQualHeader}>{currentQual?.title} Options</Text>
+          <Text style={styles.selectedQualHeader}>{currentQual?.title + t('options_suffix')}</Text>
         </View>
 
         {/* Filters */}
         <View style={styles.filterSection}>
-          <Text style={styles.filterLabel}>What is your goal?</Text>
+          <Text style={styles.filterLabel}>{t('goal_label')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
             {FILTERS.map(filter => (
               <TouchableOpacity
@@ -203,7 +209,7 @@ export default function ExploreScreen() {
 
           {filteredOptions.length === 0 && (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyStateText}>No options found for this filter.</Text>
+              <Text style={styles.emptyStateText}>{t('no_options')}</Text>
             </View>
           )}
         </ScrollView>
@@ -250,26 +256,26 @@ export default function ExploreScreen() {
                     <Text style={styles.branchDesc}>{branch.desc}</Text>
 
                     <View style={styles.detailItem}>
-                      <Text style={styles.detailLabel}>Duration:</Text>
+                      <Text style={styles.detailLabel}>{t('duration_label')}</Text>
                       <Text style={styles.detailValue}>{branch.duration}</Text>
                     </View>
 
                     <View style={styles.detailItem}>
-                      <Text style={styles.detailLabel}>Eligibility:</Text>
+                      <Text style={styles.detailLabel}>{t('eligibility_label')}</Text>
                       <Text style={styles.detailValue}>{branch.eligibility}</Text>
                     </View>
 
-                    <Text style={styles.detailSubtitle}>🏛️ Govt Jobs / Options:</Text>
+                    <Text style={styles.detailSubtitle}>{t('govt_jobs_label')}</Text>
                     {branch.govt.map((g: string, i: number) => (
                       <Text key={i} style={styles.listItem}>• {g}</Text>
                     ))}
 
-                    <Text style={[styles.detailSubtitle, { marginTop: 12 }]}>💼 Private Sector Roles:</Text>
+                    <Text style={[styles.detailSubtitle, { marginTop: 12 }]}>{t('private_sector_label')}</Text>
                     {branch.private.map((p: string, i: number) => (
                       <Text key={i} style={styles.listItem}>• {p}</Text>
                     ))}
 
-                    <Text style={[styles.detailSubtitle, { marginTop: 12 }]}>🎓 Higher Study Paths:</Text>
+                    <Text style={[styles.detailSubtitle, { marginTop: 12 }]}>{t('higher_study_label')}</Text>
                     {branch.higher.map((h: string, i: number) => (
                       <Text key={i} style={styles.listItem}>• {h}</Text>
                     ))}
@@ -279,7 +285,7 @@ export default function ExploreScreen() {
             );
           }) : (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyStateText}>Detailed branches for this pathway are coming soon!</Text>
+              <Text style={styles.emptyStateText}>{t('branches_coming_soon')}</Text>
             </View>
           )}
         </ScrollView>
@@ -287,18 +293,18 @@ export default function ExploreScreen() {
     );
   };
 
-  let headerTitle = 'Explore Pathways';
-  let headerSubtitle = 'Discover your perfect career route';
+  let headerTitle = t('tab_explore');
+  let headerSubtitle = t('auth_subtitle');
 
   if (categoryParam === 'job') {
-    headerTitle = 'Start Working';
-    headerSubtitle = 'Find job opportunities tailored for you';
+    headerTitle = t('start_working');
+    headerSubtitle = t('start_working_desc');
   } else if (categoryParam === 'skill') {
-    headerTitle = 'Skill Courses';
-    headerSubtitle = 'Short-term certifications to boost your career';
+    headerTitle = t('skill_courses');
+    headerSubtitle = t('skill_courses_desc');
   } else if (categoryParam === 'business') {
-    headerTitle = 'Start a Business';
-    headerSubtitle = 'Entrepreneurship pathways and startups';
+    headerTitle = t('start_business');
+    headerSubtitle = t('start_business_desc');
   }
 
   return (
@@ -323,10 +329,10 @@ export default function ExploreScreen() {
       ) : (
         <View style={[styles.stepContainer, { justifyContent: 'center', alignItems: 'center' }]}>
           <Text style={[styles.stepTitle, { textAlign: 'center', color: '#888' }]}>
-            Coming Soon
+            {t('coming_soon_title')}
           </Text>
           <Text style={[styles.stepSubtitle, { textAlign: 'center' }]}>
-            We are building the perfect {headerTitle} pathways for you. Check back soon!
+            {t('branches_coming_soon')}
           </Text>
         </View>
       )}

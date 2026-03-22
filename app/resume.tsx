@@ -6,6 +6,7 @@ import { ArrowLeft, Briefcase, Download, Edit3, Eye, FileText, GraduationCap, Ma
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Share, Image } from 'react-native';
 import { generateResumeHtml } from '../lib/resumeGenerators';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ResumeData {
   name: string;
@@ -33,6 +34,7 @@ export const TEMPLATES = [
 
 export default function ResumeScreen() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'edit' | 'preview' | 'templates'>('edit');
   const [selectedTemplate, setSelectedTemplate] = useState('modern');
   const [resume, setResume] = useState<ResumeData>({
@@ -117,16 +119,16 @@ export default function ResumeScreen() {
     <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
       {/* Personal Info */}
       <View style={styles.formSection}>
-        <Text style={styles.sectionTitle}><User size={18} color="#0d47a1" /> Personal Information</Text>
+        <Text style={styles.sectionTitle}><User size={18} color="#0d47a1" /> {t('personal_info')}</Text>
         <TextInput 
           style={styles.input} 
-          placeholder="Full Name" 
+          placeholder={t('full_name_ph')}
           value={resume.name} 
           onChangeText={(val) => setResume({...resume, name: val})} 
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Email Address" 
+          placeholder={t('email_ph')}
           keyboardType="email-address"
           autoCapitalize="none"
           value={resume.email} 
@@ -134,20 +136,20 @@ export default function ResumeScreen() {
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Phone Number" 
+          placeholder={t('phone_ph')}
           keyboardType="phone-pad"
           value={resume.phone} 
           onChangeText={(val) => setResume({...resume, phone: val})} 
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Location (City, State)" 
+          placeholder={t('location_ph')}
           value={resume.location} 
           onChangeText={(val) => setResume({...resume, location: val})} 
         />
         <TextInput 
           style={[styles.input, { height: 80, textAlignVertical: 'top' }]} 
-          placeholder="Professional Summary" 
+          placeholder={t('summary_ph')}
           multiline
           value={resume.summary} 
           onChangeText={(val) => setResume({...resume, summary: val})} 
@@ -157,7 +159,7 @@ export default function ResumeScreen() {
       {/* Skills */}
       <View style={styles.formSection}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}><Edit3 size={18} color="#0d47a1" /> Skills</Text>
+          <Text style={styles.sectionTitle}><Edit3 size={18} color="#0d47a1" /> {t('skills_info')}</Text>
           <TouchableOpacity onPress={addSkill} style={styles.circleAddBtn}><Plus size={18} color="#fff" /></TouchableOpacity>
         </View>
         <View style={styles.skillsGrid}>
@@ -165,7 +167,7 @@ export default function ResumeScreen() {
             <View key={index} style={styles.skillInputWrapper}>
               <TextInput 
                 style={[styles.input, { marginBottom: 0, flex: 1, paddingVertical: 8 }]} 
-                placeholder="Skill name" 
+                placeholder={t('skill_name_ph')}
                 value={skill} 
                 onChangeText={(val) => updateSkill(val, index)} 
               />
@@ -180,22 +182,22 @@ export default function ResumeScreen() {
       {/* Education */}
       <View style={styles.formSection}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}><GraduationCap size={18} color="#0d47a1" /> Education</Text>
+          <Text style={styles.sectionTitle}><GraduationCap size={18} color="#0d47a1" /> {t('edu_info')}</Text>
           <TouchableOpacity onPress={addEducation} style={styles.circleAddBtn}><Plus size={18} color="#fff" /></TouchableOpacity>
         </View>
         {resume.education.map((edu, i) => (
           <View key={i} style={styles.itemCard}>
             <View style={styles.itemHeader}>
-              <Text style={styles.itemCount}>Education #{i + 1}</Text>
+              <Text style={styles.itemCount}>{t('edu_count')}#{i + 1}</Text>
               <TouchableOpacity onPress={() => removeEducation(i)}><Trash2 size={18} color="#ff1744" /></TouchableOpacity>
             </View>
-            <TextInput style={styles.input} placeholder="School/College Name" value={edu.school} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder={t('school_ph')} value={edu.school} onChangeText={(v) => {
               const next = [...resume.education]; next[i].school = v; setResume({...resume, education: next});
             }} />
-            <TextInput style={styles.input} placeholder="Degree/Course (e.g. B.Tech Computer Science)" value={edu.degree} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder={t('degree_ph')} value={edu.degree} onChangeText={(v) => {
               const next = [...resume.education]; next[i].degree = v; setResume({...resume, education: next});
             }} />
-            <TextInput style={styles.input} placeholder="Year (e.g. 2020 - 2024)" value={edu.year} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder={t('year_ph')} value={edu.year} onChangeText={(v) => {
               const next = [...resume.education]; next[i].year = v; setResume({...resume, education: next});
             }} />
           </View>
@@ -205,27 +207,27 @@ export default function ResumeScreen() {
       {/* Experience */}
       <View style={styles.formSection}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}><Briefcase size={18} color="#0d47a1" /> Experience / Projects</Text>
+          <Text style={styles.sectionTitle}><Briefcase size={18} color="#0d47a1" /> {t('exp_info')}</Text>
           <TouchableOpacity onPress={addExperience} style={styles.circleAddBtn}><Plus size={18} color="#fff" /></TouchableOpacity>
         </View>
         {resume.experience.map((exp, i) => (
           <View key={i} style={styles.itemCard}>
             <View style={styles.itemHeader}>
-              <Text style={styles.itemCount}>Item #{i + 1}</Text>
+              <Text style={styles.itemCount}>{t('item_count')}#{i + 1}</Text>
               <TouchableOpacity onPress={() => removeExperience(i)}><Trash2 size={18} color="#ff1744" /></TouchableOpacity>
             </View>
-            <TextInput style={styles.input} placeholder="Company/Project Name" value={exp.company} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder={t('company_ph')} value={exp.company} onChangeText={(v) => {
                const next = [...resume.experience]; next[i].company = v; setResume({...resume, experience: next});
             }} />
-            <TextInput style={styles.input} placeholder="Role (e.g. Software Engineer Intern)" value={exp.role} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder={t('role_ph')} value={exp.role} onChangeText={(v) => {
                const next = [...resume.experience]; next[i].role = v; setResume({...resume, experience: next});
             }} />
-            <TextInput style={styles.input} placeholder="Duration (e.g. June 2023 - Present)" value={exp.duration} onChangeText={(v) => {
+            <TextInput style={styles.input} placeholder={t('duration_ph')} value={exp.duration} onChangeText={(v) => {
                const next = [...resume.experience]; next[i].duration = v; setResume({...resume, experience: next});
             }} />
             <TextInput 
               style={[styles.input, { height: 60, textAlignVertical: 'top' }]} 
-              placeholder="Description (Optional)" 
+              placeholder={t('desc_ph')}
               multiline
               value={exp.desc} 
               onChangeText={(v) => {
@@ -338,7 +340,7 @@ export default function ResumeScreen() {
       
       <TouchableOpacity style={styles.downloadFloatingBtn} onPress={handleDownload}>
          <Download color="#fff" size={24} />
-         <Text style={styles.downloadBtnText}>Generate PDF</Text>
+         <Text style={styles.downloadBtnText}>{t('generate_pdf')}</Text>
       </TouchableOpacity>
       
       <View style={{ height: 120 }} />
@@ -370,21 +372,21 @@ export default function ResumeScreen() {
           onPress={() => setActiveTab('edit')}
         >
           <Edit3 size={18} color={activeTab === 'edit' ? '#0d47a1' : '#666'} />
-          <Text style={[styles.tabText, activeTab === 'edit' && styles.activeTabText]}>Edit</Text>
+          <Text style={[styles.tabText, activeTab === 'edit' && styles.activeTabText]}>{t('edit_tab')}</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.tab, activeTab === 'templates' && styles.activeTab]} 
           onPress={() => setActiveTab('templates')}
         >
           <Layout size={18} color={activeTab === 'templates' ? '#0d47a1' : '#666'} />
-          <Text style={[styles.tabText, activeTab === 'templates' && styles.activeTabText]}>Templates</Text>
+          <Text style={[styles.tabText, activeTab === 'templates' && styles.activeTabText]}>{t('templates_tab')}</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.tab, activeTab === 'preview' && styles.activeTab]} 
           onPress={() => setActiveTab('preview')}
         >
           <Eye size={18} color={activeTab === 'preview' ? '#0d47a1' : '#666'} />
-          <Text style={[styles.tabText, activeTab === 'preview' && styles.activeTabText]}>Preview</Text>
+          <Text style={[styles.tabText, activeTab === 'preview' && styles.activeTabText]}>{t('preview_tab')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -392,7 +394,7 @@ export default function ResumeScreen() {
 
       {activeTab === 'edit' && (
          <TouchableOpacity style={styles.primaryBtn} onPress={() => setActiveTab('templates')}>
-            <Text style={styles.primaryBtnText}>Choose Template & Preview</Text>
+            <Text style={styles.primaryBtnText}>{t('select_tpl_preview')}</Text>
          </TouchableOpacity>
       )}
     </View>

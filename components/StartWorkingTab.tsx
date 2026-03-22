@@ -27,6 +27,7 @@ import {
 } from "../data/jobData";
 import { trackEvent } from "../lib/analytics";
 import { hostnameOf, isSafeExternalUrl } from "../lib/url";
+import { useLanguage } from "../context/LanguageContext";
 
 // ── Match Score Engine ──────────────────────────────────────────
 function computeMatchScore(
@@ -138,6 +139,7 @@ export default function StartWorkingTab() {
   const [userInterests, setUserInterests] = useState<string[]>([]);
 
   const { search: searchParam } = useLocalSearchParams();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (searchParam) {
@@ -193,9 +195,9 @@ export default function StartWorkingTab() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.catScrollContent}
     >
-      <Text style={styles.stepTitle}>Choose a Category</Text>
+      <Text style={styles.stepTitle}>{t('choose_category')}</Text>
       <Text style={styles.stepSubtitle}>
-        Find jobs matching your qualification & interests
+        {t('find_jobs_matching')}
       </Text>
 
       <View style={styles.catGrid}>
@@ -222,7 +224,7 @@ export default function StartWorkingTab() {
             </Text>
             <View style={styles.catFooter}>
               <Text style={[styles.catCount, { color: cat.accentColor }]}>
-                {cat.jobs.length} Jobs
+                {cat.jobs.length}{t('jobs_count_suffix')}
               </Text>
               <ChevronRight color={cat.accentColor} size={16} />
             </View>
@@ -234,13 +236,9 @@ export default function StartWorkingTab() {
       <View style={styles.matchInfoCard}>
         <Zap color="#F57F17" size={18} style={{ marginRight: 10 }} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.matchInfoTitle}>Smart Match Score Active</Text>
+          <Text style={styles.matchInfoTitle}>{t('match_score_active')}</Text>
           <Text style={styles.matchInfoDesc}>
-            Jobs are ranked based on your qualification ({userQual}) &{" "}
-            {userInterests.length > 0
-              ? `interests: ${userInterests.slice(0, 2).join(", ")}`
-              : "your profile"}
-            .
+            {t('match_score_desc')}
           </Text>
         </View>
       </View>
@@ -290,7 +288,7 @@ export default function StartWorkingTab() {
           {filteredJobs.length === 0 ? (
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>🔍</Text>
-              <Text style={styles.emptyText}>No jobs match this filter.</Text>
+              <Text style={styles.emptyText}>{t('no_jobs_match')}</Text>
             </View>
           ) : (
             filteredJobs.map((job) => {
@@ -311,7 +309,7 @@ export default function StartWorkingTab() {
                       <Text style={styles.jobTitle}>{job.title}</Text>
                       {job.isExamBased && (
                         <View style={styles.examBadge}>
-                          <Text style={styles.examBadgeText}>Exam-Based</Text>
+                          <Text style={styles.examBadgeText}>{t('exam_based_label')}</Text>
                         </View>
                       )}
                     </View>
@@ -453,7 +451,7 @@ export default function StartWorkingTab() {
                       ]}
                     >
                       <Text style={[styles.badgeText, { color: "#fff" }]}>
-                        Exam-Based
+                        {t('exam_based_label')}
                       </Text>
                     </View>
                   )}
@@ -464,7 +462,7 @@ export default function StartWorkingTab() {
                   {score}%
                 </Text>
                 <Text style={[styles.matchCircleLabel, { color: matchColor }]}>
-                  Match
+                  {t('match_label')}
                 </Text>
               </View>
             </View>
@@ -473,7 +471,7 @@ export default function StartWorkingTab() {
 
             {/* Salary Highlight */}
             <View style={[styles.salaryHeroBox, { borderColor: "#e8f5e9" }]}>
-              <Text style={styles.salaryHeroLabel}>Monthly Salary</Text>
+              <Text style={styles.salaryHeroLabel}>{t('monthly_salary_label')}</Text>
               <Text style={styles.salaryHeroValue}>
                 {selectedJob.salaryLabel}
               </Text>
@@ -482,7 +480,7 @@ export default function StartWorkingTab() {
 
           {/* Detail Sections */}
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}>📋 Eligibility</Text>
+            <Text style={styles.detailSectionTitle}>📋 {t('eligibility_detail_label')}</Text>
             <View style={styles.detailRow}>
               <CheckCircle
                 color="#2E7D32"
@@ -494,7 +492,7 @@ export default function StartWorkingTab() {
           </View>
 
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}>🛠 Required Skills</Text>
+            <Text style={styles.detailSectionTitle}>🛠 {t('required_skills_label')}</Text>
             <View style={styles.skillsWrap}>
               {selectedJob.skills.map((sk) => (
                 <View key={sk} style={styles.skillChip}>
@@ -505,7 +503,7 @@ export default function StartWorkingTab() {
           </View>
 
           <View style={styles.detailSection}>
-            <Text style={styles.detailSectionTitle}>📍 Where to Apply</Text>
+            <Text style={styles.detailSectionTitle}>📍 {t('where_to_apply_label')}</Text>
             <View style={styles.applyRow}>
               <ExternalLink
                 color="#1565C0"
