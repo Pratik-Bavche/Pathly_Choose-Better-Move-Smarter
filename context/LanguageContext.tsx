@@ -35,6 +35,7 @@ const LANGUAGES = {
         tab_profile: 'Profile',
 
         // Home Screen
+        hello_prefix: 'Hello',
         hello_student: 'Hello, Student! 👋',
         home_subtitle: "Let's chart your career roadmap",
         explore_section: 'What would you like to explore?',
@@ -381,6 +382,7 @@ const LANGUAGES = {
         tab_profile: 'प्रोफाइल',
 
         // Home Screen
+        hello_prefix: 'नमस्ते',
         hello_student: 'नमस्ते, छात्र! 👋',
         home_subtitle: 'आइए आपका करियर रोडमैप तैयार करें',
         explore_section: 'आप क्या एक्सप्लोर करना चाहेंगे?',
@@ -727,6 +729,7 @@ const LANGUAGES = {
         tab_profile: 'प्रोफाईल',
 
         // Home Screen
+        hello_prefix: 'नमस्कार',
         hello_student: 'नमस्कार, विद्यार्थी! 👋',
         home_subtitle: 'चला तुमचा करिअर रोडमॅप तयार करूया',
         explore_section: 'तुम्हाला काय पाहायला आवडेल?',

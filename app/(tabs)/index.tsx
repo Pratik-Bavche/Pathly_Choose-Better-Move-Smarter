@@ -1,7 +1,8 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Trophy, Wrench } from 'lucide-react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLanguage } from '../../context/LanguageContext';
 import { BUSINESS_IDEAS } from '../../data/businessIdeas';
 import { JOB_CATEGORIES } from '../../data/jobData';
@@ -13,6 +14,7 @@ export default function HomeScreen() {
   const { t } = useLanguage();
   const [selectedPath, setSelectedPath] = useState('edu');
   const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [userName, setUserName] = useState<string>('');
 
   const loadRandomRecommendations = useCallback(() => {
     // Collect all items from different sources
@@ -65,10 +67,22 @@ export default function HomeScreen() {
     setRecommendations(result);
   }, []);
 
+  const loadUserData = useCallback(async () => {
+    try {
+      const data = await AsyncStorage.getItem('userData');
+      if (data) {
+        const parsed = JSON.parse(data);
+        const name = parsed.full_name || parsed.name || '';
+        setUserName(name);
+      }
+    } catch (e) {}
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
+      loadUserData();
       loadRandomRecommendations();
-    }, [loadRandomRecommendations])
+    }, [loadUserData, loadRandomRecommendations])
   );
 
   const handleRecommendationPress = (item: any) => {
@@ -100,7 +114,9 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>{t('hello_student')}</Text>
+        <Text style={styles.greeting}>
+          {userName ? `${t('hello_prefix')}, ${userName}! 👋` : t('hello_student')}
+        </Text>
         <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
       </View>
 
