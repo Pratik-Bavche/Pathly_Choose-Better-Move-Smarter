@@ -1,5 +1,5 @@
 import { Tabs, useRouter } from 'expo-router';
-import { Compass, Home, MessageCircle, User } from 'lucide-react-native';
+import { Compass, Home, Globe, User } from 'lucide-react-native';
 import { useColorScheme } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -40,10 +40,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="chat"
+        name="freelancing"
         options={{
-          title: t('tab_assist'),
-          tabBarIcon: ({ color }) => <MessageCircle color={color} size={24} />,
+          title: t('tab_freelance'),
+          tabBarIcon: ({ color }) => <Globe color={color} size={24} />,
         }}
       />
       <Tabs.Screen

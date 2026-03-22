@@ -31,7 +31,7 @@ const LANGUAGES = {
         tab_home: 'Home',
         tab_explore: 'Explore',
         tab_plan: 'My Plan',
-        tab_assist: 'Assistant',
+        tab_freelance: 'Freelancing',
         tab_profile: 'Profile',
 
         // Home Screen
@@ -125,7 +125,7 @@ const LANGUAGES = {
         tab_home: 'होम',
         tab_explore: 'एक्सप्लोर',
         tab_plan: 'मेरा प्लान',
-        tab_assist: 'सहायक',
+        tab_freelance: 'फ्रीलांसिंग',
         tab_profile: 'प्रोफाइल',
 
         // Home Screen
@@ -219,7 +219,7 @@ const LANGUAGES = {
         tab_home: 'होम',
         tab_explore: 'एक्सप्लोर',
         tab_plan: 'माझा प्लॅन',
-        tab_assist: 'सहाय्यक',
+        tab_freelance: 'फ्रीलांसिंग',
         tab_profile: 'प्रोफाईल',
 
         // Home Screen
