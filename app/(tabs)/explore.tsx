@@ -119,7 +119,7 @@ export default function ExploreScreen() {
             style={styles.qualCard}
             onPress={() => {
               setSelectedQual(qual.id);
-              setActiveFilter('All');
+              setActiveFilter('filter_all');
             }}
             activeOpacity={0.8}
           >
