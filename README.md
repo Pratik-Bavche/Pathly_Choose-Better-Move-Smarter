@@ -93,7 +93,7 @@ Pathly is built with a deep focus on accessibility. Our trilingual logic ensures
 
 ## 🛠️ Installation & Setup
 
-Install the application on your mobile using the link below.
+Install the application on your mobile using the link - 
 https://expo.dev/accounts/pratikbavche/projects/CareerPath/builds/1694b4d1-d4f2-4d9f-b06b-7a3761262f82
 
 1. **Clone the repository**:
