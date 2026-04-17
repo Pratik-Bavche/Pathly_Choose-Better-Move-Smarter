@@ -9,6 +9,7 @@ import { BUSINESS_IDEAS } from '../../data/businessIdeas';
 import { JOB_CATEGORIES } from '../../data/jobData';
 import scholarshipsData from '../../data/scholarships.json';
 import { SKILL_CATEGORIES } from '../../data/skillData';
+import { Shimmer } from '../../components/Shimmer';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function HomeScreen() {
   const [selectedPath, setSelectedPath] = useState('edu');
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [userName, setUserName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadRandomRecommendations = useCallback(() => {
     // Collect all items from different sources
@@ -81,8 +83,12 @@ export default function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      setIsLoading(true);
       loadUserData();
       loadRandomRecommendations();
+      // Simulate network delay for premium feel
+      const timer = setTimeout(() => setIsLoading(false), 1500);
+      return () => clearTimeout(timer);
     }, [loadUserData, loadRandomRecommendations])
   );
 
@@ -112,14 +118,38 @@ export default function HomeScreen() {
     { id: 'business', title: t('start_business'), icon: Rocket, desc: t('start_business_desc'), color: '#f3e5f5', iconColor: '#8e24aa' },
   ];
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+            <Shimmer width={200} height={32} borderRadius={10} style={{ marginBottom: 10 }} />
+            <Shimmer width={150} height={18} borderRadius={5} />
+        </View>
+        <ScrollView style={styles.section}>
+            <Shimmer width={120} height={20} style={{ marginTop: 20, marginBottom: 15 }} />
+            <View style={styles.grid}>
+                {[1, 2, 3, 4].map(i => (
+                    <Shimmer key={i} width="48%" height={120} borderRadius={20} style={{ marginBottom: 12 }} />
+                ))}
+            </View>
+            <Shimmer width="100%" height={90} borderRadius={16} style={{ marginTop: 15, marginBottom: 12 }} />
+            <Shimmer width="100%" height={90} borderRadius={16} style={{ marginBottom: 20 }} />
+            <Shimmer width={150} height={20} style={{ marginBottom: 15 }} />
+            <Shimmer width="100%" height={100} borderRadius={16} style={{ marginBottom: 15 }} />
+            <Shimmer width="100%" height={100} borderRadius={16} />
+        </ScrollView>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
+      <Animatable.View animation="fadeIn" duration={800} style={styles.header}>
         <Text style={styles.greeting}>
           {userName ? `${t('hello_prefix')}, ${userName}! 👋` : t('hello_student')}
         </Text>
         <Text style={styles.subGreeting}>{t('home_subtitle')}</Text>
-      </View>
+      </Animatable.View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('explore_section')}</Text>
@@ -152,7 +182,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View style={styles.section}>
+      <Animatable.View animation="fadeInUp" delay={800} style={styles.section}>
         <TouchableOpacity
           style={[styles.recCard, { backgroundColor: '#fff8e1', borderColor: '#fef3c7', marginBottom: 12 }]}
           onPress={() => router.push('/scholarships')}
@@ -180,18 +210,22 @@ export default function HomeScreen() {
           </View>
           <ChevronRight color="#ccc" size={24} />
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
 
       <View style={styles.section}>
-        <View style={styles.sectionHeader}>
+        <Animatable.View animation="fadeIn" delay={1200} style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('recommended')}</Text>
           <TouchableOpacity onPress={() => router.push({ pathname: '/(tabs)/explore', params: { category: selectedPath } })}>
             <Text style={styles.seeMoreText}>{t('see_more')}</Text>
           </TouchableOpacity>
-        </View>
+        </Animatable.View>
 
         {recommendations.map((item, idx) => (
-          <React.Fragment key={item.id}>
+          <Animatable.View 
+            key={item.id} 
+            animation="fadeInUp" 
+            delay={1400 + (idx * 200)}
+          >
             <RecommendationCard
               title={item.title}
               subtitle={item.subtitle}
@@ -199,7 +233,7 @@ export default function HomeScreen() {
               icon={item.icon}
             />
             {idx === 0 && <View style={{ height: 16 }} />}
-          </React.Fragment>
+          </Animatable.View>
         ))}
 
         <View style={{ height: 50 }} />
@@ -272,3 +306,5 @@ const styles = StyleSheet.create({
   recTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 2 },
   recSub: { fontSize: 13, color: '#666' }
 });
+
+
