@@ -29,9 +29,10 @@ export default function WelcomeScreen() {
                 style={styles.backgroundVideo}
                 player={player}
                 contentFit="cover"
+                nativeControls={false}
                 allowsFullscreen={false}
                 allowsPictureInPicture={false}
-                showsControls={false}
+                pointerEvents="none"
             />
 
             {/* Premium Stylish Overlay */}
