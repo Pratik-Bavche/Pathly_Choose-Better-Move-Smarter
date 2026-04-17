@@ -3,6 +3,7 @@ import { BookOpen, Briefcase, ChevronRight, FileText, GraduationCap, Rocket, Tro
 import React, { useCallback, useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Animatable from 'react-native-animatable';
 import { useLanguage } from '../../context/LanguageContext';
 import { BUSINESS_IDEAS } from '../../data/businessIdeas';
 import { JOB_CATEGORIES } from '../../data/jobData';
@@ -123,22 +124,29 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('explore_section')}</Text>
         <View style={styles.grid}>
-          {PATHS.map((item) => {
+          {PATHS.map((item, index) => {
             const Icon = item.icon;
             const isSelected = selectedPath === item.id;
             return (
-              <TouchableOpacity
+              <Animatable.View
                 key={item.id}
-                style={[styles.pathCard, { backgroundColor: item.color }, isSelected && styles.activeCard]}
-                onPress={() => {
-                  setSelectedPath(item.id);
-                  router.push({ pathname: '/(tabs)/explore', params: { category: item.id } });
-                }}
+                animation="slideInDown"
+                duration={800}
+                delay={index * 150}
+                style={{ width: '48%' }}
               >
-                <Icon color={item.iconColor} size={28} style={styles.pathIcon} />
-                <Text style={styles.pathTitle}>{item.title}</Text>
-                <Text style={styles.pathDesc} numberOfLines={1}>{item.desc}</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.pathCard, { backgroundColor: item.color, width: '100%' }, isSelected && styles.activeCard]}
+                  onPress={() => {
+                    setSelectedPath(item.id);
+                    router.push({ pathname: '/(tabs)/explore', params: { category: item.id } });
+                  }}
+                >
+                  <Icon color={item.iconColor} size={28} style={styles.pathIcon} />
+                  <Text style={styles.pathTitle}>{item.title}</Text>
+                  <Text style={styles.pathDesc} numberOfLines={1}>{item.desc}</Text>
+                </TouchableOpacity>
+              </Animatable.View>
             )
           })}
         </View>

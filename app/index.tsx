@@ -24,7 +24,7 @@ export default function IndexScreen() {
                     router.replace('/(onboarding)');
                 }
             } else {
-                router.replace('/(auth)');
+                router.replace('/welcome');
             }
         } catch (e) {
             console.error('Error checking launch:', e);

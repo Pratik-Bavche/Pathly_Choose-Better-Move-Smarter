@@ -2,6 +2,7 @@ import { Tabs, useRouter } from 'expo-router';
 import { Compass, Home, Globe, User } from 'lucide-react-native';
 import { useColorScheme } from 'react-native';
 import { useLanguage } from '../../context/LanguageContext';
+import * as Animatable from 'react-native-animatable';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -29,28 +30,44 @@ export default function TabLayout() {
         name="index"
         options={{
           title: t('tab_home'),
-          tabBarIcon: ({ color }) => <Home color={color} size={24} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Animatable.View animation={focused ? "bounceIn" : "fadeIn"} duration={600}>
+              <Home color={color} size={24} />
+            </Animatable.View>
+          ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: t('tab_explore'),
-          tabBarIcon: ({ color }) => <Compass color={color} size={24} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Animatable.View animation={focused ? "bounceIn" : "fadeIn"} duration={600}>
+              <Compass color={color} size={24} />
+            </Animatable.View>
+          ),
         }}
       />
       <Tabs.Screen
         name="freelancing"
         options={{
           title: t('tab_freelance'),
-          tabBarIcon: ({ color }) => <Globe color={color} size={24} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Animatable.View animation={focused ? "bounceIn" : "fadeIn"} duration={600}>
+              <Globe color={color} size={24} />
+            </Animatable.View>
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: t('tab_profile'),
-          tabBarIcon: ({ color }) => <User color={color} size={24} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Animatable.View animation={focused ? "bounceIn" : "fadeIn"} duration={600}>
+              <User color={color} size={24} />
+            </Animatable.View>
+          ),
         }}
       />
     </Tabs >
