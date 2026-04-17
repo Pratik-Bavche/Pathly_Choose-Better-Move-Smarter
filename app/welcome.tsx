@@ -1,15 +1,22 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowRight } from 'lucide-react-native';
 import * as Animatable from 'react-native-animatable';
 
 const { width, height } = Dimensions.get('window');
+const videoSource = 'https://assets.mixkit.co/videos/preview/mixkit-university-campus-with-students-walking-4420-large.mp4';
 
 export default function WelcomeScreen() {
     const router = useRouter();
+
+    const player = useVideoPlayer(videoSource, player => {
+      player.loop = true;
+      player.play();
+      player.muted = true;
+    });
 
     const handleGetStarted = () => {
         router.replace('/(auth)');
@@ -17,14 +24,14 @@ export default function WelcomeScreen() {
 
     return (
         <View style={styles.container}>
-            {/* Background Video */}
-            <Video
-                source={{ uri: 'https://assets.mixkit.co/videos/preview/mixkit-university-campus-with-students-walking-4420-large.mp4' }}
+            {/* Background Video using updated expo-video API */}
+            <VideoView
                 style={styles.backgroundVideo}
-                shouldPlay
-                isLooping
-                isMuted
-                resizeMode={ResizeMode.COVER}
+                player={player}
+                contentFit="cover"
+                allowsFullscreen={false}
+                allowsPictureInPicture={false}
+                showsControls={false}
             />
 
             {/* Premium Stylish Overlay */}
