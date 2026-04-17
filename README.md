@@ -93,6 +93,11 @@ Pathly is built with a deep focus on accessibility. Our trilingual logic ensures
 
 ## 🛠️ Installation & Setup
 
+Install the application on your mobile using the link - 
+https://expo.dev/accounts/pratikbavche/projects/CareerPath/builds/1694b4d1-d4f2-4d9f-b06b-7a3761262f82
+<img width="407" height="359" alt="image" src="https://github.com/user-attachments/assets/5a8c8d4c-c925-4c3f-8541-cafd9a6aeced" />
+
+
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/Pratik-Bavche/Pathly-Choose-Better.-Move-Smarter.git
