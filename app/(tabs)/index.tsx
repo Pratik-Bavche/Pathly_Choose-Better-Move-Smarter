@@ -20,52 +20,70 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   const loadRandomRecommendations = useCallback(() => {
-    // Collect all items from different sources
-    const allJobs = JOB_CATEGORIES.flatMap(cat => cat.jobs).map(job => ({
-      id: job.id,
-      type: 'job',
-      title: job.title,
-      subtitle: `${job.jobType} • ${job.eligibility}`,
-      icon: Briefcase,
-      target: job.title
-    }));
+    // Pick 2 items from DIFFERENT categories without flattening huge datasets
+    const categories = [
+      { type: 'job', data: JOB_CATEGORIES },
+      { type: 'skill', data: SKILL_CATEGORIES },
+      { type: 'business', data: BUSINESS_IDEAS },
+      { type: 'scholarship', data: scholarshipsData }
+    ];
 
-    const allSkills = SKILL_CATEGORIES.flatMap(cat => cat.courses).map(course => ({
-      id: course.id,
-      type: 'skill',
-      title: course.name,
-      subtitle: `${course.duration} • ${course.mode}`,
-      icon: Wrench,
-      target: course.name
-    }));
-
-    const allBusiness = BUSINESS_IDEAS.map(idea => ({
-      id: idea.id,
-      type: 'business',
-      title: idea.name,
-      subtitle: `Budget: ${idea.setupBudget} • ${idea.mode}`,
-      icon: Rocket,
-      target: idea.name
-    }));
-
-    const allScholarships = (scholarshipsData as any[]).map(s => ({
-      id: s.id.toString(),
-      type: 'scholarship',
-      title: s.name,
-      subtitle: `${s.amount}`,
-      icon: Trophy,
-      target: s.name
-    }));
-
-    const pool = [allJobs, allSkills, allBusiness, allScholarships];
     const result: any[] = [];
-    
-    // Pick 2 items from DIFFERENT categories
-    const shuffledPool = [...pool].sort(() => Math.random() - 0.5);
-    for (let i = 0; i < 2; i++) {
-      const cat = shuffledPool[i];
-      const randomItem = cat[Math.floor(Math.random() * cat.length)];
-      result.push(randomItem);
+    const usedIndices = new Set<number>();
+
+    while (result.length < 2) {
+      const catIdx = Math.floor(Math.random() * categories.length);
+      if (usedIndices.has(catIdx)) continue;
+      usedIndices.add(catIdx);
+
+      const catInfo = categories[catIdx];
+      let item: any = null;
+
+      if (catInfo.type === 'job') {
+        const randomCat = catInfo.data[Math.floor(Math.random() * catInfo.data.length)];
+        const randomJob = (randomCat as any).jobs[Math.floor(Math.random() * (randomCat as any).jobs.length)];
+        item = {
+          id: randomJob.id,
+          type: 'job',
+          title: randomJob.title,
+          subtitle: `${randomJob.jobType} • ${randomJob.eligibility}`,
+          icon: Briefcase,
+          target: randomJob.title
+        };
+      } else if (catInfo.type === 'skill') {
+        const randomCat = catInfo.data[Math.floor(Math.random() * catInfo.data.length)];
+        const randomCourse = (randomCat as any).courses[Math.floor(Math.random() * (randomCat as any).courses.length)];
+        item = {
+          id: randomCourse.id,
+          type: 'skill',
+          title: randomCourse.name,
+          subtitle: `${randomCourse.duration} • ${randomCourse.mode}`,
+          icon: Wrench,
+          target: randomCourse.name
+        };
+      } else if (catInfo.type === 'business') {
+        const randomIdea = catInfo.data[Math.floor(Math.random() * catInfo.data.length)];
+        item = {
+          id: (randomIdea as any).id,
+          type: 'business',
+          title: (randomIdea as any).name,
+          subtitle: `Budget: ${(randomIdea as any).setupBudget} • ${(randomIdea as any).mode}`,
+          icon: Rocket,
+          target: (randomIdea as any).name
+        };
+      } else if (catInfo.type === 'scholarship') {
+        const randomS = catInfo.data[Math.floor(Math.random() * catInfo.data.length)];
+        item = {
+          id: (randomS as any).id.toString(),
+          type: 'scholarship',
+          title: (randomS as any).name,
+          subtitle: `${(randomS as any).amount}`,
+          icon: Trophy,
+          target: (randomS as any).name
+        };
+      }
+
+      if (item) result.push(item);
     }
     setRecommendations(result);
   }, []);

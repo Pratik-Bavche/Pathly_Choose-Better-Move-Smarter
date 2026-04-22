@@ -15,6 +15,7 @@ import {
 } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
 import {
+  FlatList,
   Linking,
   ScrollView,
   StyleSheet,
@@ -156,62 +157,71 @@ export default function StartBusinessTab() {
           <Text style={styles.backTitle} numberOfLines={1}>{selectedCategory.title}</Text>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.listContent}>
-          {categoryIdeas.length === 0 ? (
+        <FlatList
+          data={categoryIdeas.slice(0, visibleCount)}
+          keyExtractor={(idea) => idea.id}
+          renderItem={({ item: idea }) => (
+            <TouchableOpacity
+              key={idea.id}
+              style={styles.ideaCard}
+              activeOpacity={0.85}
+              onPress={() => setSelectedIdea(idea)}
+            >
+              <View style={styles.ideaCardTop}>
+                <View style={styles.ideaTitleBlock}>
+                  <Text style={styles.ideaTitle}>{idea.name}</Text>
+                </View>
+              </View>
+
+              <Text style={styles.ideaShortDesc} numberOfLines={2}>{idea.description}</Text>
+
+              <View style={styles.ideaTagsRow}>
+                <BudgetBadge type={idea.setupBudgetCategory} />
+                <View style={[styles.badge, { backgroundColor: '#F3E5F5' }]}>
+                  <Text style={[styles.badgeText, { color: '#8E24AA' }]}>
+                    {t(idea.mode.toLowerCase() + '_mode') || idea.mode}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.ideaCardBottom}>
+                <Text style={styles.profitLabel}>{t('avg_profit_label')}<Text style={{ color: '#2E7D32', fontWeight: 'bold' }}>{idea.expectedProfit}</Text></Text>
+                <TouchableOpacity
+                  style={styles.viewDetailsBtn}
+                  onPress={() => setSelectedIdea(idea)}
+                >
+                  <Text style={styles.viewDetailsBtnText}>{t('view_details')}</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={
             <View style={styles.emptyState}>
               <Text style={styles.emptyText}>{t('no_ideas_found')}</Text>
             </View>
-          ) : (
-            categoryIdeas.slice(0, visibleCount).map(idea => (
-              <TouchableOpacity
-                key={idea.id}
-                style={styles.ideaCard}
-                activeOpacity={0.85}
-                onPress={() => setSelectedIdea(idea)}
-              >
-                <View style={styles.ideaCardTop}>
-                  <View style={styles.ideaTitleBlock}>
-                    <Text style={styles.ideaTitle}>{idea.name}</Text>
-                  </View>
-                </View>
-
-                <Text style={styles.ideaShortDesc} numberOfLines={2}>{idea.description}</Text>
-
-                <View style={styles.ideaTagsRow}>
-                  <BudgetBadge type={idea.setupBudgetCategory} />
-                  <View style={[styles.badge, { backgroundColor: '#F3E5F5' }]}>
-                    <Text style={[styles.badgeText, { color: '#8E24AA' }]}>
-                      {t(idea.mode.toLowerCase() + '_mode') || idea.mode}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.ideaCardBottom}>
-                  <Text style={styles.profitLabel}>{t('avg_profit_label')}<Text style={{ color: '#2E7D32', fontWeight: 'bold' }}>{idea.expectedProfit}</Text></Text>
-                  <TouchableOpacity
-                    style={styles.viewDetailsBtn}
-                    onPress={() => setSelectedIdea(idea)}
-                  >
-                    <Text style={styles.viewDetailsBtnText}>{t('view_details')}</Text>
-                  </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            ))
-          )}
-
-          {visibleCount < categoryIdeas.length && (
-            <TouchableOpacity
-              style={[styles.loadMoreBtn, { borderColor: '#1565C0' }]}
-              onPress={() => setVisibleCount(prev => prev + 30)}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.loadMoreText}>
-                {t('load_more')} ({categoryIdeas.length - visibleCount} {t('remaining_suffix')})
-              </Text>
-            </TouchableOpacity>
-          )}
-          <View style={{ height: 60 }} />
-        </ScrollView>
+          }
+          ListFooterComponent={
+            <>
+              {visibleCount < categoryIdeas.length && (
+                <TouchableOpacity
+                  style={[styles.loadMoreBtn, { borderColor: '#1565C0' }]}
+                  onPress={() => setVisibleCount(prev => prev + 30)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.loadMoreText}>
+                    {t('load_more')} ({categoryIdeas.length - visibleCount} {t('remaining_suffix')})
+                  </Text>
+                </TouchableOpacity>
+              )}
+              <View style={{ height: 60 }} />
+            </>
+          }
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={5}
+        />
       </View>
     );
   };

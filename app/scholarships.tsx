@@ -10,6 +10,7 @@ import {
 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import {
+  FlatList,
   Linking,
   Modal,
   ScrollView,
@@ -522,37 +523,47 @@ export default function ScholarshipsScreen() {
       </View>
 
       {/* Scholarship List */}
-      <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
-        {filtered.length === 0 ? (
+      <FlatList
+        style={styles.list}
+        data={visibleScholarships}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ScholarshipCard item={item} onPress={() => setSelected(item)} />
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
           <View style={styles.emptyState}>
             <Text style={styles.emptyEmoji}>🔍</Text>
             <Text style={styles.emptyTitle}>{t('no_scholarships_found')}</Text>
             <Text style={styles.emptySubtitle}>{t('try_adjust_filters')}</Text>
           </View>
-        ) : (
-          visibleScholarships.map((item) => (
-            <ScholarshipCard key={item.id} item={item} onPress={() => setSelected(item)} />
-          ))
-        )}
+        }
+        ListFooterComponent={
+          <>
+            {visibleCount < filtered.length && (
+              <TouchableOpacity 
+                style={styles.loadMoreBtn} 
+                onPress={loadMore}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.loadMoreText}>
+                  {t('load_more')} ({filtered.length - visibleCount} {t('remaining_suffix')})
+                </Text>
+              </TouchableOpacity>
+            )}
 
-        {visibleCount < filtered.length && (
-          <TouchableOpacity 
-            style={styles.loadMoreBtn} 
-            onPress={loadMore}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.loadMoreText}>
-              {t('load_more')} ({filtered.length - visibleCount} {t('remaining_suffix')})
-            </Text>
-          </TouchableOpacity>
-        )}
+            {filtered.length > 0 && visibleCount >= filtered.length && (
+              <Text style={styles.endMessage}>✨ {t('end_list')}</Text>
+            )}
 
-        {filtered.length > 0 && visibleCount >= filtered.length && (
-          <Text style={styles.endMessage}>✨ {t('end_list')}</Text>
-        )}
-
-        <View style={{ height: 80 }} />
-      </ScrollView>
+            <View style={{ height: 100 }} />
+          </>
+        }
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews={true}
+      />
 
       {/* Detail Modal */}
       {selected && (

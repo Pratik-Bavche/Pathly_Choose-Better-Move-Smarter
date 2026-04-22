@@ -13,6 +13,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import {
     Alert,
+    FlatList,
     Linking,
     ScrollView,
     StyleSheet,
@@ -288,107 +289,113 @@ export default function StartWorkingTab() {
         {/* filters removed */}
 
         {/* Job cards */}
-        <ScrollView
+        <FlatList
+          data={filteredJobs.slice(0, visibleCount)}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item: job }) => {
+            const score = computeMatchScore(job, userQual, userInterests);
+            const matchColor = getMatchColor(score);
+            const btnColor = NEXT_COLORS[job.nextStep] ?? "#1565C0";
+
+            return (
+              <TouchableOpacity
+                key={job.id}
+                style={styles.jobCard}
+                activeOpacity={0.85}
+                onPress={() => setSelectedJob(job)}
+              >
+                {/* Top Row: Title + Match Score */}
+                <View style={styles.jobCardTop}>
+                  <View style={styles.jobTitleBlock}>
+                    <Text style={styles.jobTitle}>{job.title}</Text>
+                    {job.isExamBased && (
+                      <View style={styles.examBadge}>
+                        <Text style={styles.examBadgeText}>{t('exam_based_label')}</Text>
+                      </View>
+                    )}
+                  </View>
+                  <View
+                    style={[styles.matchBadge, { borderColor: matchColor }]}
+                  >
+                    <Star color={matchColor} size={11} />
+                    <Text style={[styles.matchScore, { color: matchColor }]}>
+                      {score}%
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Short Desc */}
+                <Text style={styles.jobShortDesc} numberOfLines={2}>
+                  {job.shortDesc}
+                </Text>
+
+                {/* Details Row */}
+                <View style={styles.jobDetailsRow}>
+                  <View style={styles.jobDetailItem}>
+                    <BookOpen color="#888" size={13} />
+                    <Text style={styles.jobDetailText}>
+                      {job.eligibility}
+                    </Text>
+                  </View>
+                  <View style={styles.jobDetailItem}>
+                    <MapPin color="#888" size={13} />
+                    <Text style={styles.jobDetailText} numberOfLines={1}>
+                      {job.applySource.split("/")[0].trim()}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Salary + Badge + CTA */}
+                <View style={styles.jobCardBottom}>
+                  <Text style={styles.salaryLabel}>{job.salaryLabel}/mo</Text>
+                  <JobTypeBadge type={job.jobType} />
+                  <TouchableOpacity
+                    style={[
+                      styles.nextStepBtn,
+                      { backgroundColor: btnColor },
+                    ]}
+                    onPress={() => {
+                      if (job.nextStep === "Apply Now") {
+                        handleApply(job);
+                      } else {
+                        setSelectedJob(job);
+                      }
+                    }}
+                  >
+                    <Text style={styles.nextStepBtnText}>{t(job.nextStep.toLowerCase().replace(' ', '_')) || job.nextStep}</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.jobListContent}
-        >
-          {filteredJobs.length === 0 ? (
+          ListEmptyComponent={
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>🔍</Text>
               <Text style={styles.emptyText}>{t('no_jobs_match')}</Text>
             </View>
-          ) : (
-            filteredJobs.slice(0, visibleCount).map((job) => {
-              const score = computeMatchScore(job, userQual, userInterests);
-              const matchColor = getMatchColor(score);
-              const btnColor = NEXT_COLORS[job.nextStep] ?? "#1565C0";
-
-              return (
+          }
+          ListFooterComponent={
+            <>
+              {visibleCount < filteredJobs.length && (
                 <TouchableOpacity
-                  key={job.id}
-                  style={styles.jobCard}
-                  activeOpacity={0.85}
-                  onPress={() => setSelectedJob(job)}
+                  style={[styles.loadMoreBtn, { borderColor: '#1565C0' }]}
+                  onPress={() => setVisibleCount(prev => prev + 30)}
+                  activeOpacity={0.7}
                 >
-                  {/* Top Row: Title + Match Score */}
-                  <View style={styles.jobCardTop}>
-                    <View style={styles.jobTitleBlock}>
-                      <Text style={styles.jobTitle}>{job.title}</Text>
-                      {job.isExamBased && (
-                        <View style={styles.examBadge}>
-                          <Text style={styles.examBadgeText}>{t('exam_based_label')}</Text>
-                        </View>
-                      )}
-                    </View>
-                    <View
-                      style={[styles.matchBadge, { borderColor: matchColor }]}
-                    >
-                      <Star color={matchColor} size={11} />
-                      <Text style={[styles.matchScore, { color: matchColor }]}>
-                        {score}%
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* Short Desc */}
-                  <Text style={styles.jobShortDesc} numberOfLines={2}>
-                    {job.shortDesc}
+                  <Text style={styles.loadMoreText}>
+                    {t('load_more')} ({filteredJobs.length - visibleCount} {t('remaining_suffix')})
                   </Text>
-
-                  {/* Details Row */}
-                  <View style={styles.jobDetailsRow}>
-                    <View style={styles.jobDetailItem}>
-                      <BookOpen color="#888" size={13} />
-                      <Text style={styles.jobDetailText}>
-                        {job.eligibility}
-                      </Text>
-                    </View>
-                    <View style={styles.jobDetailItem}>
-                      <MapPin color="#888" size={13} />
-                      <Text style={styles.jobDetailText} numberOfLines={1}>
-                        {job.applySource.split("/")[0].trim()}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* Salary + Badge + CTA */}
-                  <View style={styles.jobCardBottom}>
-                    <Text style={styles.salaryLabel}>{job.salaryLabel}/mo</Text>
-                    <JobTypeBadge type={job.jobType} />
-                    <TouchableOpacity
-                      style={[
-                        styles.nextStepBtn,
-                        { backgroundColor: btnColor },
-                      ]}
-                      onPress={() => {
-                        if (job.nextStep === "Apply Now") {
-                          handleApply(job);
-                        } else {
-                          setSelectedJob(job);
-                        }
-                      }}
-                    >
-                      <Text style={styles.nextStepBtnText}>{t(job.nextStep.toLowerCase().replace(' ', '_')) || job.nextStep}</Text>
-                    </TouchableOpacity>
-                  </View>
                 </TouchableOpacity>
-              );
-            })
-          )}
-
-          {visibleCount < filteredJobs.length && (
-            <TouchableOpacity
-              style={[styles.loadMoreBtn, { borderColor: '#1565C0' }]}
-              onPress={() => setVisibleCount(prev => prev + 30)}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.loadMoreText}>
-                {t('load_more')} ({filteredJobs.length - visibleCount} {t('remaining_suffix')})
-              </Text>
-            </TouchableOpacity>
-          )}
-          <View style={{ height: 60 }} />
-        </ScrollView>
+              )}
+              <View style={{ height: 60 }} />
+            </>
+          }
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={5}
+        />
       </View>
     );
   };

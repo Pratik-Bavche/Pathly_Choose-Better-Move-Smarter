@@ -14,6 +14,7 @@ import {
 } from "lucide-react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import {
+    FlatList,
     ScrollView,
     StyleSheet,
     Text,
@@ -309,78 +310,80 @@ export default function SkillCoursesTab() {
         {/* filters removed */}
 
         {/* Course Cards */}
-        <ScrollView
+        <FlatList
+          data={filteredCourses.slice(0, visibleCount)}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item: course }) => (
+            <TouchableOpacity
+              key={course.id}
+              style={styles.courseCard}
+              activeOpacity={0.85}
+              onPress={() => setSelectedCourse(course)}
+            >
+              {/* Title + Free tag */}
+              <View style={styles.courseTitleRow}>
+                <Text style={styles.courseTitle}>{course.name}</Text>
+                {course.isFree && (
+                  <View style={styles.freeTag}>
+                    <Text style={styles.freeTagText}>{t('free_tag')}</Text>
+                  </View>
+                )}
+              </View>
+
+              {/* Meta row */}
+              <View style={styles.metaRow}>
+                <View style={styles.metaItem}>
+                  <Clock color="#888" size={12} />
+                  <Text style={styles.metaText}>{course.duration}</Text>
+                </View>
+                <View style={styles.metaItem}>
+                  <BookOpen color="#888" size={12} />
+                  <Text style={styles.metaText} numberOfLines={1}>
+                    {course.eligibility}
+                  </Text>
+                </View>
+                <ModeChip mode={course.mode} />
+              </View>
+
+              {/* Salary */}
+              <Text style={styles.courseSalary}>{course.salaryLabel}</Text>
+
+              {/* Badges */}
+              <View style={styles.badgesRow}>
+                {course.badges.slice(0, 3).map((b) => (
+                  <CourseBadge key={b} label={b} />
+                ))}
+              </View>
+
+              {/* Bottom row */}
+              <View style={styles.courseCardBottom}>
+                <Text style={styles.certText} numberOfLines={1}>
+                  🏅 {course.certAuthority}
+                </Text>
+                <View
+                  style={[
+                    styles.viewBtn,
+                    { backgroundColor: selectedCategory.accentColor },
+                  ]}
+                >
+                  <Text style={styles.viewBtnText}>{t('view_details')}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.courseListContent}
-        >
-          {filteredCourses.length === 0 ? (
+          keyboardShouldPersistTaps="handled"
+          ListEmptyComponent={
             <View style={styles.emptyState}>
               <Text style={styles.emptyEmoji}>🔍</Text>
               <Text style={styles.emptyText}>
                 {t('no_courses_match')}
               </Text>
             </View>
-          ) : (
+          }
+          ListFooterComponent={
             <>
-              {filteredCourses.slice(0, visibleCount).map((course) => (
-                <TouchableOpacity
-                  key={course.id}
-                  style={styles.courseCard}
-                  activeOpacity={0.85}
-                  onPress={() => setSelectedCourse(course)}
-                >
-                  {/* Title + Free tag */}
-                  <View style={styles.courseTitleRow}>
-                    <Text style={styles.courseTitle}>{course.name}</Text>
-                    {course.isFree && (
-                      <View style={styles.freeTag}>
-                        <Text style={styles.freeTagText}>{t('free_tag')}</Text>
-                      </View>
-                    )}
-                  </View>
-
-                  {/* Meta row */}
-                  <View style={styles.metaRow}>
-                    <View style={styles.metaItem}>
-                      <Clock color="#888" size={12} />
-                      <Text style={styles.metaText}>{course.duration}</Text>
-                    </View>
-                    <View style={styles.metaItem}>
-                      <BookOpen color="#888" size={12} />
-                      <Text style={styles.metaText} numberOfLines={1}>
-                        {course.eligibility}
-                      </Text>
-                    </View>
-                    <ModeChip mode={course.mode} />
-                  </View>
-
-                  {/* Salary */}
-                  <Text style={styles.courseSalary}>{course.salaryLabel}</Text>
-
-                  {/* Badges */}
-                  <View style={styles.badgesRow}>
-                    {course.badges.slice(0, 3).map((b) => (
-                      <CourseBadge key={b} label={b} />
-                    ))}
-                  </View>
-
-                  {/* Bottom row */}
-                  <View style={styles.courseCardBottom}>
-                    <Text style={styles.certText} numberOfLines={1}>
-                      🏅 {course.certAuthority}
-                    </Text>
-                    <View
-                      style={[
-                        styles.viewBtn,
-                        { backgroundColor: selectedCategory.accentColor },
-                      ]}
-                    >
-                      <Text style={styles.viewBtnText}>{t('view_details')}</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))}
-
               {visibleCount < filteredCourses.length && (
                 <TouchableOpacity
                   style={[styles.loadMoreBtn, { borderColor: selectedCategory.accentColor }]}
@@ -392,10 +395,13 @@ export default function SkillCoursesTab() {
                   </Text>
                 </TouchableOpacity>
               )}
+              <View style={{ height: 60 }} />
             </>
-          )}
-          <View style={{ height: 60 }} />
-        </ScrollView>
+          }
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={5}
+        />
       </View>
     );
   };
