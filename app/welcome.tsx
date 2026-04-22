@@ -5,6 +5,7 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowRight } from 'lucide-react-native';
 import * as Animatable from 'react-native-animatable';
+import * as Haptics from 'expo-haptics';
 
 const { width, height } = Dimensions.get('window');
 const videoSource = 'https://assets.mixkit.co/videos/preview/mixkit-university-campus-with-students-walking-4420-large.mp4';
@@ -18,7 +19,8 @@ export default function WelcomeScreen() {
       player.muted = true;
     });
 
-    const handleGetStarted = () => {
+    const handleGetStarted = async () => {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         router.replace('/(auth)');
     };
 
@@ -30,7 +32,7 @@ export default function WelcomeScreen() {
                 player={player}
                 contentFit="cover"
                 nativeControls={false}
-                allowsFullscreen={false}
+                fullscreenOptions={{ enabled: false }}
                 allowsPictureInPicture={false}
                 pointerEvents="none"
             />
